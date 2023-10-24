@@ -1,0 +1,106 @@
+.my_card {
+  /* 只能233px,设计图的267px 在1188px宽度中一行不可能放4个 */
+  min-width: 234px;
+  height: 138px;
+  border-radius: 4px;
+  cursor: pointer;
+  .arco-btn-outline:not(.arco-btn-disabled) {
+    background-color: transparent;
+    color:#C9CDD4;
+    border: 1px solid #C9CDD4;
+    &:hover{
+      color:'#4080FF';
+      border: 1px solid rgb(var(--primary-6));
+    }
+  }
+}
+
+.arco-card-header {
+  border-bottom: 0 !important;
+}
+
+
+.my_card:hover {
+  background-color: #E8F3FF;
+}
+
+.my_card:hover .button_group {
+  display: flex;
+}
+
+.c_header {
+  display: flex;
+  align-items: center;
+}
+
+.c_avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #000;
+  margin-right: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.c_title {
+  color: #1D2129;
+}
+
+.c_title .second_name {
+  font-weight: 600;
+}
+
+.c_desc {
+  margin: 12px 0;
+  font-size: 12px;
+  line-height: 20px;
+  color: #4E5969;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  min-height: 36px;
+}
+
+.c_tag_controller {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.success_tag {
+  background: #E8FFEA;
+  color: #00B42A;
+  font-size: 12px;
+}
+
+.loading_tag {
+  background: #FFF7E8;
+  color: #FF7D00;
+}
+
+.fail_tag {
+  background: #FFECE8;
+  color: #F53F3F;
+  font-size: 12px;
+}
+
+.queued_tag {
+  background: #E8FFFB;
+  color: #0FC6C2;
+  font-size: 12px;
+}
+
+.time {
+  font-size: 10px;
+  color: #86909C;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 8px;
+}
+

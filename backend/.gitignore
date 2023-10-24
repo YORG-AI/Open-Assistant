@@ -1,0 +1,24 @@
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+.DS_Store
+env/*
+env/bin/*
+__pycache__
+/agent
+.venv
+include
+/agent/
+src/data/documents/admin/*
+src/data/redis/*
+src/data/vectorstore/*
+src/data/git/*
+src/data/data_analysis/*
+.Trash-*/*
+.ipynb_checkpoints
+*.ipynb
+*.log
+echokernel.py
+file_dir/**
+frontend/fishweb/node_modules

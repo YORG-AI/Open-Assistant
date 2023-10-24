@@ -1,0 +1,238 @@
+.mainbox {
+  display: flex;
+  padding: 12px;
+  margin-left: 15px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+.main_contain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 0 0;
+  align-self: stretch;
+  border-radius: 12px;
+  border: 1px solid var(--color-border-2, #e5e6eb);
+  background: #fff;
+  overflow: hidden;
+}
+.navbar {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+  border-radius: 12px 12px 0px 0px;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border-2, #e5e6eb);
+
+  .selectBox {
+    display: flex;
+    width: 280px;
+    padding: 7px 12px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    border-right: 1px solid var(--color-border-2, #e5e6eb);
+  }
+}
+.bomview {
+  display: flex;
+  align-items: flex-start;
+  flex: 1 0 0;
+  align-self: stretch;
+  position: relative;
+}
+.main_left {
+  display: flex;
+  width: 280px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-self: stretch;
+  border-right: 1px solid var(--color-border-2, #e5e6eb);
+}
+.top_btn {
+  display: flex;
+  height: 36px;
+  padding: 0px 12px 0px 16px;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  // align-self: stretch;
+  border-bottom: 1px solid var(--color-border-1, #f2f3f5);
+  background: var(--color-fill-1, #f7f8fa);
+}
+.btn_text {
+  color: var(--primary-5, #4080ff);
+  text-align: center;
+  font-family: PingFang SC;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 183.333% */
+}
+.mid_content {
+  display: flex;
+  padding: 0 0 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+.main_mid {
+  display: flex;
+  padding: 48px 0 0 98px;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+.mid_contop {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 16px;
+}
+.main_right {
+  display: flex;
+  width: 280px;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  align-self: stretch;
+}
+.right-content {
+  display: flex;
+  padding: 16px 12px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+  align-self: stretch;
+}
+
+.selecttionTitle {
+  width: 247px;
+  color: var(--color-text-1, #1d2129);
+
+  /* 20/CN-Regular */
+  font-family: PingFang SC;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 140% */
+}
+.boxcontain {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.boxtext {
+  display: flex;
+  width: 209px;
+  flex-direction: column;
+  align-items: flex-start;
+  .texttop {
+    color: var(--primary-5, #4080ff);
+
+    /* 12/CN-Regular */
+    font-family: PingFang SC;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 166.667% */
+  }
+  .textbom {
+    color: var(--color-text-1, #1d2129);
+
+    /* 14/CN-Regular */
+    font-family: PingFang SC;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 157.143% */
+  }
+}
+.dropicon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.dropshow {
+  display: flex;
+  width: 280px;
+  padding-bottom: 0px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  align-self: stretch;
+  border-radius: 0px 0px 0px 12px;
+  // border-right: 1px solid var(--color-border-2, #e5e6eb);
+  // background: var(--color-bg-1, #f7f8fa);
+  // 计算高度
+  height: calc(100vh - 57px - 71px);
+  transform: translateY(-4px);
+  background-color: #F7F8FA;
+  .toptitle {
+    font-weight: 700;
+  }
+  .searchTop {
+    display: flex;
+    padding: 12px 12px 0px 12px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+  }
+  .lineblock {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-left: 12px;
+    padding-right: 12px;
+    align-self: stretch;
+
+    gap: 3px;
+
+    .line {
+      position: relative;
+      // position: relative;
+      svg {
+        margin-right: 4px;
+      }
+      cursor: pointer;
+    }
+    .line:hover {
+      background: #f2f3f5;
+    }
+
+    .line.active {
+      background: #bedaff;
+    }
+  }
+}
+.overlay-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255,.5);
+  // z-index: 3; /* 设置合适的 z-index 值，确保遮罩层在上面 */
+}
+.overlay-mask::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  backdrop-filter: blur(3px); /* 高斯模糊 */
+  -webkit-backdrop-filter: blur(3px); /* WebKit 兼容性 */
+}

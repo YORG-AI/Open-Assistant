@@ -1,0 +1,31 @@
+.cardheader {
+  /* width: 426px; */
+  .error {
+    background-color: red;
+  }
+  display: flex;
+  padding: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: var(--color-fill-1, #f7f8fa);
+  .headerbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    .boxleft {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      align-self: stretch;
+    }
+    .boxright {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "argv": [
+        "python",
+        "-m",
+        "src.service.ykernel.ykernel",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "YKernel"
+}

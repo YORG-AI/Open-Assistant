@@ -1,0 +1,61 @@
+.fileCheckBox_wrapper {
+  width: 100%;
+  .file_checkBox_main {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+    /* padding: 8px 0 */
+    .file_checkBox_label {
+      margin-left: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex: 1;
+      /* padding-right: 52px; */
+      max-width: 185px;
+      margin-right: 16px;
+    }
+  }
+  .custom-checkbox-card-mask {
+    height: 16px;
+    width: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    border: 1px solid rgb(var(--primary-5));
+    box-sizing: border-box;
+  }
+
+  .custom-checkbox-card-mask-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  }
+  .arco-checkbox-group-direction-vertical .arco-checkbox {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--color-border-1);
+    height: 38px;
+    padding: 0 16px;
+  }
+  // .arco-checkbox-group-direction-vertical .arco-checkbox:last-child {
+  //   border-bottom: 0;
+  // }
+  .arco-checkbox-group {
+    width: 100%;
+  }
+  .arco-checkbox-text {
+    width: 100%;
+  }
+  .custom-checkbox-card-mask-dot {
+    width: 3.33px;
+    height: 3.33px;
+    border-radius: 50%;
+  }
+  .custom-checkbox-card-mask-dot {
+    background-color: rgb(var(--primary-5));
+  }
+}

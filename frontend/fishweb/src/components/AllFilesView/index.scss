@@ -1,0 +1,72 @@
+.all_file_center_container {
+  flex: 1;
+  background: var(--color-neutral-1);
+  padding: 12px;
+  // 避免挤压其他盒子
+  width: 0;
+  .all_file_center_main {
+    display: flex;
+    background: #fff;
+    border-radius: 12px;
+    flex: 1;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid var(--color-neutral-3);
+    height: 100%;
+    .arco-tabs-header {
+      // max-width: 830px;
+    }
+    .arco-tabs-header-scroll {
+      // max-width: 670px;
+    }
+    .arco-tabs-card > .arco-tabs-content {
+      border: none;
+    }
+    .arco-tabs-header-nav-card .arco-tabs-header-title {
+      border-top: none;
+      border-bottom-color: transparent;
+    }
+    .arco-tabs-header-nav-card .arco-tabs-header-title:first-child {
+      border-left: none;
+    }
+    .arco-tabs-header-wrapper {
+      justify-content: space-between;
+    }
+    .arco-tabs-content {
+      padding-top: 0;
+    }
+    .screensplit_btn {
+      width: 14px;
+      height: 36px;
+      cursor: pointer;
+      &:hover {
+        color: rgb(var(--arcoblue-5));
+      }
+    }
+  }
+}
+
+.splitView {
+  display: flex;
+  .item {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.allfileview {
+  flex: 1;
+  background: var(--color-neutral-1);
+  padding: 12px 8px 12px 12px;
+}
+.content-transition {
+  transition: width 1s ease; /* 过渡所有属性，可以根据需要调整持续时间和缓动函数 */
+}
+.all_file_center_container {
+  display: flex;
+  flex-direction: row;
+}
+
+.all_file_center_main {
+  flex: 1;
+}

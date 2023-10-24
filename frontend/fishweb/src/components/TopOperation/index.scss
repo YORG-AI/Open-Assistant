@@ -1,0 +1,50 @@
+.topOperationStyle{
+    max-height: 46px;
+    border-bottom: 1px solid #E5E6EB;
+    display: flex;
+    justify-content: space-between;
+    .iconLeft,.iconRignt{
+        width: 14px;
+        height: 14px;
+        padding: 8px;
+        cursor: pointer;
+        border-radius: 50%;
+        background: #E5E6EB;
+    }
+    .topOperationStyle-left-icon{
+        padding: 7px 16px;
+        min-height: 30px;
+    }
+    .topOperationStyle-left-tabs{
+        display: flex;
+        &>div{
+            margin-left: 20px;
+            font-size: 14px;
+            line-height: 46px;
+            cursor: pointer;
+        }
+    }
+    .iconLeft{
+        margin-right: 16px;
+    }
+    .topOperationStyle-left{
+        display: flex;
+    }
+    .topOperationStyle-right{
+        padding: 7px 16px;
+    }
+    .active{
+        color:#4080FF;
+        border-bottom: 1px solid #4080FF
+    }
+   
+}
+.modalStyle{
+    padding:24px 16px;
+    & >div{
+        margin-bottom: 8px;
+    }
+}
+.marginRight10{
+    margin-right: 10px;
+}

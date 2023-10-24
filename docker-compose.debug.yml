@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - ./src/data/redis:/data
+
+  fastapi:
+    build: .
+    command: [
+      "sh", 
+      "-c", 
+      "pip install debugpy && python -Xfrozen_modules=off -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000"]
+    ports:
+      - 5678:5678
+      - 8000:8000
+    environment:
+      - PYDEVD_DISABLE_FILE_VALIDATION=1
+    depends_on:
+      - redis
+    volumes:
+      - .:/app

@@ -1,0 +1,34 @@
+version: '3.8'
+
+
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - ./backend/src/data/redis:/data
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+      - 8888:8888   # Port for Jupyter Notebook
+      - 5678:5678   # Port for Debugger
+    depends_on:
+      - redis
+    volumes:
+      - ./backend:/app/
+      - ./backend/kernel.json:/usr/local/share/jupyter/kernels/ykernel/kernel.json
+    entrypoint: ./entrypoint.sh
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend/fishweb:/app
+      - /app/node_modules
+    command: npm start
