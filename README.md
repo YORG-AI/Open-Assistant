@@ -1,8 +1,10 @@
-# Webapp-Backend
+# YORG AI
 
 A brief description of the project.
 
-## Installation
+
+
+## How to install
 
 1. Clone the repository.
 2. Install the required dependencies using pip:
