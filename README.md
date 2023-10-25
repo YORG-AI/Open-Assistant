@@ -1,6 +1,10 @@
 # YORG AI
 
-YORG AI connects large language model with Jupyter Notebook to complete versatile tasks. YORG AI provides a user-friendly, interactive way to understand existing codebases, write codes and documentation with the knowledge of the whole project, perform data analysis and generate complete reports, and more.
+YORG AI connects large language model with Jupyter Notebook to complete various tasks:
+- Explore your GitHub repo; write implementation plans; add new features.
+- Explore your data; generate reports about your data (In Progress).
+
+YORG AI provides a user-friendly, interactive way to understand existing codebases, write codes and documentation with the knowledge of the whole project, perform data analysis and generate complete reports, and more.
 
 **License Notation**: YORG AI is constructed and distributed for personal and non-commercial use only. For commercial use of this project, please contact corresponding authors.
 
