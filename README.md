@@ -25,8 +25,6 @@ Y'ORG provides a user-friendly platform that not only enhances code understandin
 backend/.env
 ```
 
-backend/.env
-
 ### Installation by Docker
 Make sure you have Docker running and Run Command in terminal
 - Build frontend and backend at the same time
