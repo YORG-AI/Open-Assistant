@@ -1,8 +1,8 @@
 # Y'ORG
 
-Y'ORG = Your AI Org.
+![Overview](https://github.com/YORG-AI/YORG-AI/assets/20519290/86ed4e78-2fbe-4dee-81fc-eb503cae40b5)
 
-Y'ORG connects large language model with Jupyter Notebook to complete various tasks. It provides a user-friendly, interactive way to understand existing codebases, write codes and documentation with the knowledge of the whole project, perform data analysis and generate complete reports, and more.
+Y'ORG connects large language model with Jupyter Notebook to complete various tasks. Y'ORG aims to provide a user-friendly, interactive way to (1) explore codebases, (2) draft implementation plans, (3) write codes and add new features. It also helps data scientists and analysts to (4) perform data analysis and (5) generate complete PhD-level reports. More features on the way!
 
 **License Notation**: Y'ORG is constructed and distributed for personal and non-commercial use only. For commercial use of this project, please contact corresponding authors.
 
