@@ -55,4 +55,12 @@ Go to http://localhost:8888/ and you will see a Jupyter Notebook.
     - File Upload
     - Data Analysis
     - Python Code
+ 
+## Contact
+
+If you have any questions / feedback / comment, do not hesitate to contact us. 
+
+Email: contact@yorg.ai
+GitHub Issues: For more technical inquiries, you can also create a new issue in our GitHub repository.
+
 
