@@ -56,7 +56,7 @@ If you see: ``/app/entrypoint.sh: 3: set: Illegal option -``, try in console
 Go to http://localhost:8888/ and you will see a Jupyter Notebook.
 - Create a new notebook with YKernel
 - Wait until Ykernel is ready
-- Click **+** next to the keyboard button to create a new cell to start
+- Click ``+`` next to the keyboard button to create a new cell to start
     - Software Engineer
     - OpenAI Chat
     - File Upload
