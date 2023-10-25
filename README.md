@@ -1,23 +1,20 @@
-# YORG AI
+# Y'ORG
 
-YORG AI connects large language model with Jupyter Notebook to complete various tasks:
-- Explore your GitHub repo; write implementation plans; add new features.
-- Explore your data; generate reports about your data (In Progress).
+Y'ORG = Your AI Org.
 
-YORG AI provides a user-friendly, interactive way to understand existing codebases, write codes and documentation with the knowledge of the whole project, perform data analysis and generate complete reports, and more.
+Y'ORG connects large language model with Jupyter Notebook to complete various tasks. It provides a user-friendly, interactive way to understand existing codebases, write codes and documentation with the knowledge of the whole project, perform data analysis and generate complete reports, and more.
 
-**License Notation**: YORG AI is constructed and distributed for personal and non-commercial use only. For commercial use of this project, please contact corresponding authors.
+**License Notation**: Y'ORG is constructed and distributed for personal and non-commercial use only. For commercial use of this project, please contact corresponding authors.
 
 ## Introduction
 
-YORG AI provides a user-friendly platform that not only enhances code understanding and writing but also empowers users to perform data analysis and generate comprehensive reports effectively. With its interactive and guided approach, YORG AI is a robust tool for managing and navigating through diverse coding and data analysis projects.
+Y'ORG provides a user-friendly platform that not only enhances code understanding and writing but also empowers users to perform data analysis and generate comprehensive reports effectively -- with natural language! With its interactive and guided approach, YORG is a robust tool for managing and navigating through diverse coding and data analysis projects.
 
 ## Features
 
 - Turns feature request into codes and documentation based on the knowledge of the entire repository without an IDE.
-- Interpret and extract insights from data, and turn them into complete reports.
-- Chat with LLM models including OpenAI, Anthropic, and Hugging Face.
-
+- Interpret and extract insights from data, and turn them into complete PhD-level reports.
+  
 ## Roadmap
 
 
