@@ -1,4 +1,4 @@
-# Y'ORG
+# Open Assistant
 
 ![Overview](https://github.com/YORG-AI/YORG-AI/assets/20519290/86ed4e78-2fbe-4dee-81fc-eb503cae40b5)
 
