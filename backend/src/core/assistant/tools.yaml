@@ -1,0 +1,39 @@
+YORG: 0.0.1
+info:
+  title: yorg_tools_document
+  description: yorg tool define document.
+  version: 'v1'
+servers: local
+tools:
+  code_interpreter:
+    get:
+      operationId: serve_code_interpreter
+      summary: Run the code through open_interpreter and return a dictionary including a log of the code run and whether it was successful or not
+      parameters:
+        - name: text
+          description: Text that requires open_interpreter to run
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            schema:
+              $ref: '#/components/schemas/serve_code_interpreter'
+components:
+  schemas:
+    data:
+      type: object
+      description: The data to be fetched, in dict format
+    serve_serve_code_interpreter:
+      type: object
+      items:
+        properties:
+          type: object
+          status:
+            type: string
+            description: execution status
+          context:
+            type: string
+            description: Execution log
