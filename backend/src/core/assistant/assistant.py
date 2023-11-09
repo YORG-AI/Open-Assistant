@@ -1,14 +1,23 @@
-from backend.src.core.assistant.base_assistant import BaseAssistant
+from src.core.assistant.base_assistant import BaseAssistant,AssistantConfig
 import uuid
 import time
+import yaml
 
 class Assistants(BaseAssistant):
     def __init__(self, config):
         super().__init__(config)
     
     def save_to_yaml(self):
-        # 读取已存在的 YAML 文件
-        with open('assistants.yaml', 'r') as file:
+        import os
+
+        # 获取当前文件的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # 构建 assistants.yaml 文件的绝对路径
+        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
+
+        # 使用绝对路径打开 assistants.yaml 文件
+        with open(assistants_yaml_path, 'r') as file:
             data = yaml.safe_load(file) or []
         # 查找具有相同 id 的 assistant
         for i, d in enumerate(data):
@@ -72,12 +81,21 @@ class Assistants(BaseAssistant):
             tools=tools,
             model=model,
         )
+        assistant = Assistants(config)
         assistant.save_to_yaml()  # 保存到 YAML 文件
-        return Assistants(config)
+        return assistant
     @classmethod
     def from_id(cls, id: str) -> 'Assistants':
-        # 读取 YAML 文件
-        with open('assistants.yaml', 'r') as file:
+        import os
+
+        # 获取当前文件的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # 构建 assistants.yaml 文件的绝对路径
+        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
+
+        # 使用绝对路径打开 assistants.yaml 文件
+        with open(assistants_yaml_path, 'r') as file:
             data = yaml.safe_load(file) or []
         # 查找具有相同 id 的配置
         for d in data:

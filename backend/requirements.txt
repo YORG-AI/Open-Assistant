@@ -54,6 +54,9 @@ PyGithub==1.58
 bs4
 jq
 
+#assistant
+pyyaml
+
 # nodes needed in the future
 # replicate==0.8.3
 # cos-python-sdk-v5==1.9.25

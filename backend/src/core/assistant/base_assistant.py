@@ -46,26 +46,21 @@ class BaseAssistant(ABC):
 
     def __init__(self, config: AssistantConfig):
         self.config = config
-        # 初始化 func_mapping
-        self.func_mapping = {}
-        avail_funcs = [
-            func_name for func_name in dir(self) if not func_name.startswith("_")
-        ]
-        # 读取 YAML 文件
-        with open('tools.yaml', 'r') as file:
-            tools_dict = yaml.safe_load(file)
-        available_tools = list(tools_dict['tools'].keys())  # 获取 tools 部分的内容
-        for tool in self.config.tools:
-            func_name = tool["type"]
-            if func_name not in available_tools or func_name not in avail_funcs:
-                raise ValueError(f'Tool {func_name} not defined in YAML file.')
-            elif func_name in avail_funcs:
-                self.func_mapping[func_name] = getattr(self, func_name)
+        import os
 
-    def run(self, input: AssistantInput):
-        if input.func_name not in self.func_mapping.keys():
-            raise Exception(
-                f"Assistant {self.config.name} does not contain {input.func_name} method."
-            )
-        else:
-            return self.func_mapping[input.func_name](input.func_input)
+        # 获取当前文件的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # 构建 tools.yaml 文件的绝对路径
+        tools_yaml_path = os.path.join(current_dir, 'tools.yaml')
+
+        # 使用绝对路径打开 tools.yaml 文件
+        with open(tools_yaml_path, 'r') as f:
+            tools_yaml = yaml.safe_load(f)
+        for tool in self.config.tools:
+            if tool['type'] not in tools_yaml['tools']:
+                raise ValueError(f"Tool {tool['type']} not found in tools.yaml")
+
+  
+
+  

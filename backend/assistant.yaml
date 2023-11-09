@@ -1,0 +1,11 @@
+- created_at: 1699530202
+  description: null
+  file_ids: []
+  id: 57bbc74e-201c-470d-9c2f-e9a06a38e9f9
+  instructions: test_instructions
+  metadata: {}
+  model: test_model
+  name: test_name
+  object: assistant
+  tools:
+  - type: code_interpreter
