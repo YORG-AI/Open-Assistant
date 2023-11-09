@@ -1,4 +1,4 @@
-# Y'ORG
+# Open Assistant
 
 Y'ORG AI provides a local implementation of OpenAI's assistant.
 
