@@ -1,22 +1,38 @@
-# Open Assistant
+# Y'ORG
 
-![Overview](https://github.com/YORG-AI/YORG-AI/assets/20519290/86ed4e78-2fbe-4dee-81fc-eb503cae40b5)
-
-Y'ORG connects large language model with Jupyter Notebook to complete various tasks. Y'ORG aims to provide a user-friendly, interactive way to (1) explore codebases, (2) draft implementation plans, (3) write codes and add new features. It also helps data scientists and analysts to (4) perform data analysis and (5) generate complete PhD-level reports. More features on the way!
-
-**License Notation**: Y'ORG is constructed and distributed for personal and non-commercial use only. For commercial use of this project, please contact corresponding authors.
+Y'ORG AI provides a local implementation of OpenAI's assistant.
 
 ## Introduction
+OpenAI's Assistant API is awesome: channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers build powerful AI assistants capable of performing various tasks. However, it executes codes within an online sandbox and requires us to upload our files to OpenAI's platform -- which does not sound that awesome...
 
-Y'ORG provides a user-friendly platform that not only enhances code understanding and writing but also empowers users to perform data analysis and generate comprehensive reports effectively -- with natural language! With its interactive and guided approach, YORG is a robust tool for managing and navigating through diverse coding and data analysis projects.
+Y'ORG AI thus introduces the Open Assistant, which allows you to run your codes locally, retrieve knowledge from local files (without sendding them to OpenAI), and access more developer-friendly tools!
 
-## Features
+## Key Advantages
+Our platform is designed with the developer and data analyst in mind, offering unparalleled advantages:
 
-- Turns feature request into codes and documentation based on the knowledge of the entire repository without an IDE.
-- Interpret and extract insights from data, and turn them into complete PhD-level reports.
-  
+- **Fortified Data Privacy**: Your sensitive information never leaves your own secure servers.
+- **Boundless Document Handling**: Wave goodbye to restrictions on file size or quantity.
+- **Cost Efficiency**: Eliminate session and retrieval costs associated with cloud-based services.
+- **Local LLM Flexibility**: Opt for the Large Language Model of your choice and maintain all operations in-house.
+
+## Tools and pre-built assistants
+Y'ORG provide additional tools for developers:
+- Understand codebases.
+- Draft development specification.
+- Introduce new features into existing projects.
+
+And for data analyst:
+- Conduct data analysis.
+- Create reports for diverse audiences.
+
+We also provide pre-built assistants for our users:
+
+**SDE assistant**: Transform feature requests into executable code and documentation by harnessing the collective intelligence of your entire code repository—no IDE required.
+
+**Data assistant**: Analyze datasets, distill insights, and convert them into comprehensive reports for varied stakeholders.
+
 ## Roadmap
-
+TBD (Your thoughts and suggestions are highly welcomed! Create an issue or email contact@yorg.ai)
 
 ## Installation
 ### Add your API keys
