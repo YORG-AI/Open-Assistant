@@ -17,11 +17,8 @@ def test_threads_create():
     assert threads.config.metadata == {}
 
 def test_threads_run():
-    # import openai
-    # openai.api_base = 'https://api.openai.com'
-    # openai.api_key  = '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'
 
-    # 创建一个 Threads 对象
+    # 创建一个 Threads 对象  
     threads = Threads.create()
 
     # 创建一个助手并保存到 assistants.yaml 文件
