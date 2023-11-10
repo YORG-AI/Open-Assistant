@@ -22,11 +22,6 @@ from pydantic import BaseModel, Field
 }
 """
 
-class AssistantInput(BaseModel):
-    func_name: str
-    func_input: BaseModel
-
-
 class AssistantConfig(BaseModel):
     id: str = Field(description="助手 ID")
     object: str = Field(default="assistant", description="对象类型")

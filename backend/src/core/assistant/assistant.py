@@ -70,6 +70,9 @@ class Assistants(BaseAssistant):
         self.config.model = value
         self.save_to_yaml()  # 更新 YAML 文件
 
+    def get_tools_type_list(self):
+        return [tool['type'] for tool in self.config.tools]
+
     @staticmethod
     def create(name: str = None, instructions: str = None, tools: list[dict] = [{'type':''}], model: str = 'gpt-4', description: str = None, file_ids: list = None) -> 'Assistants':
         # 创建配置和 Assistants 对象
@@ -107,3 +110,31 @@ class Assistants(BaseAssistant):
                 return cls(config)
         # 如果没有找到，就抛出一个异常
         raise ValueError(f'No assistant with id {id} found in YAML file.')
+    
+    @classmethod
+    def delete_by_id(cls, id: str):
+        import os
+
+        # 获取当前文件的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # 构建 assistants.yaml 文件的绝对路径
+        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
+
+        # 使用绝对路径打开 assistants.yaml 文件
+        with open(assistants_yaml_path, 'r') as file:
+            data = yaml.safe_load(file) or []
+
+        # 查找具有相同 id 的 assistant
+        for i, d in enumerate(data):
+            if d['id'] == id:
+                # 如果找到了，就删除它
+                del data[i]
+                break
+        else:
+            # 如果没有找到，就抛出一个异常
+            raise ValueError(f'No assistant with id {id} found in YAML file.')
+
+        # 写回 YAML 文件
+        with open(assistants_yaml_path, 'w') as file:
+            yaml.dump(data, file)
