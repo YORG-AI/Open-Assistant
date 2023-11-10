@@ -126,6 +126,26 @@ define([
                     new_cell.execute();
                     Jupyter.notebook.delete_cell(Jupyter.notebook.get_cells().length - 1);
                     break;
+                case "generate_unit_test":
+                    new_cell = insert_yorg_cell(constants.OPTION_GENERATE_UT);
+                    new_cell.set_text(data_from_kernel.code);
+                    // new_cell.is_deletable = function () { return true; };
+                    new_cell.execute();
+                    break;
+                    
+                case "unit_test":
+                    new_cell = insert_yorg_cell(constants.OPTION_UT_CODE);
+                    new_cell.set_text(data_from_kernel.code);
+                    new_cell.is_deletable = function () { return true; };
+                    new_cell.execute();
+                    break;
+
+                case "regenerate_unit_test":
+                    new_cell = insert_yorg_cell(constants.OPTION_REGENERATE_UT);
+                    new_cell.set_text(data_from_kernel.code);
+                    // new_cell.is_deletable = function () { return true; };
+                    new_cell.execute();
+                    break;
                 default:
                     break;
             }
@@ -226,6 +246,10 @@ define([
                 return 'DS In';
             case constants.OPTION_DS_UPLOAD_FILE:
                 return 'DS In';
+            case constants.OPTION_UT:
+                return 'UT In';
+            case constants.OPTION_GENERATE_UT:
+                return 'UT In';
         }
         return 'In';
     }
@@ -295,6 +319,15 @@ define([
         } 
 
         switch (type) {
+            case constants.OPTION_UT: {
+                new_cell.execute();
+                new_cell.execute = function (stop_on_error) { };
+                new_cell.set_text('"Unit test agent is running, please interact with it in the output area."');
+                new_cell.metadata.editable = false;
+                new_cell.is_deletable = function () { return true; };
+                break;
+            }
+
             case constants.OPTION_SWE: {
                 new_cell.execute();
                 // disable SWE cell execute function
@@ -381,6 +414,9 @@ define([
             .append(
                 $('<li />').append($('<a />').text('Data Analysis').on('click', () => insert_yorg_cell(constants.OPTION_DATA_ANALYSIS)))
             )
+            .append(
+                $('<li />').append($('<a />').text('Unit Test').on('click', () => insert_yorg_cell(constants.OPTION_UT)))
+            );
         function toggleMenu() {
             menuOpen = !menuOpen;
             if (menuOpen) {

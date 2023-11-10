@@ -13,6 +13,7 @@ from .swe_agent_handler import SoftwareEngineerAgentHandler
 from .ds_agent_handler import DataScientistAgentHandler
 from .file_upload_handler import FileUploadHandler
 from .display_handler import DisplayHandler
+from .unit_test_generator_handler import UnitTestAgentHandler
 
 
 import json
@@ -55,6 +56,9 @@ class YKernel(IPythonKernel):
             "ds_query": self.ds_handler,
             "ds_upload_file": self.ds_handler,
             "display": DisplayHandler(self),
+            "unit_test": UnitTestAgentHandler(self),
+            "generate_unit_test": UnitTestAgentHandler(self),
+            "regenerate_unit_test": UnitTestAgentHandler(self),
         }
 
         self.outputs: dict[str, list] = {}  # cell_id -> output[text]
