@@ -29,7 +29,7 @@ class Assistants(BaseAssistant):
             # 如果没有找到，就添加新的 assistant 到列表中
             data.append(self.config.__dict__)
         # 写回 YAML 文件
-        with open('assistant.yaml', 'w') as file:
+        with open(assistants_yaml_path, 'w') as file:
             yaml.dump(data, file)
     @property
     def id(self):
@@ -71,15 +71,17 @@ class Assistants(BaseAssistant):
         self.save_to_yaml()  # 更新 YAML 文件
 
     @staticmethod
-    def create(name: str, instructions: str, tools: list[dict], model: str) -> 'Assistants':
+    def create(name: str = None, instructions: str = None, tools: list[dict] = [{'type':''}], model: str = 'gpt-4', description: str = None, file_ids: list = None) -> 'Assistants':
         # 创建配置和 Assistants 对象
         config = AssistantConfig(
             id=str(uuid.uuid4()),
             created_at=int(time.time()),
             name=name,
+            description=description,
             instructions=instructions,
             tools=tools,
             model=model,
+            file_ids=file_ids if file_ids is not None else [],
         )
         assistant = Assistants(config)
         assistant.save_to_yaml()  # 保存到 YAML 文件
