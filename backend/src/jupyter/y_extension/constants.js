@@ -11,5 +11,7 @@ define({
     OPTION_DS_UPLOAD_FILE: 'ds_upload_file',
     OPTION_AUTO_REFRESH: 'auto_refresh',
     ADD_YORG_CELL_ID: 'yorg-add-agent-cell-button',
-    
+    OPTION_UT: 'unit_test',
+    OPTION_GENERATE_UT: 'generate_unit_test',
+    OPTION_REGENERATE_UT: 'regenerate_unit_test',
 });
