@@ -1,8 +1,11 @@
 # main services
 fastapi==0.72.0
 uvicorn==0.17.0
+openai==1.2.3
+replicate==0.8.3
+cos-python-sdk-v5==1.9.25
+stability-sdk==0.8.1
 redis==4.5.5
-openai==0.27.8
 ipykernel
 notebook==6.5.6
 jupyter_server
@@ -13,7 +16,23 @@ GitPython
 # debug
 debugpy
 pytest==7.4.0
-httpx==0.19.0
+httpx==0.23.0
+
+# nodes
+pymongo==3.11.0
+dnspython==2.1.0
+slack-sdk==3.11.2
+google-auth-oauthlib==0.4.6
+google-auth-httplib2==0.1.0
+google-api-python-client==2.22.0
+discordwebhook
+discord_webhook
+telegram
+python-telegram-bot
+google-search-results
+typeguard==4.1.2
+requests==2.26.0
+PyGithub==1.58
 
 # data analysis
 pandas==2.1.0
