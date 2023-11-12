@@ -1,14 +1,21 @@
 import uuid
 from typing import List, Optional
 from pydantic import BaseModel, Field
+
 from src.core.assistant.assistant import Assistants
 from src.core.nodes.openai.openai import OpenAINode
 from src.core.nodes.openai.openai_model import *
-from src.core.assistant.tools import Tools
+from src.core.assistant.tools import Tools, Tool
+
 import time
 import yaml
 import os
 import re
+import logging
+import json
+
+from .prompt.few_shot_tools_choose_prompt import *
+from .prompt.parameters_generate_prompt import *
 
 def extract_bracket_content(s: str) -> list:
     content = re.findall(r'\[(.*?)\]', s)
@@ -27,6 +34,8 @@ class ThreadsConfig(BaseModel):
     metadata: dict = Field(default={}, description="元数据")
 
 class Threads:
+    current_tool: Tool
+    
     def __init__(self, config: ThreadsConfig):
         self._config = config
 
@@ -35,8 +44,6 @@ class Threads:
         return self._config
     
     def save_to_yaml(self):
-        import os
-
         # 获取当前文件的绝对路径
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -78,7 +85,7 @@ class Threads:
 
         return threads
 
-    def run(self, assistant_id: str, input_text: str):
+    def run(self, assistant_id: str, input_text: str, **kwargs):
        # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
@@ -86,27 +93,53 @@ class Threads:
         tools = Tools()
         # 获取 tools 的 summary
         tools_summary = tools.get_tools_list_summary(tools_list)
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        # 获取 prompt 文件夹下的 few_shot_tools_choose_prompt.txt 文件的路径
-        few_shot_tools_choose_prompt = os.path.join(current_dir, 'prompt', 'few_shot_tools_choose_prompt.txt')
 
-        # 读取文件内容
-        with open(few_shot_tools_choose_prompt, 'r') as file:
-            prompt_text = file.read()
-        tools_choose_prompt = prompt_text+f"""
+        # 如果第一次执行或当前的 tool 已执行完毕
+        if self.current_tool is None or self.current_tool.has_done():
+            # 使用 LLM 选择 tools
+            chosen_tools = self._choose_tools(tools_summary, input_text)
+
+            # TODO: 支持多个 tool 执行
+            if len(chosen_tools) == 0:
+                logging.warn("No tool is recommended.")
+                return {}
+            else:
+                tool_name = chosen_tools[0]
+
+            # 获取对应的 tool 对象
+            target_tool = tools.get_tool(tool_name)
+            self.current_tool = target_tool
+
+        # 判断当前 tool 的执行是否需要 llm 生成参数
+        if target_tool.need_llm_generate_parameters():
+            # 使用 LLM 生成参数
+            parameters = self._generate_parameters(target_tool, input_text)
+        else:
+            parameters = kwargs
+        
+        # 执行 tool
+        res = target_tool.call(**parameters)        
+        return res
+
+    def _choose_tools(self, tools_summary: dict, input_text: str) -> list[str]:
+        # 创建一个 OpenAINode 对象
+        tools_node = OpenAINode()
+
+        tools_node.add_system_message(TOOLS_CHOOSE_PROMPT)
+        tools_node.add_system_message(TOOLS_CHOOSE_EXAMPLE_PROMPT)
+        tools_node.add_system_message(TOOLS_CHOOSE_HINT)
+
+        tools_choose_prompt = f"""
 Input:
 tools_summary: {tools_summary}
 input_text: {input_text}
 """     
 
-        
-        # 创建一个 OpenAINode 对象
-        tools_node = OpenAINode()
         message_config = Message(
             role = 'user',
             content = tools_choose_prompt
         )
+
         # 创建一个 ChatInput 对象
         chat_config = ChatWithMessageInput(
             message=message_config,
@@ -117,8 +150,41 @@ input_text: {input_text}
 
         # 使用 chat_with_prompt_template 方法进行聊天
         response = tools_node.chat_with_message(chat_config).message.content
-        response = extract_bracket_content(response)
+        tools_list = extract_bracket_content(response)
 
-        # todo：已经选好tool了，接下来写prompt去生成对应tools参数的text，然后给tools运行，之后在结合tools运行结果，再生成一份回答，然后就给用户。
+        return tools_list
 
-        return response
+    def _generate_parameters(self, target_tool: Tool, input_text: str) -> dict:
+        # 创建一个 OpenAINode 对象
+        tools_node = OpenAINode()
+
+        tools_node.add_system_message(PARAMETERS_GENERATE_PROMPT)
+        tools_node.add_system_message(PARAMETERS_GENERATE_EXAMPLE_PROMPT)
+        tools_node.add_system_message(PARAMETERS_GENERATE_HINT)
+
+        parameters_generate_prompt = f"""
+Input:
+tools_name: {target_tool.config.name}
+tools_summary: {target_tool.config.summary}
+input_text: {input_text}
+tool_input_schema: {[parameter.json() for parameter in target_tool.config.parameters]}
+"""
+        
+        message_config = Message(
+            role = 'user',
+            content = parameters_generate_prompt
+        )
+
+        # 创建一个 ChatInput 对象
+        chat_config = ChatWithMessageInput(
+            message=message_config,
+            model="gpt-4",
+            append_history=False,
+            use_streaming=False
+        )
+
+        # 使用 chat_with_prompt_template 方法进行聊天
+        response = tools_node.chat_with_message(chat_config).message.content
+        paramters = json.loads(response)
+
+        return paramters

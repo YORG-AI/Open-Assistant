@@ -4,64 +4,19 @@ info:
   description: yorg tool define document.
   version: 'v1'
 tools:
-  code_interpreter:
-    get:
-      servers: local
-      operationId: serve_code_interpreter
-      summary: Run the code through open_interpreter and return a dictionary including a log of the code run and whether it was successful or not
-      parameters:
-        - name: text
-          description: Text that requires open_interpreter to run
-          required: true
-          schema:
+  - name: code_interpreter
+    entity_name: serve_code_interpreter
+    summary: Run the code through code_interpreter and return a dictionary including a log of the code run and whether it was successful or not.
+    parameters:
+      - name: code
+        description: code text that requires code_interpreter to run
+        required: true
+        parameter_schema:
+          type: string
+    responses:
+      success:
+        description: OK
+        content:
+          result:
             type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            schema:
-              $ref: '#/components/schemas/serve_code_interpreter'
-  data_analyzer:
-    get:
-      servers: local
-      operationId: serve_data_analyzer
-      summary: Run the data analysis and return a dictionary including a log of the analysis and whether it was successful or not
-      parameters:
-        - name: data
-          description: Data that requires analysis
-          required: true
-          schema:
-            type: object
-      responses:
-        "200":
-          description: OK
-          content:
-            schema:
-              $ref: '#/components/schemas/serve_data_analyzer'
-components:
-  schemas:
-    data:
-      type: object
-      description: The data to be fetched, in dict format
-    serve_serve_code_interpreter:
-      type: object
-      items:
-        properties:
-          type: object
-          status:
-            type: string
-            description: execution status
-          context:
-            type: string
-            description: Execution log
-    serve_data_analyzer:
-      type: object
-      items:
-        properties:
-          type: object
-          status:
-            type: string
-            description: execution status
-          context:
-            type: string
-            description: Execution log
+            description: the result of the code run

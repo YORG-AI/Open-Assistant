@@ -17,12 +17,11 @@ def test_threads_create():
     assert threads.config.metadata == {}
 
 def test_threads_run():
-
     # 创建一个 Threads 对象  
     threads = Threads.create()
 
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4", instructions="run code", tools=[{'type':'code_interpreter'},{'type':'data_analyzer'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="run code", tools=[{'type':'code_interpreter'}])
     # 运行 Threads 对象
     result = threads.run(assistant.id, "请您运行print(1)")
     print(result)

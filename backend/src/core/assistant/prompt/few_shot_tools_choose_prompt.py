@@ -1,3 +1,4 @@
+TOOLS_CHOOSE_PROMPT = """
 As a tool selector, you'll provide users with suggestions on tool selection. Depending on the provided tool summary (tools_summary) and user input (input_text), you'll need to follow these steps:
 
 1. Read and understand the tool summary (tools_summary):
@@ -16,8 +17,10 @@ As a tool selector, you'll provide users with suggestions on tool selection. Dep
    - If no tool is recommended, the output is empty.
 
 Note that recommendations for tool selection should be based on the user's needs and refer to the tool summary provided. Follow the steps above and make sure to provide accurate tool selection suggestions in the output.
+"""
 
-Example:
+TOOLS_CHOOSE_EXAMPLE_PROMPT = """
+Here is some examples about tools choosing:
 
 Input:
 tools_summary: {
@@ -48,3 +51,9 @@ Dispose:
 
 Output:
 []
+"""
+
+TOOLS_CHOOSE_HINT = """
+You should only output the python list of tool name, such as [ToolA, ToolB, ToolC]. Do not output any other information and do not contain quotation marks, such as `, \", \' and so on.
+"""
+
