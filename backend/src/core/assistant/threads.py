@@ -110,7 +110,6 @@ class Threads:
                 logging.warn("No tool is recommended.")
                 # 不使用 Tool, 直接 chat
                 res = self._chat(input_text, assistant)
-                return res
             else:
                 tool_name = chosen_tools[0]
                 
@@ -132,8 +131,9 @@ class Threads:
                 if target_tool.need_llm_generate_response():
                     # 使用 LLM 生成 response
                     res = self._generate_response(target_tool, input_text, parameters, res, assistant)
-
-                return res
+            
+            self._config.message_history = [MessageRecord(role='user',content=input_text),MessageRecord(role='assistant',content=res)]
+            return res
 
     def _chat(self, input_text: str, assistant: Assistants) -> str:
         # TODO: 使用全局 OpenAI Node
@@ -219,11 +219,16 @@ tool_input_schema: {[parameter.json() for parameter in target_tool.config.parame
             use_streaming=False
         )
 
-        # 使用 chat_with_prompt_template 方法进行聊天
-        response = tools_node.chat_with_message(chat_config).message.content
-        paramters = json.loads(response)
+       # 使用 chat_with_prompt_template 方法进行聊天
+        while True:
+            try:
+                response = tools_node.chat_with_message(chat_config).message.content
+                parameters = json.loads(response)
+                break
+            except json.JSONDecodeError:
+                continue
 
-        return paramters
+        return parameters
 
     def _generate_response(self, target_tool: Tool, input_text: str, tool_input: dict[str, any], tool_result: dict[str, any], assistant: Assistants) -> dict:
         # 创建一个 OpenAINode 对象

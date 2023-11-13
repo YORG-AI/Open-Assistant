@@ -24,3 +24,8 @@ def test_threads_run():
     # 运行 Threads 对象
     result = threads.run(assistant.id, "Tell me the answer of 12th fibonacci number plus 15th prime.")
     print(result)
+    # 运行 Threads 对象
+    result = threads.run(assistant.id, "Tell me the answer of 17th fibonacci number plus 20th prime.")
+    print(result)
+
+    print(threads.config.message_history)
