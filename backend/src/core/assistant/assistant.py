@@ -89,6 +89,7 @@ class Assistants(BaseAssistant):
         assistant = Assistants(config)
         assistant.save_to_yaml()  # 保存到 YAML 文件
         return assistant
+    
     @classmethod
     def from_id(cls, id: str) -> 'Assistants':
         import os

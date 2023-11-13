@@ -4,8 +4,9 @@ info:
   description: yorg tool define document.
   version: 'v1'
 tools:
-  - name: code_interpreter
-    entity_name: serve_code_interpreter
+  code_interpreter:
+    name: code_interpreter
+    entity_name: code_interpreter
     summary: Run the code through code_interpreter and return a dictionary including a log of the code run and whether it was successful or not.
     parameters:
       - name: code

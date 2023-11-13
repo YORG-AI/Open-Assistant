@@ -38,6 +38,7 @@ class Threads:
     
     def __init__(self, config: ThreadsConfig):
         self._config = config
+        self.current_tool = None
 
     @property
     def config(self):
@@ -143,7 +144,7 @@ input_text: {input_text}
         # 创建一个 ChatInput 对象
         chat_config = ChatWithMessageInput(
             message=message_config,
-            model="gpt-4",
+            model="gpt-4-1106-preview",
             append_history=False,
             use_streaming=False
         )
@@ -178,7 +179,7 @@ tool_input_schema: {[parameter.json() for parameter in target_tool.config.parame
         # 创建一个 ChatInput 对象
         chat_config = ChatWithMessageInput(
             message=message_config,
-            model="gpt-4",
+            model="gpt-4-1106-preview",
             append_history=False,
             use_streaming=False
         )

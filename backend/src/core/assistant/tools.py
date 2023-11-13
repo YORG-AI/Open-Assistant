@@ -118,8 +118,8 @@ class Tools:
         # 读取 tools.yaml 文件，初始化所有 tools
         with open(tools_yaml_path, "r") as f:
             config_obj = yaml.safe_load(f)
-            for tool_config in config_obj["tools"]:
-                self.tools[tool_config["name"]] = Tool(config=ToolConfig(**tool_config))
+            for tool_name, tool_config in config_obj["tools"].items():
+                self.tools[tool_name] = Tool(config=ToolConfig(**tool_config))
 
     def get_tool(self, tool_name: str) -> Tool:
         # 找到对应的工具

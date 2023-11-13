@@ -442,3 +442,15 @@
   message_history: []
   metadata: {}
   object: thread
+- assistant_id: null
+  created_at: 1699857140
+  id: 2f5744b2-7165-46e8-97d1-37229349ff36
+  message_history: []
+  metadata: {}
+  object: thread
+- assistant_id: null
+  created_at: 1699857140
+  id: a29413d2-ac73-4b03-803f-dbf894e0e3e7
+  message_history: []
+  metadata: {}
+  object: thread

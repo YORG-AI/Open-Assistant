@@ -21,7 +21,7 @@ RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
 COPY requirements.txt /app
 # Use cache to speed up pip install:
 # https://stackoverflow.com/questions/58018300/using-a-pip-cache-directory-in-docker-builds
-RUN --mount=type=cache,target=/root/.cache/pip pip install -r /app/requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip pip install -r /app/requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # Install jupyter nbextensions
 RUN jupyter contrib nbextension install --user
