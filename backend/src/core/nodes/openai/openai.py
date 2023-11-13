@@ -1,4 +1,5 @@
 import openai
+from openai import OpenAI
 import os
 from typing import Optional
 
@@ -39,8 +40,6 @@ class OpenAINode(BaseNode):
         self.cur_role = None
         self.cur_content = None
 
-        openai.api_key = os.getenv("OPENAI_CHAT_API_KEY")
-        openai.api_base = os.getenv("OPENAI_CHAT_API_BASE")
 
     def complete(self, input: CompleteInput):
         """
@@ -122,7 +121,7 @@ class OpenAINode(BaseNode):
         for message in messages:
             cur_messages.append(message.dict(exclude_none=True))
 
-        kwargs["messages"] = tt.trim(cur_messages, input.model)
+        kwargs["messages"] = tt.trim(cur_messages, input.model, max_tokens=9999)
 
         # add function definitions if exists
         if len(self.functions) > 0:
@@ -135,7 +134,8 @@ class OpenAINode(BaseNode):
 
         # TODO: add exception handling
         try:
-            response = openai.ChatCompletion.create(**kwargs)
+            client = OpenAI(api_key=os.getenv("OPENAI_CHAT_API_KEY"))
+            response = client.chat.completions.create(**kwargs)
         except Exception as e:
             return OpenAIResp(
                 message=Message(
@@ -146,12 +146,12 @@ class OpenAINode(BaseNode):
             )
 
         if input.use_streaming:
-            resp = OpenAIStreamingResp(**response.choices[0])
+            resp = OpenAIStreamingResp(**response.choices[0].dict())
             if input.append_history:
                 self.history.append(resp.delta.dict(exclude_none=True))
             return resp
 
-        resp = OpenAIResp(**response.choices[0])
+        resp = OpenAIResp(**response.choices[0].dict())
         if input.append_history:
             self.history.append(resp.message.dict(exclude_none=True))
         return resp

@@ -1,6 +1,10 @@
 # main services
 fastapi==0.72.0
 uvicorn==0.17.0
+openai==1.2.3
+replicate==0.8.3
+cos-python-sdk-v5==1.9.25
+stability-sdk==0.8.1
 redis==4.5.5
 openai==1.2.3
 ipykernel

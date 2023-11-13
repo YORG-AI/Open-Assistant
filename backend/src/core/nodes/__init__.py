@@ -7,6 +7,8 @@ from src.core.nodes.hello.hello_model import *
 from src.core.nodes.openai.openai import *
 from src.core.nodes.openai.openai_model import *
 
+from src.core.nodes.unit_test.unit_test import *
+from src.core.nodes.unit_test.unit_test_model import *
 # from src.core.nodes.google.google_translate.google_translate import *
 # from src.core.nodes.google.google_translate.google_translate_model import *
 
