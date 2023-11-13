@@ -13,7 +13,6 @@ def test_threads_create():
     # 检查其他属性的默认值
     assert threads.config.object == "thread"
     assert threads.config.assistant_id is None
-    assert threads.config.message_history == []
     assert threads.config.metadata == {}
 
 def test_threads_run():

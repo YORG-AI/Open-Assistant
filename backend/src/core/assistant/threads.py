@@ -1,4 +1,5 @@
 import uuid
+from collections import deque
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
@@ -33,8 +34,20 @@ class ThreadsConfig(BaseModel):
     object: str = Field(default="thread", description="对象类型")
     created_at: int = Field(description="创建时间")
     assistant_id:  Optional[str] = Field(description="助手 ID")
-    message_history: List[MessageRecord] = Field(description="消息")
+    message_history: deque[List[MessageRecord]] = Field(deque(maxlen=10), description="消息")
     metadata: dict = Field(default={}, description="元数据")
+    def to_dict(self):
+        # Convert the ThreadsConfig object to a dictionary
+        data = self.__dict__.copy()
+        # Convert the deque to a list
+        data['message_history'] = list(data['message_history'])
+        return data
+
+    @classmethod
+    def from_dict(cls, data):
+        # Convert the list back to a deque
+        data['message_history'] = deque(data['message_history'], maxlen=10)
+        return cls(**data)
 
 class Threads:
     current_tool: Tool
@@ -64,11 +77,11 @@ class Threads:
         for i, d in enumerate(data):
             if d['id'] == self.config.id:
                 # 如果找到了，就更新它
-                data[i] = self.config.__dict__
+                data[i] = self.config.to_dict()
                 break
         else:
             # 如果没有找到，就添加新的 assistant 到列表中
-            data.append(self.config.__dict__)
+            data.append(self.config.to_dict())
         # 写回 YAML 文件
         with open(threads_yaml_path, 'w') as file:
             yaml.dump(data, file)
@@ -132,7 +145,7 @@ class Threads:
                     # 使用 LLM 生成 response
                     res = self._generate_response(target_tool, input_text, parameters, res, assistant)
             
-            self._config.message_history = [MessageRecord(role='user',content=input_text),MessageRecord(role='assistant',content=res)]
+            self._config.message_history.append([MessageRecord(role='user',content=input_text),MessageRecord(role='assistant',content=res)])
             return res
 
     def _chat(self, input_text: str, assistant: Assistants) -> str:
