@@ -157,6 +157,16 @@ class Threads:
         response_node.add_system_message(system_prompt)
         if system_message:
             response_node.add_system_message(system_message)
+        
+        # 如果 self._config.message_history 里有数据
+        if self._config.message_history:
+            for record in self._config.message_history:
+                user_message = record[0]
+                assistant_message = record[1]
+                response_node.add_content(user_message.content)
+                response_node.add_role(user_message.role)
+                response_node.add_content(assistant_message.content)
+                response_node.add_role(assistant_message.role)
 
         message_config = Message(
             role = 'user',
@@ -253,5 +263,5 @@ input_text: {input_text}
 chosen_tool_info: {target_tool.config.json()}
 tool_input: {tool_input}
 tool_result: {tool_result}
-"""
+"""      
         return self._chat(response_generate_prompt,assistant,system_message)
