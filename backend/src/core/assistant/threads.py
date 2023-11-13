@@ -109,7 +109,7 @@ class Threads:
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
                 # 不使用 Tool, 直接 chat
-                res = self._chat(input_text)
+                res = self._chat(input_text, assistant)
                 return res
             else:
                 tool_name = chosen_tools[0]
@@ -131,13 +131,18 @@ class Threads:
                 # 根据执行结果，交给 LLM 进行包装
                 if target_tool.need_llm_generate_response():
                     # 使用 LLM 生成 response
-                    res = self._generate_response(target_tool, input_text, parameters, res)
+                    res = self._generate_response(target_tool, input_text, parameters, res, assistant)
 
                 return res
 
-    def _chat(self, input_text: str) -> str:
+    def _chat(self, input_text: str, assistant: Assistants) -> str:
         # TODO: 使用全局 OpenAI Node
 
+        # 使用 assistant 的 description 和 instructions
+        description = assistant.description
+        instructions = assistant.instructions
+        system_prompt = f"""You're an assistant. That's your description.\n{description}\nPlease follow these instructions:\n{instructions}\n """
+        self.chat_node.add_system_message(system_prompt)
         message_config = Message(
             role = 'user',
             content = input_text
@@ -220,10 +225,14 @@ tool_input_schema: {[parameter.json() for parameter in target_tool.config.parame
 
         return paramters
 
-    def _generate_response(self, target_tool: Tool, input_text: str, tool_input: dict[str, any], tool_result: dict[str, any]) -> dict:
+    def _generate_response(self, target_tool: Tool, input_text: str, tool_input: dict[str, any], tool_result: dict[str, any], assistant: Assistants) -> dict:
         # 创建一个 OpenAINode 对象
         response_node = OpenAINode()
-
+        # 使用 assistant 的 description 和 instructions
+        description = assistant.description
+        instructions = assistant.instructions
+        system_prompt = f"""You're an assistant. That's your description.\n{description}\nPlease follow these instructions:\n{instructions}\n """
+        response_node.add_system_message(system_prompt)
         response_node.add_system_message(RESPONSE_GENERATE_PROMPT + RESPONSE_GENERATE_EXAMPLE_PROMPT + RESPONSE_GENERATE_HINT)
 
         response_generate_prompt = f"""

@@ -53,6 +53,14 @@ class Assistants(BaseAssistant):
         self.config.instructions = value
 
     @property
+    def description(self):
+        return self.config.description
+
+    @description.setter
+    def description(self, value):
+        self.config.description = value
+
+    @property
     def tools(self):
         return self.config.tools
 
