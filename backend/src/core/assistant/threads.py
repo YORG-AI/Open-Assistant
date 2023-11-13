@@ -16,10 +16,13 @@ import json
 
 from .prompt.few_shot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
+from .prompt.response_generate_prompt import *
 
 def extract_bracket_content(s: str) -> list:
     content = re.findall(r'\[(.*?)\]', s)
-    return [c.replace("'", "") for c in content]
+    content = [c.replace("'", "") for c in content]
+    content = filter(lambda x: x != "", content)
+    return list(content)
 
 class MessageRecord(BaseModel):
     role: str = Field(description="角色")
@@ -35,10 +38,13 @@ class ThreadsConfig(BaseModel):
 
 class Threads:
     current_tool: Tool
-    
+    chat_node: OpenAINode # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
+
+
     def __init__(self, config: ThreadsConfig):
         self._config = config
         self.current_tool = None
+        self.chat_node = OpenAINode()
 
     @property
     def config(self):
@@ -99,36 +105,62 @@ class Threads:
         if self.current_tool is None or self.current_tool.has_done():
             # 使用 LLM 选择 tools
             chosen_tools = self._choose_tools(tools_summary, input_text)
-
             # TODO: 支持多个 tool 执行
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
-                return {}
+                # 不使用 Tool, 直接 chat
+                res = self._chat(input_text)
+                return res
             else:
                 tool_name = chosen_tools[0]
+                
+                # 获取对应的 tool 对象
+                target_tool = tools.get_tool(tool_name)
+                self.current_tool = target_tool
 
-            # 获取对应的 tool 对象
-            target_tool = tools.get_tool(tool_name)
-            self.current_tool = target_tool
+                # 判断当前 tool 的执行是否需要 llm 生成参数
+                if target_tool.need_llm_generate_parameters():
+                    # 使用 LLM 生成参数
+                    parameters = self._generate_parameters(target_tool, input_text)
+                else:
+                    parameters = kwargs
+                
+                # 执行 tool
+                res = target_tool.call(**parameters)
 
-        # 判断当前 tool 的执行是否需要 llm 生成参数
-        if target_tool.need_llm_generate_parameters():
-            # 使用 LLM 生成参数
-            parameters = self._generate_parameters(target_tool, input_text)
-        else:
-            parameters = kwargs
-        
-        # 执行 tool
-        res = target_tool.call(**parameters)        
-        return res
+                # 根据执行结果，交给 LLM 进行包装
+                if target_tool.need_llm_generate_response():
+                    # 使用 LLM 生成 response
+                    res = self._generate_response(target_tool, input_text, parameters, res)
+
+                return res
+
+    def _chat(self, input_text: str) -> str:
+        # TODO: 使用全局 OpenAI Node
+
+        message_config = Message(
+            role = 'user',
+            content = input_text
+        )
+
+        # 创建一个 ChatInput 对象
+        chat_config = ChatWithMessageInput(
+            message=message_config,
+            model="gpt-4-1106-preview",
+            append_history=True,
+            use_streaming=False
+        )
+
+        # 使用 chat_with_prompt_template 方法进行聊天
+        response = self.chat_node.chat_with_message(chat_config).message.content
+
+        return response
 
     def _choose_tools(self, tools_summary: dict, input_text: str) -> list[str]:
         # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
 
-        tools_node.add_system_message(TOOLS_CHOOSE_PROMPT)
-        tools_node.add_system_message(TOOLS_CHOOSE_EXAMPLE_PROMPT)
-        tools_node.add_system_message(TOOLS_CHOOSE_HINT)
+        tools_node.add_system_message(TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT)
 
         tools_choose_prompt = f"""
 Input:
@@ -159,9 +191,7 @@ input_text: {input_text}
         # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
 
-        tools_node.add_system_message(PARAMETERS_GENERATE_PROMPT)
-        tools_node.add_system_message(PARAMETERS_GENERATE_EXAMPLE_PROMPT)
-        tools_node.add_system_message(PARAMETERS_GENERATE_HINT)
+        tools_node.add_system_message(PARAMETERS_GENERATE_PROMPT + PARAMETERS_GENERATE_EXAMPLE_PROMPT + PARAMETERS_GENERATE_HINT)
 
         parameters_generate_prompt = f"""
 Input:
@@ -189,3 +219,33 @@ tool_input_schema: {[parameter.json() for parameter in target_tool.config.parame
         paramters = json.loads(response)
 
         return paramters
+
+    def _generate_response(self, target_tool: Tool, input_text: str, tool_input: dict[str, any], tool_result: dict[str, any]) -> dict:
+        # 创建一个 OpenAINode 对象
+        response_node = OpenAINode()
+
+        response_node.add_system_message(RESPONSE_GENERATE_PROMPT + RESPONSE_GENERATE_EXAMPLE_PROMPT + RESPONSE_GENERATE_HINT)
+
+        response_generate_prompt = f"""
+Input:
+input_text: {input_text}
+chosen_tool_info: {target_tool.config.json()}
+tool_input: {tool_input}
+tool_result: {tool_result}
+"""
+        
+        message_config = Message(
+            role = 'user',
+            content = response_generate_prompt
+        )
+
+        # 创建一个 ChatInput 对象
+        chat_config = ChatWithMessageInput(
+            message=message_config,
+            model="gpt-4-1106-preview",
+            append_history=False,
+            use_streaming=False
+        )
+
+        response = response_node.chat_with_message(chat_config).message.content
+        return response

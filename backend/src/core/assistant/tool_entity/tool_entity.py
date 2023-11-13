@@ -19,6 +19,10 @@ class BaseToolEntity(ABC):
     def need_llm_generate_parameters(self) -> bool:
         pass
 
+    @abstractmethod
+    def need_llm_generate_response(self) -> bool:
+        pass
+
 class FunctionToolEntity(BaseToolEntity):
     parameters: dict[str, any]
     func: callable
@@ -33,6 +37,9 @@ class FunctionToolEntity(BaseToolEntity):
         return self.state
     
     def need_llm_generate_parameters(self) -> bool:
+        return True
+
+    def need_llm_generate_response(self) -> bool:
         return True
 
     def call(self, **kwargs):
@@ -52,6 +59,7 @@ class ExampleStage(str, Enum):
     STAGE3 = "stage3"
     DONE = "done"
 
+# TODO: fill it
 class ExampleStatefulToolEntity(BaseToolEntity):
     stage: ExampleStage
 

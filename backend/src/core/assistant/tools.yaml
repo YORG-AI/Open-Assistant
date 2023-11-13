@@ -7,7 +7,7 @@ tools:
   code_interpreter:
     name: code_interpreter
     entity_name: code_interpreter
-    summary: Run the code through code_interpreter and return a dictionary including a log of the code run and whether it was successful or not.
+    summary: Run the code through code_interpreter and return the result of the code run. If your query is about math, computer science, or data science, you can use this tool to get the result of the code run.
     parameters:
       - name: code
         description: code text that requires code_interpreter to run

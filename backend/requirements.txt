@@ -47,11 +47,10 @@ python-dotenv
 
 # nodes (please comment unused nodes based on your projects)
 langchain==0.0.214
-tiktoken==0.4.0
 # faiss-cpu==1.7.4
 lxml==4.9.2
 python-multipart==0.0.6
-tiktoken==0.4.0
+tiktoken==0.5.1
 dnspython==2.1.0
 typeguard==4.1.2
 PyGithub==1.58
@@ -78,3 +77,5 @@ pyyaml
 # google-search-results
 # slack-sdk==3.11.2
 # pymongo==3.11.0
+
+urllib3==1.25.11

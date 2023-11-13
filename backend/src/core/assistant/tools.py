@@ -19,12 +19,12 @@ from .tool_entity.swe_tool_entity import SWEToolEntity
 
 
 # 示例工具函数
-def serve_code_interpreter(text: str) -> dict[str, any]:
+def serve_code_interpreter(code: str) -> dict[str, any]:
     from src.core.nodes.code_runner.code_runner import CodeRunnerNode, RunCodeInput
 
     code_runner_node = CodeRunnerNode()
     code_runner_node.init_python_repl()
-    res = code_runner_node.run_code(RunCodeInput(code=text))
+    res = code_runner_node.run_code(RunCodeInput(code=code))
 
     return {
         "type": "success",
@@ -99,6 +99,9 @@ class Tool:
 
     def need_llm_generate_parameters(self) -> bool:
         return self.entity.need_llm_generate_parameters()
+
+    def need_llm_generate_response(self) -> bool:
+        return self.entity.need_llm_generate_response()
 
     def has_done(self) -> bool:
         return self.entity.current_state() == "done"
