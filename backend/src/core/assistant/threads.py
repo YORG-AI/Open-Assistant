@@ -57,7 +57,6 @@ class Threads:
     def __init__(self, config: ThreadsConfig):
         self._config = config
         self.current_tool = None
-        self.chat_node = OpenAINode()
 
     @property
     def config(self):
@@ -147,32 +146,35 @@ class Threads:
             
             self._config.message_history.append([MessageRecord(role='user',content=input_text),MessageRecord(role='assistant',content=res)])
             return res
-
-    def _chat(self, input_text: str, assistant: Assistants) -> str:
-        # TODO: 使用全局 OpenAI Node
+    def _chat(self, prompt: str, assistant: Assistants,system_message: Optional[str] = None) -> str:
+        # 创建一个 OpenAINode 对象
+        response_node = OpenAINode()
 
         # 使用 assistant 的 description 和 instructions
         description = assistant.description
         instructions = assistant.instructions
         system_prompt = f"""You're an assistant. That's your description.\n{description}\nPlease follow these instructions:\n{instructions}\n """
-        self.chat_node.add_system_message(system_prompt)
+        response_node.add_system_message(system_prompt)
+        if system_message:
+            response_node.add_system_message(system_message)
+
         message_config = Message(
             role = 'user',
-            content = input_text
+            content = prompt
         )
 
         # 创建一个 ChatInput 对象
         chat_config = ChatWithMessageInput(
             message=message_config,
             model="gpt-4-1106-preview",
-            append_history=True,
+            append_history=False,
             use_streaming=False
         )
 
-        # 使用 chat_with_prompt_template 方法进行聊天
-        response = self.chat_node.chat_with_message(chat_config).message.content
-
+        response = response_node.chat_with_message(chat_config).message.content
         return response
+
+
 
     def _choose_tools(self, tools_summary: dict, input_text: str) -> list[str]:
         # 创建一个 OpenAINode 对象
@@ -244,15 +246,7 @@ tool_input_schema: {[parameter.json() for parameter in target_tool.config.parame
         return parameters
 
     def _generate_response(self, target_tool: Tool, input_text: str, tool_input: dict[str, any], tool_result: dict[str, any], assistant: Assistants) -> dict:
-        # 创建一个 OpenAINode 对象
-        response_node = OpenAINode()
-        # 使用 assistant 的 description 和 instructions
-        description = assistant.description
-        instructions = assistant.instructions
-        system_prompt = f"""You're an assistant. That's your description.\n{description}\nPlease follow these instructions:\n{instructions}\n """
-        response_node.add_system_message(system_prompt)
-        response_node.add_system_message(RESPONSE_GENERATE_PROMPT + RESPONSE_GENERATE_EXAMPLE_PROMPT + RESPONSE_GENERATE_HINT)
-
+        system_message = RESPONSE_GENERATE_PROMPT + RESPONSE_GENERATE_EXAMPLE_PROMPT + RESPONSE_GENERATE_HINT
         response_generate_prompt = f"""
 Input:
 input_text: {input_text}
@@ -260,19 +254,4 @@ chosen_tool_info: {target_tool.config.json()}
 tool_input: {tool_input}
 tool_result: {tool_result}
 """
-        
-        message_config = Message(
-            role = 'user',
-            content = response_generate_prompt
-        )
-
-        # 创建一个 ChatInput 对象
-        chat_config = ChatWithMessageInput(
-            message=message_config,
-            model="gpt-4-1106-preview",
-            append_history=False,
-            use_streaming=False
-        )
-
-        response = response_node.chat_with_message(chat_config).message.content
-        return response
+        return self._chat(response_generate_prompt,assistant,system_message)
