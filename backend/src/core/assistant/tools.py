@@ -142,7 +142,6 @@ class Tools:
 
     def get_tools_list_summary(self, tools_list: list[str]) -> dict[str, str]:
         tools_summary = {}
-        print(f"tools_list:{tools_list}")
         for tool_name in tools_list:
             summary = self.get_tool_summary(tool_name)
             tools_summary[tool_name] = summary
