@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
 from enum import Enum
+from pydantic import BaseModel, Field
+
+import os
+import yaml
 
 class State(str, Enum):
     IDLE = "idle"
@@ -23,6 +27,10 @@ class BaseToolEntity(ABC):
     def need_llm_generate_response(self) -> bool:
         pass
 
+    @abstractmethod
+    def is_stateful(self) -> bool:
+        pass
+
 class FunctionToolEntity(BaseToolEntity):
     parameters: dict[str, any]
     func: callable
@@ -42,7 +50,10 @@ class FunctionToolEntity(BaseToolEntity):
     def need_llm_generate_response(self) -> bool:
         return True
 
-    def call(self, **kwargs):
+    def is_stateful(self) -> bool:
+        return False
+
+    def _call(self, **kwargs):
         if self.state == State.IDLE:
             self.state = State.RUNNING
             res = self.func(**kwargs)
@@ -52,42 +63,6 @@ class FunctionToolEntity(BaseToolEntity):
             raise Exception(f"FunctionTool is in state {self.state}, not {State.IDLE}")
 
 
-class ExampleStage(str, Enum):
-    INIT = "init"
-    STAGE1 = "stage1"
-    STAGE2 = "stage2"
-    STAGE3 = "stage3"
-    DONE = "done"
 
-# TODO: fill it
-class ExampleStatefulToolEntity(BaseToolEntity):
-    stage: ExampleStage
 
-    def __init__(self):
-        self.stage = ExampleStage.INIT
-        self.parameters = {}
-
-    def current_state(self):
-        match self.stage:
-            case ExampleStage.INIT:
-                return State.IDLE
-            case ExampleStage.DONE:
-                return State.DONE
-            case _:
-                return State.RUNNING
-    
-    def call(self, **kwargs):
-        match self.stage:
-            case ExampleStage.INIT:
-                self.stage = ExampleStage.STAGE1
-                return ...
-            case ExampleStage.STAGE1:
-                self.stage = ExampleStage.STAGE2
-                return ...
-            case ExampleStage.STAGE2:
-                self.stage = ExampleStage.STAGE3
-                return ...
-            case ExampleStage.STAGE3:
-                self.stage = ExampleStage.DONE
-                return ...
 

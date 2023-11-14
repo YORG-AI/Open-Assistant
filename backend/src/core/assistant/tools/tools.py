@@ -1,21 +1,16 @@
-from __future__ import annotations  # for type hinting the class itself
-
-from enum import Enum
-from typing import Any, Dict, Callable, Optional
-
 import yaml
 import os
-import inspect
 
 from pydantic import BaseModel, Field
 
-from .tool_entity.tool_entity import (
+from .tool_entity import (
     BaseToolEntity,
     FunctionToolEntity,
-    ExampleStatefulToolEntity,
 )
+from .model import Parameter, Response
 
-from .tool_entity.swe_tool_entity import SWEToolEntity
+from .swe_tool_entity import SWEToolEntity
+from .example_stateful_tool_entity import ExampleStatefulToolEntity
 
 
 # 示例工具函数
@@ -44,32 +39,6 @@ STATEFUL_TOOL_ENTITIES = {
 }
 
 
-class ObjectType(str, Enum):
-    STRING = "string"
-    NUMBER = "number"
-    BOOLEAN = "boolean"
-    OBJECT = "object"
-    ARRAY = "array"
-
-
-class Schema(BaseModel):
-    type: ObjectType = Field(description="参数类型")
-    description: Optional[str] = Field(description="参数描述")
-    properties: Optional[dict[str, Schema]] = Field(description="参数类型为 object 时的元素类型")
-    items: Optional[list[Schema]] = Field(description="参数类型为 array 时的元素类型")
-
-
-class Parameter(BaseModel):
-    name: str = Field(description="参数名")
-    required: bool = Field(description="是否必须")
-    parameter_schema: Schema = Field(description="参数schema")
-
-
-class Response(BaseModel):
-    description: str = Field(description="响应描述")
-    content: dict[str, Schema] = Field(description="响应内容")
-
-
 class ToolConfig(BaseModel):
     name: str = Field(description="工具名称")
     entity_name: str = Field(description="工具实体名称")
@@ -93,7 +62,7 @@ class Tool:
         else:
             raise Exception(f"Tool entity {entity_name} not found.")
 
-    # TODO: response check and type convert 
+    # TODO: response check and type convert
     def call(self, **kwargs):
         return self.entity.call(**kwargs)
 
@@ -105,6 +74,7 @@ class Tool:
 
     def has_done(self) -> bool:
         return self.entity.current_state() == "done"
+
 
 class Tools:
     tools: dict[str, Tool]
@@ -146,4 +116,3 @@ class Tools:
             summary = self.get_tool_summary(tool_name)
             tools_summary[tool_name] = summary
         return tools_summary
-

@@ -1,5 +1,5 @@
 import pytest
-from src.core.assistant.tools import Tools
+from backend.src.core.assistant.tools.tools import Tools
 
 def test_tools():
     # 创建一个 Tools 对象
