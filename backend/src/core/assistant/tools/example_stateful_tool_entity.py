@@ -1,3 +1,5 @@
+import logging
+
 from .stateful_tool_entity import *
 
 
@@ -14,19 +16,42 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
         super().__init__("example_stateful_tool.yaml")
 
     def _call(self, **kwargs):
-        request_next_stage = kwargs["request_next_stage"]
-        if request_next_stage in self.current_stage.next_stage_entry:
-            self.current_stage = self.config.all_stages[request_next_stage]
+        if "goto" not in kwargs:
+            if self.current_stage.name == self.config.start_stage:
+                return {
+                    "type": "success",
+                    "content": {"message": "stateful tool is started"},
+                }
+            else:
+                return {
+                    "type": "error",
+                    "content": {"message": "please provide `goto` parameter"},
+                }
+
+        request_next_stage = kwargs["goto"]
+        if request_next_stage not in self.config.all_stages:
+            return {
+                "type": "error",
+                "content": {"message": f"stage {request_next_stage} not found"},
+            }
+        self.current_stage = self.config.all_stages[request_next_stage]
 
         match self.current_stage.name:
-            case "stage1":
+            case "stage_1":
                 return self._stage1(kwargs["x"])
-            case "stage2":
+            case "stage_2":
                 return self._stage2(kwargs["y"])
-            case "stage3":
+            case "stage_3":
                 return self._stage3()
+            case self.config.finish_stage:
+                return self._finish()
             case _:
-                raise Exception(f"Stage {self.current_stage} not found.")
+                return {
+                    "type": "error",
+                    "content": {"message": f"stage {self.current_stage.name} not found"},
+                }
+        
+        
 
     def _stage1(self, x: int):
         self.x = x
@@ -38,4 +63,6 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
 
     def _stage3(self):
         return {"type": "success", "content": {"result": self.x + self.y}}
-    
+
+    def _finish(self):
+        return {"type": "success", "content": {"message": "stateful tool is finished"}}

@@ -1,6 +1,6 @@
 from __future__ import annotations  # for type hinting the class itself
 
-from typing import Optional
+from typing import Optional, Literal
 from enum import Enum
 from pydantic import BaseModel, Field
 
@@ -16,7 +16,7 @@ class ObjectType(str, Enum):
 
 
 class Schema(BaseModel):
-    type: ObjectType = Field(description="参数类型")
+    type: Literal['string', 'number', 'boolean', 'object', 'array'] = Field(description="参数类型")
     description: Optional[str] = Field(description="参数描述")
     properties: Optional[dict[str, Schema]] = Field(description="参数类型为 object 时的元素类型")
     items: Optional[list[Schema]] = Field(description="参数类型为 array 时的元素类型")

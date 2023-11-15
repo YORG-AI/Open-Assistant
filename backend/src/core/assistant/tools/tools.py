@@ -34,8 +34,8 @@ FUNCTION_TOOL_ENTITIES = {
 }
 
 STATEFUL_TOOL_ENTITIES = {
-    "example_stateful_tool_entity": ExampleStatefulToolEntity,
-    "swe_tool_entity": SWEToolEntity,
+    "example_stateful_tool": ExampleStatefulToolEntity,
+    "swe_tool": SWEToolEntity,
 }
 
 

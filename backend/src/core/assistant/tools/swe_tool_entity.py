@@ -6,4 +6,5 @@ from .tool_entity import *
 
     
 class SWEToolEntity(BaseToolEntity):
-    raise NotImplementedError
+    def __init__(self):
+        raise NotImplementedError

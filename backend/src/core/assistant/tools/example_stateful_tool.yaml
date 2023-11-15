@@ -3,7 +3,7 @@ finish_stage: "finish"
 all_stages:
   init:
     name: "init"
-    next_stage: 
+    next_stage_entry: 
       stage_1:
         - name: x
           required: true
@@ -12,9 +12,9 @@ all_stages:
             description: "input value x"
     need_llm_generate_parameters: false
     need_llm_generate_response: false
-  stage1:
+  stage_1:
     name: "stage_1"
-    next_stage: 
+    next_stage_entry: 
       stage_2:
         - name: y 
           required: true
@@ -23,20 +23,20 @@ all_stages:
             description: "input value y"
     need_llm_generate_parameters: false 
     need_llm_generate_response: false
-  stage2:
+  stage_2:
     name: "stage_2"
-    next_stage: 
+    next_stage_entry: 
       stage_3: []
     need_llm_generate_parameters: false
     need_llm_generate_response: false
-  stage3:
+  stage_3:
     name: "stage_3"
-    next_stage: 
+    next_stage_entry: 
       finish: []
     need_llm_generate_parameters: false
     need_llm_generate_response: false
-  finiish:
+  finish:
     name: "finish"
-    next_stage: {}
+    next_stage_entry: {}
     need_llm_generate_parameters: false
     need_llm_generate_response: false

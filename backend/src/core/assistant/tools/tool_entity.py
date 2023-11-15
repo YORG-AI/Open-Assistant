@@ -53,7 +53,7 @@ class FunctionToolEntity(BaseToolEntity):
     def is_stateful(self) -> bool:
         return False
 
-    def _call(self, **kwargs):
+    def call(self, **kwargs):
         if self.state == State.IDLE:
             self.state = State.RUNNING
             res = self.func(**kwargs)

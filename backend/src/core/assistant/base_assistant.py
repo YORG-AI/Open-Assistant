@@ -47,7 +47,8 @@ class BaseAssistant(ABC):
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # 构建 tools.yaml 文件的绝对路径
-        tools_yaml_path = os.path.join(current_dir, 'tools.yaml')
+        # TODO: 初始化一个全局的 Tool List, 而不是在 Assistant 里读取配置文件
+        tools_yaml_path = os.path.join(current_dir, 'tools/tools.yaml')
 
         # 使用绝对路径打开 tools.yaml 文件
         with open(tools_yaml_path, 'r') as f:

@@ -43,8 +43,8 @@ class StatefulToolEntity(BaseToolEntity, ABC):
     def need_llm_generate_response(self) -> bool:
         return self.current_stage.need_llm_generate_response
     
-    def _get_next_stages_info(self) -> dict[str, list[Parameter]]:
-        return self.current_stage.next_stage_entry 
+    def _get_next_stages_info(self) -> dict[str, list[dict]]:
+        return self.current_stage.dict()["next_stage_entry"]
 
     def call(self, **kwargs):
         res = self._call(**kwargs)

@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from src.core.assistant.assistant import Assistants
 from src.core.nodes.openai.openai import OpenAINode
 from src.core.nodes.openai.openai_model import *
-from backend.src.core.assistant.tools.tools import Tools, Tool
+from src.core.assistant.tools.tools import Tools, Tool
 
 import time
 import yaml
@@ -135,31 +135,34 @@ class Threads:
                 # 获取对应的 tool 对象
                 self.current_tool = tools.get_tool(tool_name)
 
-            # 判断当前 tool 的执行是否需要 llm 生成参数
-            if self.current_tool.need_llm_generate_parameters():
-                # 使用 LLM 生成参数
-                parameters = self._generate_parameters(self.current_tool, input_text)
-            else:
-                parameters = kwargs
+        # 判断当前 tool 的执行是否需要 llm 生成参数
+        if self.current_tool is not None and self.current_tool.need_llm_generate_parameters():
+            # 使用 LLM 生成参数
+            parameters = self._generate_parameters(self.current_tool, input_text)
+        else:
+            parameters = kwargs
 
-            # 执行 tool
+        # 执行 tool
+        if self.current_tool is not None:
             res_message = self.current_tool.call(**parameters)
 
-            # 根据执行结果，交给 LLM 进行包装
-            if self.current_tool.need_llm_generate_response():
-                # 使用 LLM 生成 response
-                res_message = self._generate_response(
-                    self.current_tool, input_text, parameters, res_message, assistant
-                )
-
-            self._config.message_history.append(
-                [
-                    MessageRecord(role="user", content=input_text),
-                    MessageRecord(role="assistant", content=res_message),
-                ]
+        # 根据执行结果，交给 LLM 进行包装
+        if self.current_tool is not None and self.current_tool.need_llm_generate_response():
+            # 使用 LLM 生成 response
+            res_message = self._generate_response(
+                self.current_tool, input_text, parameters, res_message, assistant
             )
 
-            return res_message
+        assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
+
+        self._config.message_history.append(
+            [
+                MessageRecord(role="user", content=input_text),
+                MessageRecord(role="assistant", content=assistant_message_str),
+            ]
+        )
+
+        return res_message
 
     def _chat(
         self, prompt: str, assistant: Assistants, system_message: Optional[str] = None
