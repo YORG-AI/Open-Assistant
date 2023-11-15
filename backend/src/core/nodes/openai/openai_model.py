@@ -87,6 +87,15 @@ class ChatConfig(BaseModel):
         default=False, description="Whether to append this message to history."
     )
 
+class OldCompleteConfig(BaseModel):
+    model: OpenAIModel = Field(description="Model to use for chat.")
+    use_streaming: bool = Field(
+        default=False, description="Whether to use streaming output or not."
+    )
+    
+
+class OldCompleteInput(OldCompleteConfig):
+    prompt:str = Field(description="prompt to use for model.")
 
 class CompleteInput(ChatConfig):
     pass

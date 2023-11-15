@@ -88,6 +88,48 @@ class OpenAINode(BaseNode):
         Chat with OpenAI's model with a specific message dict.
         """
         return self._make_completion(input.messages, input)
+    
+    def use_old_openai_with_prompt(self,input: OldCompleteInput):
+        return self._make_old_completion(input.prompt,input)
+
+    def _make_old_completion(self,prompt:str, input: OldCompleteConfig)-> OpenAIOldResp:
+        """
+        Make a completion with the given messages.
+        """
+
+        kwargs = {
+            "model": input.model,
+            "max_tokens":1096
+        }
+
+        kwargs["prompt"] = prompt     
+        # set streaming if needed
+        if input.use_streaming:
+            kwargs["stream"] = True
+
+        # TODO: add exception handling
+        try:
+            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            response = client.completions.create(**kwargs)
+        except Exception as e:
+            logging.warn(f"openai_node._make_completion: error occurred: {e}")
+            return OpenAIOldResp(
+                text=f"Error occurred: {e}",
+                finish_reason="error",
+            )
+
+        if input.use_streaming:
+            #TODO 目前不支持流式处理
+            resp = OpenAIOldResp(text="",finish_reason='')
+            for completion in response:
+                resp.text += completion['choices'][0]['text']
+                if choice.finish_reason:
+                    resp.finish_reason = completion['choices'][0]['finish_reason']
+                    break
+            return resp
+
+        resp = OpenAIOldResp(**response.choices[0].model_dump())
+        return resp
 
     def _make_completion(
         self, messages: list[Message], input: ChatConfig
