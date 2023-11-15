@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 from .tool_entity import (
     BaseToolEntity,
     FunctionToolEntity,
+    State
 )
 from .model import Parameter, Response
 
@@ -73,8 +74,7 @@ class Tool:
         return self.entity.need_llm_generate_response()
 
     def has_done(self) -> bool:
-        return self.entity.current_state() == "done"
-
+        return self.entity.current_state() == State.DONE
 
 class Tools:
     tools: dict[str, Tool]

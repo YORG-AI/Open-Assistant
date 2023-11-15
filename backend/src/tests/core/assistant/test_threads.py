@@ -33,7 +33,7 @@ def test_threads_run_stateful_tool():
     # 创建一个 Threads 对象  
     threads = Threads.create()
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="add number", tools=[{'type':'example_stateful_tool'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="add number", tools=[{'type':'example_stateful_tool'}, {'type': 'code_interpreter'}])
     # 运行 Threads 对象
     result = threads.run(assistant.id, "Use example stateful tool to add numbers.")
     print(result)
@@ -48,4 +48,8 @@ def test_threads_run_stateful_tool():
     print(result)
 
     result = threads.run(assistant.id, "", goto="finish")
+    print(result)
+     
+    # change to another tool
+    result = threads.run(assistant.id, "Tell me the answer of 17th fibonacci number plus 20th prime.")
     print(result)

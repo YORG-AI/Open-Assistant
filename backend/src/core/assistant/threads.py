@@ -24,7 +24,13 @@ def extract_bracket_content(s: str) -> list:
     content = re.findall(r"\[(.*?)\]", s)
     content = [c.replace("'", "") for c in content]
     content = filter(lambda x: x != "", content)
-    return list(content)
+    ret = []
+    for item in content:
+        if "," in item:
+            ret.extend(item.split(","))
+        else:
+            ret.append(item)
+    return ret
 
 
 class MessageRecord(BaseModel):
@@ -127,6 +133,7 @@ class Threads:
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
 
+                self.current_tool = None
                 # 不使用 Tool, 直接 chat
                 res_message = self._chat(input_text, assistant)
             else:
