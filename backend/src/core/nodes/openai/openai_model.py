@@ -11,6 +11,7 @@ class OpenAIModel(str, Enum):
     GPT_4_1106_PREVIEW= "gpt-4-1106-preview"
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_3_5_TURBO_16K = "gpt-3.5-turbo-16k"
+    GPT_3_5_TURBO_INSTRUCT = "gpt-3.5-turbo-instruct"
     GPT_3_5_TURBO_0613 = "gpt-3.5-turbo-0613"
     GPT_3_5_TURBO_16K_0613 = "gpt-3.5-turbo-16k-0613"
     TEXT_MODERATION_LATEST = "text-moderation-latest"
@@ -134,4 +135,11 @@ class OpenAIStreamingResp(BaseModel):
     """
 
     delta: Message = Field(description="Delta message")
+    finish_reason: str = Field(description="Finish reason.")
+
+class OpenAIOldResp(BaseModel):
+    """
+    Response from OpenAI with no streaming. It's a chat completion object.
+    """
+    text: str = Field(description="Response message")
     finish_reason: str = Field(description="Finish reason.")

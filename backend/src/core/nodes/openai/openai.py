@@ -8,7 +8,6 @@ import tokentrim as tt
 from src.core.nodes.base_node import BaseNode, NodeConfig
 from src.core.nodes.openai.openai_model import *
 from src.utils.router_generator import generate_node_end_points
-
 import logging
 
 openai_node_config = {
@@ -109,7 +108,7 @@ class OpenAINode(BaseNode):
 
         # TODO: add exception handling
         try:
-            client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+            client = OpenAI(api_key=os.getenv("OPENAI_CHAT_API_KEY"))
             response = client.completions.create(**kwargs)
         except Exception as e:
             logging.warn(f"openai_node._make_completion: error occurred: {e}")
