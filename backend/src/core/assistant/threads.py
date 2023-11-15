@@ -129,6 +129,7 @@ class Threads:
         if self.current_tool is None or self.current_tool.has_done():
             # 使用 LLM 选择 tools
             chosen_tools = self._choose_tools(tools_summary, input_text)
+            print(f'chosen_tools:{chosen_tools}')
             # TODO: 支持多个 tool 执行
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
@@ -208,73 +209,108 @@ class Threads:
         response = response_node.chat_with_message(chat_config).message.content
         return response
 
-    def _choose_tools(self, tools_summary: dict, input_text: str) -> list[str]:
-        # 创建一个 OpenAINode 对象
+    def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = True) -> list[str]:
+         # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
+        if instruct:
+            tools_choose_prompt = TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT +f"""\nInput:\ntools_summary: {tools_summary}\ninput_text: {input_text}\nDispose:"""     
 
-        tools_node.add_system_message(
-            TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT
-        )
+            # 创建一个 ChatInput 对象
+            chat_config = OldCompleteInput(
+                model="gpt-3.5-turbo-instruct",
+                prompt = tools_choose_prompt,
+                use_streaming=False
+            )
 
-        tools_choose_prompt = f"""
-Input:
-tools_summary: {tools_summary}
-input_text: {input_text}
-"""
+            response = tools_node.use_old_openai_with_prompt(chat_config).text
 
-        message_config = Message(role="user", content=tools_choose_prompt)
+        else:
+            tools_node.add_system_message(
+                TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT
+            )
 
-        # 创建一个 ChatInput 对象
-        chat_config = ChatWithMessageInput(
-            message=message_config,
-            model="gpt-4-1106-preview",
-            append_history=False,
-            use_streaming=False,
-        )
+            tools_choose_prompt = f"""
+    Input:
+    tools_summary: {tools_summary}
+    input_text: {input_text}
+    Dispose:
+    """
 
-        # 使用 chat_with_prompt_template 方法进行聊天
-        response = tools_node.chat_with_message(chat_config).message.content
+            message_config = Message(role="user", content=tools_choose_prompt)
+
+            # 创建一个 ChatInput 对象
+            chat_config = ChatWithMessageInput(
+                message=message_config,
+                model="gpt-4-1106-preview",
+                append_history=False,
+                use_streaming=False,
+            )
+
+            # 使用 chat_with_prompt_template 方法进行聊天
+            response = tools_node.chat_with_message(chat_config).message.content
         tools_list = extract_bracket_content(response)
-
+        print(f'tools_list:{tools_list}')
         return tools_list
 
-    def _generate_parameters(self, target_tool: Tool, input_text: str) -> dict:
+    def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
         # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
+        if instruct:
+            parameters_generate_prompt = PARAMETERS_GENERATE_PROMPT + PARAMETERS_GENERATE_EXAMPLE_PROMPT + PARAMETERS_GENERATE_HINT +f"""
+    Input:
+    tools_name: {target_tool.config.name}
+    tools_summary: {target_tool.config.summary}
+    input_text: {input_text}
+    tool_input_schema: {[parameter.json() for parameter in target_tool.config.parameters]}
+    """
 
-        tools_node.add_system_message(
-            PARAMETERS_GENERATE_PROMPT
-            + PARAMETERS_GENERATE_EXAMPLE_PROMPT
-            + PARAMETERS_GENERATE_HINT
-        )
+            # 创建一个 ChatInput 对象
+            chat_config = OldCompleteInput(
+                model="gpt-3.5-turbo-instruct",
+                prompt = parameters_generate_prompt,
+                use_streaming=False
+            )
+            while True:
+                try:
+                    response = tools_node.use_old_openai_with_prompt(chat_config).text
+                    parameters = json.loads(response)
+                    break
+                except json.JSONDecodeError:
+                    continue
+        else:
+            tools_node.add_system_message(
+                PARAMETERS_GENERATE_PROMPT
+                + PARAMETERS_GENERATE_EXAMPLE_PROMPT
+                + PARAMETERS_GENERATE_HINT
+            )
 
-        parameters_generate_prompt = f"""
-Input:
-tools_name: {target_tool.config.name}
-tools_summary: {target_tool.config.summary}
-input_text: {input_text}
-tool_input_schema: {[parameter.json() for parameter in target_tool.config.parameters]}
-"""
+            parameters_generate_prompt = f"""
+    Input:
+    tools_name: {target_tool.config.name}
+    tools_summary: {target_tool.config.summary}
+    input_text: {input_text}
+    tool_input_schema: {[parameter.json() for parameter in target_tool.config.parameters]}
+    """
 
-        message_config = Message(role="user", content=parameters_generate_prompt)
+            message_config = Message(role="user", content=parameters_generate_prompt)
 
-        # 创建一个 ChatInput 对象
-        chat_config = ChatWithMessageInput(
-            message=message_config,
-            model="gpt-4-1106-preview",
-            append_history=False,
-            use_streaming=False,
-        )
+            # 创建一个 ChatInput 对象
+            chat_config = ChatWithMessageInput(
+                message=message_config,
+                model="gpt-4-1106-preview",
+                append_history=False,
+                use_streaming=False,
+            )
 
-        # 使用 chat_with_prompt_template 方法进行聊天
-        while True:
-            try:
-                response = tools_node.chat_with_message(chat_config).message.content
-                parameters = json.loads(response)
-                break
-            except json.JSONDecodeError:
-                continue
-
+            # 使用 chat_with_prompt_template 方法进行聊天
+            while True:
+                try:
+                    response = tools_node.chat_with_message(chat_config).message.content
+                    parameters = json.loads(response)
+                    break
+                except json.JSONDecodeError:
+                    continue
+        print(f'parameters:{parameters}')
         return parameters
 
     def _generate_response(
