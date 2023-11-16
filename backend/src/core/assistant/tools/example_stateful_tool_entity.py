@@ -35,6 +35,7 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
                 "content": {"message": f"stage {request_next_stage} not found"},
             }
         self.current_stage = self.config.all_stages[request_next_stage]
+        
 
         match self.current_stage.name:
             case "stage_1":
