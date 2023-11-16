@@ -39,10 +39,10 @@ def test_threads_run_stateful_tool():
     result = threads.run(assistant.id, "Use example stateful tool to add numbers.")
     print(result)
 
-    result = threads.run(assistant.id, "x=1",x=1, goto="stage_1")
+    result = threads.run(assistant.id, "x=1",goto="stage_1")
     print(result)
 
-    result = threads.run(assistant.id, "", y=2, goto="stage_2")
+    result = threads.run(assistant.id, "y=2",  goto="stage_2")
     print(result)
 
     result = threads.run(assistant.id, "", goto="stage_3")

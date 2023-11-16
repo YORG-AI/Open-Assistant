@@ -67,6 +67,7 @@ class StatefulToolEntity(BaseToolEntity, ABC):
         
         print(f'kwargs:{kwargs}')
         res = self._call(**kwargs)
+        # 正常的应该是我这里处理还是上层处理assistant对话
         return {
             **res,
             "next_stages_info": self._get_next_stages_info(),
@@ -75,9 +76,10 @@ class StatefulToolEntity(BaseToolEntity, ABC):
     def _extract_parametes(self,input_text:str,parameter_info:list):
         # 创建一个 OpenAINode 对象
         parametes_node = OpenAINode()
-        parametes_node.add_system_message(EXTRACT_PARAMETES_PROMPT+EXTRACT_PARAMETES_EXAMPLE_PROMPT)
-        prompt = """\nTextual content (input_text):{input_text}\nParameter information (parameter_info):{parameter_info}\nGenerated parameter reference dictionary:\n"""
+        parametes_node.add_system_message(EXTRACT_PARAMETES_PROMPT+EXTRACT_PARAMETES_EXAMPLE_PROMPT+EXTRACT_PARAMETES_HINT)
+        prompt = f"""\nTextual content (input_text):{input_text}\nParameter information (parameter_info):{parameter_info}\nGenerated parameter reference dictionary:\n"""
         message_config = Message(role="user", content=prompt)
+
 
         # 创建一个 ChatInput 对象
         chat_config = ChatWithMessageInput(
@@ -86,7 +88,9 @@ class StatefulToolEntity(BaseToolEntity, ABC):
             append_history=False,
             use_streaming=False,
         )
-
+        # response = parametes_node.chat_with_message(chat_config).message.content
+        # parametes = json.loads(response)
+        
         while True:
             try:
                 response = parametes_node.chat_with_message(chat_config).message.content
@@ -94,6 +98,7 @@ class StatefulToolEntity(BaseToolEntity, ABC):
                 break
             except json.JSONDecodeError:
                 continue
+
         return parametes
 
         

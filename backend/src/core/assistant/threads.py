@@ -117,7 +117,7 @@ class Threads:
         return threads
 
     def run(self, assistant_id: str, input_text: str, **kwargs):
-        print('12312312')
+        
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
@@ -125,7 +125,6 @@ class Threads:
         tools = Tools()
         # 获取 tools 的 summary
         tools_summary = tools.get_tools_list_summary(tools_list)
-        print(f'tools_summary:{tools_summary}')
         # 如果第一次执行或当前的 tool 已执行完毕
         if self.current_tool is None or self.current_tool.has_done():
             # 使用 LLM 选择 tools
