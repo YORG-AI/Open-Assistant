@@ -88,6 +88,7 @@ class StatefulToolEntity(BaseToolEntity, ABC):
             append_history=False,
             use_streaming=False,
         )
+        
         # response = parametes_node.chat_with_message(chat_config).message.content
         # parametes = json.loads(response)
         
