@@ -1,0 +1,337 @@
+- created_at: 1699583431
+  description: null
+  file_ids: []
+  id: cf5b6d08-290f-45d1-a099-dce4beb3d396
+  instructions: test_instructions
+  metadata: {}
+  model: test_model
+  name: test_name
+  object: assistant
+  tools:
+  - type: code_interpreter
+- created_at: 1699586357
+  description: null
+  file_ids: []
+  id: abc2be53-08f7-4ef0-bac6-2378f79305a5
+  instructions: test_instructions
+  metadata: {}
+  model: test_model
+  name: test_name
+  object: assistant
+  tools:
+  - type: code_interpreter
+- created_at: 1699586385
+  description: null
+  file_ids: []
+  id: 7bdc7b91-1ccb-4a76-b3e7-10a2bdc88be1
+  instructions: test_instructions
+  metadata: {}
+  model: test_model
+  name: test_name
+  object: assistant
+  tools:
+  - type: code_interpreter
+- created_at: 1699586462
+  description: null
+  file_ids: []
+  id: 10e59115-87fa-4b86-ab50-e8e005886352
+  instructions: test_instructions
+  metadata: {}
+  model: test_model
+  name: test_name
+  object: assistant
+  tools:
+  - type: code_interpreter
+- created_at: 1699611943
+  description: null
+  file_ids: []
+  id: 84e5f668-e234-43e5-9c57-b8dc2cdb430a
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699611980
+  description: null
+  file_ids: []
+  id: 4dcde626-40bb-467f-aec6-d00508c5d60a
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612016
+  description: null
+  file_ids: []
+  id: 2c5089b1-3265-4774-a345-cadc9045f926
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612057
+  description: null
+  file_ids: []
+  id: c71eec4e-3134-43d0-9325-05baacbc8b25
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612145
+  description: null
+  file_ids: []
+  id: 4aafca5b-7cd0-44df-8551-7f5c6c597af1
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612175
+  description: null
+  file_ids: []
+  id: f9753295-80b5-48c6-abdf-8feb92eea163
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612262
+  description: null
+  file_ids: []
+  id: c8705dde-4177-4704-b0d0-ca8a83f73636
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612331
+  description: null
+  file_ids: []
+  id: c7528199-c5b1-4aec-82e3-ac2b018a1923
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612435
+  description: null
+  file_ids: []
+  id: 6e4824dc-dd96-49c2-8193-572e495fcb86
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699612479
+  description: null
+  file_ids: []
+  id: af2b2785-6715-4544-a0fb-b53a36318300
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699614761
+  description: null
+  file_ids: []
+  id: c173bd7f-58ba-49ee-9502-000aa1a8f33c
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615206
+  description: null
+  file_ids: []
+  id: 3b859b70-fa35-4f50-9820-2a2ee9e3759f
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615231
+  description: null
+  file_ids: []
+  id: 17a78d43-2bed-412a-9dad-7f3a82a5e0ac
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615464
+  description: null
+  file_ids: []
+  id: 43495c40-9ac6-4dd3-91b8-64fb182b6eff
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615599
+  description: null
+  file_ids: []
+  id: 69807c43-9b23-4c1d-bcc4-603fa5f24d3e
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615686
+  description: null
+  file_ids: []
+  id: 5ec7c4c9-1193-4395-8cc2-66a860750457
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615798
+  description: null
+  file_ids: []
+  id: e74d035b-6111-4355-9c8c-214d9589f1dd
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615869
+  description: null
+  file_ids: []
+  id: 083380ef-f72e-4bd9-beb4-ac35c86c8fae
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699615923
+  description: null
+  file_ids: []
+  id: a24456d0-6226-4a5f-8f9d-1b3bcf04aea6
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: data_analyzer
+- created_at: 1699616082
+  description: null
+  file_ids: []
+  id: 1883214b-b270-41e0-b415-c9de2533e334
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616137
+  description: null
+  file_ids: []
+  id: 37050f80-5c8a-4f41-960b-2f26536a9d5b
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616174
+  description: null
+  file_ids: []
+  id: ae40ffaf-b81d-4d4d-baa8-8b6dde28725b
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616210
+  description: null
+  file_ids: []
+  id: cda2087c-8cbe-4558-a027-b3632abbde3e
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616337
+  description: null
+  file_ids: []
+  id: 222557f0-042f-4a6b-9b38-9282ab4cc8e9
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616452
+  description: null
+  file_ids: []
+  id: 81436f4c-5cc4-4d56-8291-3661d8a795b2
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer
+- created_at: 1699616599
+  description: null
+  file_ids: []
+  id: 420ba7b3-f6b1-4445-939f-a05b5013e930
+  instructions: run code
+  metadata: {}
+  model: gpt-4
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: code_interpreter
+  - type: data_analyzer

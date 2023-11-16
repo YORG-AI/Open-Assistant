@@ -8,8 +8,10 @@ class OpenAIModel(str, Enum):
     GPT_4_0613 = "gpt-4-0613"
     GPT_4_32K = "gpt-4-32k"
     GPT_4_32K_0613 = "gpt-4-32k-0613"
+    GPT_4_1106_PREVIEW= "gpt-4-1106-preview"
     GPT_3_5_TURBO = "gpt-3.5-turbo"
     GPT_3_5_TURBO_16K = "gpt-3.5-turbo-16k"
+    GPT_3_5_TURBO_INSTRUCT = "gpt-3.5-turbo-instruct"
     GPT_3_5_TURBO_0613 = "gpt-3.5-turbo-0613"
     GPT_3_5_TURBO_16K_0613 = "gpt-3.5-turbo-16k-0613"
     TEXT_MODERATION_LATEST = "text-moderation-latest"
@@ -86,6 +88,15 @@ class ChatConfig(BaseModel):
         default=False, description="Whether to append this message to history."
     )
 
+class OldCompleteConfig(BaseModel):
+    model: OpenAIModel = Field(description="Model to use for chat.")
+    use_streaming: bool = Field(
+        default=False, description="Whether to use streaming output or not."
+    )
+    
+
+class OldCompleteInput(OldCompleteConfig):
+    prompt:str = Field(description="prompt to use for model.")
 
 class CompleteInput(ChatConfig):
     pass
@@ -124,4 +135,11 @@ class OpenAIStreamingResp(BaseModel):
     """
 
     delta: Message = Field(description="Delta message")
+    finish_reason: str = Field(description="Finish reason.")
+
+class OpenAIOldResp(BaseModel):
+    """
+    Response from OpenAI with no streaming. It's a chat completion object.
+    """
+    text: str = Field(description="Response message")
     finish_reason: str = Field(description="Finish reason.")

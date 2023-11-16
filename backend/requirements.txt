@@ -6,6 +6,7 @@ replicate==0.8.3
 cos-python-sdk-v5==1.9.25
 stability-sdk==0.8.1
 redis==4.5.5
+openai==1.2.3
 ipykernel
 notebook==6.5.6
 jupyter_server
@@ -16,23 +17,7 @@ GitPython
 # debug
 debugpy
 pytest==7.4.0
-httpx==0.23.0
-
-# nodes
-pymongo==3.11.0
-dnspython==2.1.0
-slack-sdk==3.11.2
-google-auth-oauthlib==0.4.6
-google-auth-httplib2==0.1.0
-google-api-python-client==2.22.0
-discordwebhook
-discord_webhook
-telegram
-python-telegram-bot
-google-search-results
-typeguard==4.1.2
-requests==2.26.0
-PyGithub==1.58
+httpx
 
 # data analysis
 pandas==2.1.0
@@ -62,16 +47,18 @@ python-dotenv
 
 # nodes (please comment unused nodes based on your projects)
 langchain==0.0.214
-tiktoken==0.4.0
 # faiss-cpu==1.7.4
 lxml==4.9.2
 python-multipart==0.0.6
-tiktoken==0.4.0
+tiktoken==0.5.1
 dnspython==2.1.0
 typeguard==4.1.2
 PyGithub==1.58
 bs4
 jq
+
+#assistant
+pyyaml
 
 # nodes needed in the future
 # replicate==0.8.3
@@ -90,3 +77,5 @@ jq
 # google-search-results
 # slack-sdk==3.11.2
 # pymongo==3.11.0
+
+urllib3==1.25.11
