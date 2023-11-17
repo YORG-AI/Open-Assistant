@@ -271,12 +271,17 @@ class Threads:
                 prompt = parameters_generate_prompt,
                 use_streaming=False
             )
-            while True:
+            
+            max_attempts = 5
+            attempts = 0
+
+            while attempts < max_attempts:
                 try:
                     response = tools_node.use_old_openai_with_prompt(chat_config).text
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
+                    attempts+=1
                     continue
         else:
             tools_node.add_system_message(
@@ -304,12 +309,16 @@ class Threads:
             )
 
             # 使用 chat_with_prompt_template 方法进行聊天
-            while True:
+            max_attempts = 5
+            attempts = 0
+
+            while attempts < max_attempts:
                 try:
                     response = tools_node.chat_with_message(chat_config).message.content
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
+                    attempts += 1
                     continue
         return parameters
 
