@@ -117,6 +117,7 @@ class Threads:
         return threads
 
     def run(self, assistant_id: str, input_text: str, **kwargs):
+        
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
@@ -124,12 +125,10 @@ class Threads:
         tools = Tools()
         # 获取 tools 的 summary
         tools_summary = tools.get_tools_list_summary(tools_list)
-
         # 如果第一次执行或当前的 tool 已执行完毕
         if self.current_tool is None or self.current_tool.has_done():
             # 使用 LLM 选择 tools
             chosen_tools = self._choose_tools(tools_summary, input_text)
-            print(f'chosen_tools:{chosen_tools}')
             # TODO: 支持多个 tool 执行
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
@@ -149,6 +148,7 @@ class Threads:
             parameters = self._generate_parameters(self.current_tool, input_text)
         else:
             parameters = kwargs
+            parameters['input_text'] = input_text
 
         # 执行 tool
         if self.current_tool is not None:
@@ -209,7 +209,8 @@ class Threads:
         response = response_node.chat_with_message(chat_config).message.content
         return response
 
-    def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = True) -> list[str]:
+    def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = False) -> list[str]:
+        
          # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
         if instruct:
@@ -270,12 +271,17 @@ class Threads:
                 prompt = parameters_generate_prompt,
                 use_streaming=False
             )
-            while True:
+            
+            max_attempts = 5
+            attempts = 0
+
+            while attempts < max_attempts:
                 try:
                     response = tools_node.use_old_openai_with_prompt(chat_config).text
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
+                    attempts+=1
                     continue
         else:
             tools_node.add_system_message(
@@ -303,14 +309,17 @@ class Threads:
             )
 
             # 使用 chat_with_prompt_template 方法进行聊天
-            while True:
+            max_attempts = 5
+            attempts = 0
+
+            while attempts < max_attempts:
                 try:
                     response = tools_node.chat_with_message(chat_config).message.content
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
+                    attempts += 1
                     continue
-        print(f'parameters:{parameters}')
         return parameters
 
     def _generate_response(

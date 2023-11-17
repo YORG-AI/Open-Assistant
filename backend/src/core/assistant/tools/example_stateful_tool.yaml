@@ -8,7 +8,7 @@ all_stages:
         - name: x
           required: true
           parameter_schema:
-            type: string
+            type: number
             description: "input value x"
     need_llm_generate_parameters: false
     need_llm_generate_response: false
@@ -19,7 +19,7 @@ all_stages:
         - name: y 
           required: true
           parameter_schema:
-            type: string
+            type: number
             description: "input value y"
     need_llm_generate_parameters: false 
     need_llm_generate_response: false
