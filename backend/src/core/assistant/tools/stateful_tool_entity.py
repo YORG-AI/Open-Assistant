@@ -125,6 +125,7 @@ class StatefulToolEntity(BaseToolEntity, ABC):
         while attempts < max_attempts:
             try:
                 response = parametes_node.chat_with_message(chat_config).message.content
+                print(f'response:{response}')
                 parametes = json.loads(response)
                 break
             except json.JSONDecodeError:

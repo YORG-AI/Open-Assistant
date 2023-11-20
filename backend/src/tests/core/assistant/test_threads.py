@@ -33,24 +33,27 @@ def test_threads_run_stateful_tool():
     # 创建一个 Threads 对象  
     threads = Threads.create()
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="add number", tools=[{'type':'example_stateful_tool'}, {'type': 'code_interpreter'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
     print(assistant.id)
     # 运行 Threads 对象
-    result = threads.run(assistant.id, "Use example stateful tool to add numbers.")
+    result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
     print(result)
 
-    result = threads.run(assistant.id, "x=1",goto="stage_1")
+    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",goto="stage_1")
     print(result)
 
-    result = threads.run(assistant.id, "y=2",  goto="stage_2")
+    result = threads.run(assistant.id, "add helloworld feature to readme",  goto="stage_2")
     print(result)
 
-    result = threads.run(assistant.id, "", goto="stage_3")
+    result = threads.run(assistant.id, "focus_files_name_list = ['README.md']", goto="stage_3")
+    print(result)
+
+    result = threads.run(assistant.id, "action=3", goto="stage_4")
+    print(result)
+
+    result = threads.run(assistant.id, "", goto="stage_5")
     print(result)
 
     result = threads.run(assistant.id, "", goto="finish")
     print(result)
      
-    # change to another tool
-    result = threads.run(assistant.id, "Tell me the answer of 17th fibonacci number plus 20th prime.")
-    print(result)

@@ -1,0 +1,74 @@
+start_stage: "init"
+finish_stage: "finish"
+all_stages:
+  init:
+    name: "init"
+    next_stage_entry: 
+      stage_1:
+        - name: repo_url
+          required: true
+          parameter_schema:
+            type: string
+            description: "Provide a code repository address"
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_1:
+    name: "stage_1"
+    next_stage_entry: 
+      stage_2:
+        - name: feature 
+          required: true
+          parameter_schema:
+            type: string
+            description: "Ask the user to enter a feature that they would like the SWE Agent to implement in the original project."
+    need_llm_generate_parameters: false 
+    need_llm_generate_response: false
+  stage_2:
+    name: "stage_2"
+    next_stage_entry: 
+      stage_3:
+        - name: focus_files_name_list 
+          required: true
+          parameter_schema:
+            type: array
+            description: "The filename of the selected file is put into a list, the elements of which are of type str."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_3:
+    name: "stage_3"
+    next_stage_entry: 
+      stage_4: 
+        - name: action 
+          required: true
+          parameter_schema:
+            type: number
+            description: "The action of the operation, the number 0 means add, 1 means delete, 2 means modify, and 3 means skip."
+        - name: focus_file_name 
+          required: false
+          parameter_schema:
+            type: string
+            description: "The filename of the file that corresponds to the action of the operation."
+        - name: description 
+          required: false
+          parameter_schema:
+            type: string
+            description: "Description of the file you wish to operate on."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_4:
+    name: "stage_4"
+    next_stage_entry: 
+      stage_5: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_5:
+    name: "stage_5"
+    next_stage_entry: 
+      finish: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  finish:
+    name: "finish"
+    next_stage_entry: {}
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
