@@ -45,13 +45,16 @@ def test_threads_run_stateful_tool():
     result = threads.run(assistant.id, "add helloworld feature to readme",  goto="stage_2")
     print(result)
 
-    result = threads.run(assistant.id, "focus_files_name_list = ['README.md']", goto="stage_3")
+    result = threads.run(assistant.id, "focus_files_name_list = [README.md]", goto="stage_3")
     print(result)
 
     result = threads.run(assistant.id, "action=3", goto="stage_4")
     print(result)
 
     result = threads.run(assistant.id, "", goto="stage_5")
+    print(result)
+
+    result = threads.run(assistant.id, "action=0,action_idx=0", goto="stage_6")
     print(result)
 
     result = threads.run(assistant.id, "", goto="finish")
