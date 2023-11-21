@@ -161,7 +161,8 @@ class Threads:
                 self.current_tool, input_text, parameters, res_message, assistant
             )
 
-        assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
+        #有问题 assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
+        assistant_message_str = str(res_message)
 
         self._config.message_history.append(
             [

@@ -27,3 +27,9 @@ tools:
     summary: This tool is an example of a stateful tool. It will get two number from user input and return the sum of the two numbers.
     parameters: []
     responses: {}  
+  swe_tool:
+    name: sew_tool
+    entity_name: swe_tool
+    summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
+    parameters: []
+    responses: {}  
