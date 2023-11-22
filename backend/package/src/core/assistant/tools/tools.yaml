@@ -1,0 +1,35 @@
+YORG: 0.0.1
+info:
+  title: yorg_tools_document
+  description: yorg tool define document.
+  version: 'v1'
+tools:
+  code_interpreter:
+    name: code_interpreter
+    entity_name: code_interpreter
+    summary: Run the code through code_interpreter and return the result of the code run. If your query is about math, computer science, or data science, you can use this tool to get the result of the code run.
+    parameters:
+      - name: code
+        description: code text that requires code_interpreter to run
+        required: true
+        parameter_schema:
+          type: string
+    responses:
+      success:
+        description: OK
+        content:
+          result:
+            type: string
+            description: the result of the code run
+  example_stateful_tool:
+    name: example_stateful_tool
+    entity_name: example_stateful_tool
+    summary: This tool is an example of a stateful tool. It will get two number from user input and return the sum of the two numbers.
+    parameters: []
+    responses: {}  
+  swe_tool:
+    name: sew_tool
+    entity_name: swe_tool
+    summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
+    parameters: []
+    responses: {}  

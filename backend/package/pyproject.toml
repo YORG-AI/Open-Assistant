@@ -1,0 +1,18 @@
+[project]
+name = "yorg_test"
+version = "0.0.1"
+authors = [
+  { name="Example Author", email="author@example.com" },
+]
+description = "test package for yorg"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/YORG-AI/Open-Assistant"
+Issues = "https://github.com/YORG-AI/Open-Assistant/issues"

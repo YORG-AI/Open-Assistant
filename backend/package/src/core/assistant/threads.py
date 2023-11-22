@@ -3,11 +3,6 @@ from collections import deque
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
-from src.core.assistant.assistant import Assistants
-from src.core.nodes.openai.openai import OpenAINode
-from src.core.nodes.openai.openai_model import *
-from src.core.assistant.tools.tools import Tools, Tool
-
 import time
 import yaml
 import os
@@ -15,6 +10,11 @@ import re
 import logging
 import json
 
+from ..nodes import OpenAINode
+from ..nodes.openai.openai_model import *
+
+from .assistant import Assistants
+from .tools.tools import Tools, Tool
 from .prompt.few_shot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
 from .prompt.response_generate_prompt import *
@@ -142,25 +142,31 @@ class Threads:
                 self.current_tool = tools.get_tool(tool_name)
 
         # 判断当前 tool 的执行是否需要 llm 生成参数
-        if self.current_tool is not None and self.current_tool.need_llm_generate_parameters():
+        if (
+            self.current_tool is not None
+            and self.current_tool.need_llm_generate_parameters()
+        ):
             # 使用 LLM 生成参数
             parameters = self._generate_parameters(self.current_tool, input_text)
         else:
             parameters = kwargs
-            parameters['input_text'] = input_text
+            parameters["input_text"] = input_text
 
         # 执行 tool
         if self.current_tool is not None:
             res_message = self.current_tool.call(**parameters)
 
         # 根据执行结果，交给 LLM 进行包装
-        if self.current_tool is not None and self.current_tool.need_llm_generate_response():
+        if (
+            self.current_tool is not None
+            and self.current_tool.need_llm_generate_response()
+        ):
             # 使用 LLM 生成 response
             res_message = self._generate_response(
                 self.current_tool, input_text, parameters, res_message, assistant
             )
 
-        #有问题 assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
+        # 有问题 assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
         assistant_message_str = str(res_message)
 
         self._config.message_history.append(
@@ -209,18 +215,24 @@ class Threads:
         response = response_node.chat_with_message(chat_config).message.content
         return response
 
-    def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = False) -> list[str]:
-        
-         # 创建一个 OpenAINode 对象
+    def _choose_tools(
+        self, tools_summary: dict, input_text: str, instruct: bool = False
+    ) -> list[str]:
+        # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
         if instruct:
-            tools_choose_prompt = TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT +f"""\nInput:\ntools_summary: {tools_summary}\ninput_text: {input_text}\nDispose:"""     
+            tools_choose_prompt = (
+                TOOLS_CHOOSE_PROMPT
+                + TOOLS_CHOOSE_EXAMPLE_PROMPT
+                + TOOLS_CHOOSE_HINT
+                + f"""\nInput:\ntools_summary: {tools_summary}\ninput_text: {input_text}\nDispose:"""
+            )
 
             # 创建一个 ChatInput 对象
             chat_config = OldCompleteInput(
                 model="gpt-3.5-turbo-instruct",
-                prompt = tools_choose_prompt,
-                use_streaming=False
+                prompt=tools_choose_prompt,
+                use_streaming=False,
             )
 
             response = tools_node.use_old_openai_with_prompt(chat_config).text
@@ -250,28 +262,35 @@ class Threads:
             # 使用 chat_with_prompt_template 方法进行聊天
             response = tools_node.chat_with_message(chat_config).message.content
         tools_list = extract_bracket_content(response)
-        print(f'tools_list:{tools_list}')
+        print(f"tools_list:{tools_list}")
         return tools_list
 
-    def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
+    def _generate_parameters(
+        self, target_tool: Tool, input_text: str, instruct: bool = False
+    ) -> dict:
         # 创建一个 OpenAINode 对象
         tools_node = OpenAINode()
         if instruct:
-            parameters_generate_prompt = PARAMETERS_GENERATE_PROMPT + PARAMETERS_GENERATE_EXAMPLE_PROMPT + PARAMETERS_GENERATE_HINT +f"""
+            parameters_generate_prompt = (
+                PARAMETERS_GENERATE_PROMPT
+                + PARAMETERS_GENERATE_EXAMPLE_PROMPT
+                + PARAMETERS_GENERATE_HINT
+                + f"""
     Input:
     tools_name: {target_tool.config.name}
     tools_summary: {target_tool.config.summary}
     input_text: {input_text}
     tool_input_schema: {[parameter.json() for parameter in target_tool.config.parameters]}
     """
+            )
 
             # 创建一个 ChatInput 对象
             chat_config = OldCompleteInput(
                 model="gpt-3.5-turbo-instruct",
-                prompt = parameters_generate_prompt,
-                use_streaming=False
+                prompt=parameters_generate_prompt,
+                use_streaming=False,
             )
-            
+
             max_attempts = 5
             attempts = 0
 
@@ -281,7 +300,7 @@ class Threads:
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
-                    attempts+=1
+                    attempts += 1
                     continue
         else:
             tools_node.add_system_message(
