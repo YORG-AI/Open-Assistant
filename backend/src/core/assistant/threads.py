@@ -15,7 +15,8 @@ import re
 import logging
 import json
 
-from .prompt.few_shot_tools_choose_prompt import *
+# from .prompt.few_shot_tools_choose_prompt import *
+from .prompt.few_shot_cot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
 from .prompt.response_generate_prompt import *
 
@@ -250,7 +251,10 @@ class Threads:
 
             # 使用 chat_with_prompt_template 方法进行聊天
             response = tools_node.chat_with_message(chat_config).message.content
-        tools_list = extract_bracket_content(response)
+        # tools_list = extract_bracket_content(response)
+        response = json.loads(response)
+        tools_list = response['tool']['name']
+
         print(f'tools_list:{tools_list}')
         return tools_list
 
