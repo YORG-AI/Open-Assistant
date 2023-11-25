@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Field
 
 from src.core.assistant.assistant import Assistants
-from src.core.nodes.openai.openai import OpenAINode
+from src.core.nodes.openai.openai import OpenAINode,AsyncOpenAINode
 from src.core.nodes.openai.openai_model import *
 from src.core.assistant.tools.tools import Tools, Tool
 
@@ -15,8 +15,8 @@ import re
 import logging
 import json
 
-# from .prompt.few_shot_tools_choose_prompt import *
-from .prompt.few_shot_cot_tools_choose_prompt import *
+
+from .prompt.few_shot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
 from .prompt.response_generate_prompt import *
 
@@ -63,7 +63,7 @@ class ThreadsConfig(BaseModel):
         return cls(**data)
 
 
-class Threads:
+class AsyncThreads:
     current_tool: Tool
     chat_node: OpenAINode  # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
 
@@ -99,7 +99,7 @@ class Threads:
             yaml.dump(data, file)
 
     @staticmethod
-    def create() -> "Threads":
+    def create() -> "AsyncThreads":
         # 创建 ThreadsConfig 对象
         config = ThreadsConfig(
             id=str(uuid.uuid4()),
@@ -110,14 +110,15 @@ class Threads:
         )
 
         # 创建 Threads 对象
-        threads = Threads(config)
+        threads = AsyncThreads(config)
 
         # 保存到 YAML 文件
         threads.save_to_yaml()
 
         return threads
 
-    def run(self, assistant_id: str, input_text: str, **kwargs):
+    async def run(self, assistant_id: str, input_text: str, **kwargs):
+        
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
@@ -128,7 +129,7 @@ class Threads:
         # 如果第一次执行或当前的 tool 已执行完毕
         if self.current_tool is None or self.current_tool.has_done():
             # 使用 LLM 选择 tools
-            chosen_tools = self._choose_tools(tools_summary, input_text)
+            chosen_tools =await self._choose_tools(tools_summary, input_text)
             # TODO: 支持多个 tool 执行
             if len(chosen_tools) == 0:
                 logging.warn("No tool is recommended.")
@@ -173,11 +174,11 @@ class Threads:
 
         return res_message
 
-    def _chat(
+    async def _chat(
         self, prompt: str, assistant: Assistants, system_message: Optional[str] = None
     ) -> str:
         # 创建一个 OpenAINode 对象
-        response_node = OpenAINode()
+        response_node = AsyncOpenAINode()
 
         # 使用 assistant 的 description 和 instructions
         description = assistant.description
@@ -207,13 +208,14 @@ class Threads:
             use_streaming=False,
         )
 
-        response = response_node.chat_with_message(chat_config).message.content
+        response = await response_node.chat_with_message(chat_config)
+        response = response.message.content
         return response
 
-    def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = False) -> list[str]:
+    async def _choose_tools(self, tools_summary: dict, input_text: str,instruct:bool = False) -> list[str]:
         
          # 创建一个 OpenAINode 对象
-        tools_node = OpenAINode()
+        tools_node = AsyncOpenAINode()
         if instruct:
             tools_choose_prompt = TOOLS_CHOOSE_PROMPT + TOOLS_CHOOSE_EXAMPLE_PROMPT + TOOLS_CHOOSE_HINT +f"""\nInput:\ntools_summary: {tools_summary}\ninput_text: {input_text}\nDispose:"""     
 
@@ -224,7 +226,8 @@ class Threads:
                 use_streaming=False
             )
 
-            response = tools_node.use_old_openai_with_prompt(chat_config).text
+            response = await tools_node.use_old_openai_with_prompt(chat_config)
+            response = response.text
 
         else:
             tools_node.add_system_message(
@@ -247,19 +250,18 @@ class Threads:
                 append_history=False,
                 use_streaming=False,
             )
-
             # 使用 chat_with_prompt_template 方法进行聊天
-            response = tools_node.chat_with_message(chat_config).message.content
-        # tools_list = extract_bracket_content(response)
-        response = json.loads(response)
-        tools_list = response['tool']['name']
-
+            response =await tools_node.chat_with_message(chat_config)
+            response = response.message.content  # 现在可以安全地访问 message 属性
+            # 使用 chat_with_prompt_template 方法进行聊天
+            # response = await tools_node.chat_with_message(chat_config).message.content
+        tools_list = extract_bracket_content(response)
         print(f'tools_list:{tools_list}')
         return tools_list
 
-    def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
+    async def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
         # 创建一个 OpenAINode 对象
-        tools_node = OpenAINode()
+        tools_node = AsyncOpenAINode()
         if instruct:
             parameters_generate_prompt = PARAMETERS_GENERATE_PROMPT + PARAMETERS_GENERATE_EXAMPLE_PROMPT + PARAMETERS_GENERATE_HINT +f"""
     Input:
@@ -281,7 +283,8 @@ class Threads:
 
             while attempts < max_attempts:
                 try:
-                    response = tools_node.use_old_openai_with_prompt(chat_config).text
+                    response =await tools_node.use_old_openai_with_prompt(chat_config)
+                    response = response.text
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
@@ -318,7 +321,8 @@ class Threads:
 
             while attempts < max_attempts:
                 try:
-                    response = tools_node.chat_with_message(chat_config).message.content
+                    response =await tools_node.chat_with_message(chat_config)
+                    response = response.message.content
                     parameters = json.loads(response)
                     break
                 except json.JSONDecodeError:
@@ -326,7 +330,7 @@ class Threads:
                     continue
         return parameters
 
-    def _generate_response(
+    async def _generate_response(
         self,
         target_tool: Tool,
         input_text: str,
@@ -346,4 +350,4 @@ chosen_tool_info: {target_tool.config.json()}
 tool_input: {tool_input}
 tool_result: {tool_result}
 """
-        return self._chat(response_generate_prompt, assistant, system_message)
+        return await self._chat(response_generate_prompt, assistant, system_message)
