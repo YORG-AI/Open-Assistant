@@ -1,4 +1,4 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
 from .github_model import (
     SearchCodeInput,
@@ -7,9 +7,8 @@ from .github_model import (
     SearchLabelsInput,
     SearchRepositoriesInput,
     SearchTopicsInput,
-    SearchUsersInput
+    SearchUsersInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 github_search_node_config = {
     "name": "github_search",
@@ -25,7 +24,7 @@ github_search_node_config = {
     },
 }
 
-@generate_node_end_points
+
 class GithubSearchNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_search_node_config)
 
@@ -34,21 +33,29 @@ class GithubSearchNode(GithubNode):
 
     def search_code(self, input: SearchCodeInput):
         try:
-            result = self.g.search_code(query=input.query, sort=input.sort, order=input.order)
+            result = self.g.search_code(
+                query=input.query, sort=input.sort, order=input.order
+            )
             return [{"name": item.name, "path": item.path} for item in result]
         except Exception as e:
             return str(e)
 
     def search_commits(self, input: SearchCommitsInput):
         try:
-            result = self.g.search_commits(query=input.query, sort=input.sort, order=input.order)
-            return [{"sha": item.sha, "message": item.commit.message} for item in result]
+            result = self.g.search_commits(
+                query=input.query, sort=input.sort, order=input.order
+            )
+            return [
+                {"sha": item.sha, "message": item.commit.message} for item in result
+            ]
         except Exception as e:
             return str(e)
 
     def search_issues_and_prs(self, input: SearchIssuesAndPRsInput):
         try:
-            result = self.g.search_issues(query=input.query, sort=input.sort, order=input.order)
+            result = self.g.search_issues(
+                query=input.query, sort=input.sort, order=input.order
+            )
             return [{"number": item.number, "title": item.title} for item in result]
         except Exception as e:
             return str(e)
@@ -57,27 +64,37 @@ class GithubSearchNode(GithubNode):
         try:
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
             labels = repo.get_labels()
-            return [{"id": label.id, "name": label.name} for label in labels if input.query.lower() in label.name.lower()]
+            return [
+                {"id": label.id, "name": label.name}
+                for label in labels
+                if input.query.lower() in label.name.lower()
+            ]
         except Exception as e:
             return str(e)
 
     def search_repositories(self, input: SearchRepositoriesInput):
         try:
-            result = self.g.search_repositories(query=input.query, sort=input.sort, order=input.order)
+            result = self.g.search_repositories(
+                query=input.query, sort=input.sort, order=input.order
+            )
             return [{"full_name": repo.full_name} for repo in result]
         except Exception as e:
             return str(e)
 
     def search_topics(self, input: SearchTopicsInput):
         try:
-            result = self.g.search_topics(query=input.query, sort=input.sort, order=input.order)
+            result = self.g.search_topics(
+                query=input.query, sort=input.sort, order=input.order
+            )
             return [{"name": topic.name} for topic in result]
         except Exception as e:
             return str(e)
 
     def search_users(self, input: SearchUsersInput):
         try:
-            result = self.g.search_users(query=input.query, sort=input.sort, order=input.order)
+            result = self.g.search_users(
+                query=input.query, sort=input.sort, order=input.order
+            )
             return [{"login": user.login, "name": user.name} for user in result]
         except Exception as e:
             return str(e)

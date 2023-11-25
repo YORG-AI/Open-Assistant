@@ -1,4 +1,4 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
 from .github_model import (
     RepositoryInput,
@@ -7,7 +7,6 @@ from .github_model import (
     GetBranchProtectionStatusInput,
     GetBranchRequiredStatusChecksInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 github_branch_node_config = {
     "name": "github_branch",
@@ -17,11 +16,11 @@ github_branch_node_config = {
         "get_branch": "Get a specific branch.",
         "get_head_commit_of_branch": "Get the HEAD commit of a branch.",
         "get_protection_status_of_branch": "Get the protection status of a branch.",
-        "see_required_status_checks_of_branch": "See the required status checks of a branch."
+        "see_required_status_checks_of_branch": "See the required status checks of a branch.",
     },
 }
 
-@generate_node_end_points
+
 class GithubBranchNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_branch_node_config)
 
@@ -60,7 +59,9 @@ class GithubBranchNode(GithubNode):
         except Exception as e:
             return str(e)
 
-    def see_required_status_checks_of_branch(self, input: GetBranchRequiredStatusChecksInput):
+    def see_required_status_checks_of_branch(
+        self, input: GetBranchRequiredStatusChecksInput
+    ):
         try:
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
             protection = repo.get_branch_protection(branch=input.branch_name)

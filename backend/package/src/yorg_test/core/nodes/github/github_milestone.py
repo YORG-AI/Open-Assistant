@@ -6,7 +6,6 @@ from .github_model import (
     CreateMilestoneInput,
     CreateMilestoneWithDetailsInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 github_milestone_node_config = {
     "name": "github_milestone",
@@ -15,11 +14,11 @@ github_milestone_node_config = {
         "get_milestone_list": "Get list of milestones.",
         "get_milestone": "Get a specific milestone.",
         "create_milestone": "Create a new milestone.",
-        "create_milestone_with_details": "Create a milestone with state and description."
+        "create_milestone_with_details": "Create a milestone with state and description.",
     },
 }
 
-@generate_node_end_points
+
 class GithubMilestoneNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_milestone_node_config)
 
@@ -42,7 +41,7 @@ class GithubMilestoneNode(GithubNode):
                 "number": milestone.number,
                 "title": milestone.title,
                 "description": milestone.description,
-                "state": milestone.state
+                "state": milestone.state,
             }
         except Exception as e:
             return str(e)
@@ -59,9 +58,7 @@ class GithubMilestoneNode(GithubNode):
         try:
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
             milestone = repo.create_milestone(
-                title=input.title,
-                state=input.state,
-                description=input.description
+                title=input.title, state=input.state, description=input.description
             )
             return milestone.number
         except Exception as e:

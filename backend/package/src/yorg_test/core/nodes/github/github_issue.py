@@ -1,4 +1,4 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
 from .github_model import (
     GetIssueInput,
@@ -10,7 +10,6 @@ from .github_model import (
     CreateIssueWithMilestoneInput,
     CloseAllIssuesInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 from github import Github
 
@@ -30,7 +29,6 @@ github_issues_node_config = {
 }
 
 
-@generate_node_end_points
 class GithubIssuesNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_issues_node_config)
 
@@ -44,7 +42,7 @@ class GithubIssuesNode(GithubNode):
             return issue.title, issue.body
         except Exception as e:
             return str(e)
-        
+
     def create_issue_comment(self, input: CreateIssueCommentInput):
         try:
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
@@ -78,14 +76,11 @@ class GithubIssuesNode(GithubNode):
             return f"Issue created with title: {issue.title}, ID: {issue.id}, and labels: {[label.name for label in issue.labels]}"
         except Exception as e:
             return str(e)
-        
+
     def create_issue_with_assignee(self, input: CreateIssueWithAssigneeInput):
         try:
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
-            issue = repo.create_issue(
-                title=input.title,
-                assignee=input.assignee
-                )
+            issue = repo.create_issue(title=input.title, assignee=input.assignee)
             return f"Issue '{issue.title}' created with assignee '{input.assignee}' successfully."
         except Exception as e:
             return str(e)
@@ -97,14 +92,14 @@ class GithubIssuesNode(GithubNode):
             milestone = repo.get_milestone(number=input.milestone_number)
             # Create an issue with the milestone
             issue = repo.create_issue(
-                title=input.title,
-                body=input.body,
-                milestone=milestone
+                title=input.title, body=input.body, milestone=milestone
             )
-            return {"status": "Issue created successfully with milestone.", "issue_number": issue.number}
+            return {
+                "status": "Issue created successfully with milestone.",
+                "issue_number": issue.number,
+            }
         except Exception as e:
             return str(e)
-
 
     def close_all_issues(self, input: CloseAllIssuesInput):
         try:

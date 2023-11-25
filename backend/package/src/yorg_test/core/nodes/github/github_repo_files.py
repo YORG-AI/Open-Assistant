@@ -1,6 +1,6 @@
 import requests
 from github import Github
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_model import (
     RepositoryInput,
     GetSpecificContentFileInput,
@@ -8,7 +8,6 @@ from .github_model import (
     EditFileInput,
     DeleteFileInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 import os
 from dotenv import load_dotenv
@@ -45,7 +44,6 @@ class GithubNode(BaseNode):
         self.g = Github(self.token)  # Initializing the GitHub instance with the token
         super().__init__()
 
-@generate_node_end_points
 class RepositoryNode(GithubNode):
     config: NodeConfig = NodeConfig(**repository_node_config)
 

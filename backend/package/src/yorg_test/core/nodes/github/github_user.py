@@ -1,21 +1,17 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
-from .github_model import (
-    GetUserRepositoriesInput,
-    InviteUserToOrgInput
-)
-from src.utils.router_generator import generate_node_end_points
+from .github_model import GetUserRepositoriesInput, InviteUserToOrgInput
 
 github_user_node_config = {
     "name": "github_user",
     "description": "A node for interacting with GitHub users.",
     "functions": {
         "get_user_repositories": "Returns the repositories of a user.",
-        "invite_user_to_org": "Invites a user to an organization."
+        "invite_user_to_org": "Invites a user to an organization.",
     },
 }
 
-@generate_node_end_points
+
 class GithubUserNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_user_node_config)
 

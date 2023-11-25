@@ -1,10 +1,9 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
 from .github_model import (
     CreateCommitStatusCheckInput,
     GetCommitDateInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 from datetime import datetime
 
@@ -17,7 +16,7 @@ github_commit_node_config = {
     },
 }
 
-@generate_node_end_points
+
 class GithubCommitNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_commit_node_config)
 
@@ -32,7 +31,7 @@ class GithubCommitNode(GithubNode):
                 state=input.state,
                 target_url=input.target_url,
                 description=input.description,
-                context=input.context
+                context=input.context,
             )
             return {"status": "Status check created successfully.", "url": status.url}
         except Exception as e:
@@ -43,6 +42,6 @@ class GithubCommitNode(GithubNode):
             repo = self.g.get_repo(f"{input.owner}/{input.repo_name}")
             commit = repo.get_commit(sha=input.sha)
             date = commit.commit.committer.date
-            return date.strftime('%Y-%m-%d %H:%M:%S')
+            return date.strftime("%Y-%m-%d %H:%M:%S")
         except Exception as e:
             return str(e)

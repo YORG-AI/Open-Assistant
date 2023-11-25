@@ -1,4 +1,4 @@
-from src.core.nodes.base_node import BaseNode, NodeConfig
+from ..base_node import BaseNode, NodeConfig
 from .github_node import GithubNode
 from .github_model import (
     RepositoryInput,
@@ -7,7 +7,6 @@ from .github_model import (
     GetPullRequestsByQueryInput,
     ModifyPRCommentInput,
 )
-from src.utils.router_generator import generate_node_end_points
 
 github_pullrequest_node_config = {
     "name": "github_pullrequest",
@@ -20,7 +19,6 @@ github_pullrequest_node_config = {
     },
 }
 
-@generate_node_end_points
 class GithubPullRequestNode(GithubNode):
     config: NodeConfig = NodeConfig(**github_pullrequest_node_config)
 
