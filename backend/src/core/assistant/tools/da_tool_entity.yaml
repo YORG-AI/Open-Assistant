@@ -1,0 +1,76 @@
+start_stage: "init"
+finish_stage: "finish"
+all_stages:
+  init:
+    name: "init"
+    next_stage_entry:
+      stage_1:
+        - name: project_name
+          required: true
+          parameter_schema:
+            type: string
+            description: "Set the name of the project and initialize it."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_1:
+    name: "stage_1"
+    next_stage_entry:
+      stage_2:
+        - name: file_list
+          required: true
+          parameter_schema:
+            type: array
+            description: "Upload data by providing the path of the files."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_2:
+    name: "stage_2"
+    next_stage_entry:
+      stage_3:
+        - name: project_requirement
+          required: true
+          parameter_schema:
+            type: string
+            description: "Set up the project requirement."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_3:
+    name: "stage_3"
+    next_stage_entry:
+      stage_4: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_4:
+    name: "stage_4"
+    next_stage_entry:
+      stage_5:
+        - name: project_type
+          required: true
+          parameter_schema:
+            type: string
+            description: "Set up the project type."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_5:
+    name: "stage_5"
+    next_stage_entry:
+      stage_6: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_6:
+    name: "stage_6"
+    next_stage_entry:
+      stage_7: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_7:
+    name: "stage_7"
+    next_stage_entry:
+      finish: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  finish:
+    name: "finish"
+    next_stage_entry: {}
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
