@@ -2,6 +2,7 @@ import pytest
 from src.core.assistant.threads import Threads
 from src.core.assistant.async_threads import AsyncThreads
 from src.core.assistant.assistant import Assistants
+from src.core.assistant.tools.tools import register_function_tool
 import asyncio
 # def test_threads_create():
 #     # 创建一个 Threads 对象
@@ -15,12 +16,20 @@ import asyncio
 #     assert threads.config.object == "thread"
 #     assert threads.config.assistant_id is None
 #     assert threads.config.metadata == {}
+@register_function_tool
+def code_test(code:str):
+    return {
+        "type": "success",
+        "content": {
+            "result": "Hello, World!",
+        },
+    }
 
 # def test_threads_run():
 #     # 创建一个 Threads 对象  
-#     threads = Threads.create()
+#     threads = Threads.create('tools.yaml')
 #     # 创建一个助手并保存到 assistants.yaml 文件
-#     assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="run code", tools=[{'type':'code_interpreter'}])
+#     assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="run code", tools=[{'type':'code_test'}])
 #     # 运行 Threads 对象
 #     result = threads.run(assistant.id, "tell me python code print('Hello, World!') result")
 #     print(result)

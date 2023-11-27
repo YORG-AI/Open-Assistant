@@ -39,6 +39,9 @@ STATEFUL_TOOL_ENTITIES = {
     "swe_tool": SWEToolEntity,
 }
 
+def register_function_tool(func):
+    FUNCTION_TOOL_ENTITIES[func.__name__] = func
+    return func
 
 class ToolConfig(BaseModel):
     name: str = Field(description="工具名称")

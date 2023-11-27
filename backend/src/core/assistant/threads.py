@@ -252,8 +252,16 @@ class Threads:
 
             # 使用 chat_with_prompt_template 方法进行聊天
             response = tools_node.chat_with_message(chat_config).message.content
+         # 使用正则表达式匹配字典部分
+        match = re.search(r'\{.*\}', response, re.DOTALL)
+        if match:
+            dict_str = match.group()
+            # 使用json.loads()函数将字符串转换为字典
+            response = json.loads(dict_str)
+        else:
+            response = json.loads(response)
         # tools_list = extract_bracket_content(response)
-        response = json.loads(response)
+        # response = json.loads(response)
         tools_list = response['tool']['name']
 
         print(f'tools_list:{tools_list}')
