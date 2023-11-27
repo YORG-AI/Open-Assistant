@@ -3,18 +3,17 @@ from collections import deque
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
+from src.core.assistant.assistant import Assistants
+from src.core.nodes.openai.openai import OpenAINode
+from src.core.nodes.openai.openai_model import *
+from src.core.assistant.tools.tools import Tools, Tool
+
 import time
 import yaml
 import os
 import re
 import logging
 import json
-
-from ..nodes.openai.openai import OpenAINode
-from ..nodes.openai.openai_model import *
-
-from .assistant import Assistants
-from .tools.tools import Tools, Tool
 
 # from .prompt.few_shot_tools_choose_prompt import *
 from .prompt.few_shot_cot_tools_choose_prompt import *
@@ -68,7 +67,8 @@ class Threads:
     current_tool: Tool
     chat_node: OpenAINode  # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
 
-    def __init__(self, config: ThreadsConfig):
+    def __init__(self, config: ThreadsConfig,yaml_file_path:str):
+        self.yaml_file_path = yaml_file_path
         self._config = config
         self.current_tool = None
 
@@ -100,7 +100,7 @@ class Threads:
             yaml.dump(data, file)
 
     @staticmethod
-    def create() -> "Threads":
+    def create(yaml_file_path:str) -> "Threads":
         # 创建 ThreadsConfig 对象
         config = ThreadsConfig(
             id=str(uuid.uuid4()),
@@ -109,9 +109,9 @@ class Threads:
             message_history=[],
             metadata={},
         )
-
+       
         # 创建 Threads 对象
-        threads = Threads(config)
+        threads = Threads(config,yaml_file_path)
 
         # 保存到 YAML 文件
         threads.save_to_yaml()
@@ -119,11 +119,12 @@ class Threads:
         return threads
 
     def run(self, assistant_id: str, input_text: str, **kwargs):
+        
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
         # 初始化 Tools 对象
-        tools = Tools()
+        tools = Tools(self.yaml_file_path)
         # 获取 tools 的 summary
         tools_summary = tools.get_tools_list_summary(tools_list)
         # 如果第一次执行或当前的 tool 已执行完毕
