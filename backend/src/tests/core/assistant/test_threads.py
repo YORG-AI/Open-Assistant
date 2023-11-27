@@ -32,7 +32,7 @@ import asyncio
 @pytest.mark.asyncio
 async def test_threads_run_stateful_tool():
     # 创建一个 Threads 对象  
-    threads = AsyncThreads.create()
+    threads = AsyncThreads.create('tools.yaml')
     # 创建一个助手并保存到 assistants.yaml 文件
     assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
     print(assistant.id)
@@ -63,7 +63,7 @@ async def test_threads_run_stateful_tool():
 
 # def test_threads_run_stateful_tool():
 #     # 创建一个 Threads 对象  
-#     threads = Threads.create()
+#     threads = Threads.create('tools.yaml')
 #     # 创建一个助手并保存到 assistants.yaml 文件
 #     assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
 #     print(assistant.id)
