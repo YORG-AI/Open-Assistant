@@ -30,33 +30,44 @@ from src.core.assistant.assistant import Assistants
 #     print(threads.config.message_history)
 
 def test_threads_run_stateful_tool():
-    # 创建一个 Threads 对象  
+    # # 创建一个 Threads 对象
+    # threads = Threads.create()
+    # # 创建一个助手并保存到 assistants.yaml 文件
+    # assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
+    # print(assistant.id)
+    # # 运行 Threads 对象
+    # result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",goto="stage_1")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "add helloworld feature to readme",  goto="stage_2")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "focus_files_name_list = [README.md]", goto="stage_3")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "action=3", goto="stage_4")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "", goto="stage_5")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "action=0,action_idx=0", goto="stage_6")
+    # print(result)
+    #
+    # result = threads.run(assistant.id, "", goto="finish")
+    # print(result)
+    # 创建一个 Threads 对象
     threads = Threads.create()
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview",
+                                  instructions="Use swe tool auto fix code files", tools=[{'type': 'da_tool'}])
     print(assistant.id)
-    # 运行 Threads 对象
-    result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
+    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",
+                         project_name="test_project", goto="stage_1")
     print(result)
-
-    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",goto="stage_1")
-    print(result)
-
-    result = threads.run(assistant.id, "add helloworld feature to readme",  goto="stage_2")
-    print(result)
-
-    result = threads.run(assistant.id, "focus_files_name_list = [README.md]", goto="stage_3")
-    print(result)
-
-    result = threads.run(assistant.id, "action=3", goto="stage_4")
-    print(result)
-
-    result = threads.run(assistant.id, "", goto="stage_5")
-    print(result)
-
-    result = threads.run(assistant.id, "action=0,action_idx=0", goto="stage_6")
-    print(result)
-
-    result = threads.run(assistant.id, "", goto="finish")
+    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
     print(result)
      

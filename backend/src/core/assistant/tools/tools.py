@@ -11,6 +11,7 @@ from .tool_entity import (
 from .model import Parameter, Response
 
 from .swe_tool_entity import SWEToolEntity
+from .da_tool_entity import DAToolEntity
 from .example_stateful_tool_entity import ExampleStatefulToolEntity
 
 
@@ -37,6 +38,7 @@ FUNCTION_TOOL_ENTITIES = {
 STATEFUL_TOOL_ENTITIES = {
     "example_stateful_tool": ExampleStatefulToolEntity,
     "swe_tool": SWEToolEntity,
+    "da_tool": DAToolEntity
 }
 
 

@@ -454,3 +454,21 @@
   message_history: []
   metadata: {}
   object: thread
+- assistant_id: null
+  created_at: 1701086672
+  id: ebb24e27-c190-4cf0-a414-7d1ebac538e9
+  message_history: []
+  metadata: {}
+  object: thread
+- assistant_id: null
+  created_at: 1701087406
+  id: 34af2317-8595-410a-9fcd-547f7fbb2d5c
+  message_history: []
+  metadata: {}
+  object: thread
+- assistant_id: null
+  created_at: 1701087777
+  id: 97f3a43c-d99b-4b8b-a426-f4d7a695ea43
+  message_history: []
+  metadata: {}
+  object: thread

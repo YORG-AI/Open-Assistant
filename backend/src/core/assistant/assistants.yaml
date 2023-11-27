@@ -335,3 +335,36 @@
   tools:
   - type: code_interpreter
   - type: data_analyzer
+- created_at: 1701086673
+  description: null
+  file_ids: []
+  id: 83cbf978-c6cd-4274-a4ad-1e6dfc2d087c
+  instructions: Use swe tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1701087406
+  description: null
+  file_ids: []
+  id: 3b754fbc-cf66-41b3-9f51-9897ed12e501
+  instructions: Use swe tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1701087777
+  description: null
+  file_ids: []
+  id: 5f153665-0e29-4d0e-b3ba-9d77bc6b04d2
+  instructions: Use swe tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
