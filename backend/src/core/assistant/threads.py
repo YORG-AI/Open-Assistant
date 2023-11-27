@@ -121,6 +121,8 @@ class Threads:
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
+        print(tools_list)
+        print(self.current_tool)
         # 初始化 Tools 对象
         tools = Tools()
         # 获取 tools 的 summary
@@ -250,6 +252,11 @@ class Threads:
 
             # 使用 chat_with_prompt_template 方法进行聊天
             response = tools_node.chat_with_message(chat_config).message.content
+        print("tools_summary", tools_summary)
+        print("input_text", input_text)
+        print("instruct:", instruct)
+        print("response:")
+        print(response)
         tools_list = extract_bracket_content(response)
         print(f'tools_list:{tools_list}')
         return tools_list

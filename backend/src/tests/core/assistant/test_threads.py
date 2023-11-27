@@ -59,15 +59,18 @@ def test_threads_run_stateful_tool():
     #
     # result = threads.run(assistant.id, "", goto="finish")
     # print(result)
+    
+    
+    
     # 创建一个 Threads 对象
     threads = Threads.create()
     # 创建一个助手并保存到 assistants.yaml 文件
     assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview",
-                                  instructions="Use swe tool auto fix code files", tools=[{'type': 'da_tool'}])
+                                  instructions="Use da_tool to analysis files", tools=[{'type': 'da_tool'}])
     print(assistant.id)
-    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",
+    result = threads.run(assistant.id, "the project is called test_project",
                          project_name="test_project", goto="stage_1")
     print(result)
-    result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
+    result = threads.run(assistant.id, "the data file we need is at src/data/ds_data/data.csv", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
     print(result)
      
