@@ -1,6 +1,6 @@
 import yaml
 import os
-
+import inspect
 from pydantic import BaseModel, Field
 
 from .tool_entity import (
@@ -79,15 +79,19 @@ class Tool:
 class Tools:
     tools: dict[str, Tool]
 
-    def __init__(self):
+    def __init__(self,yaml_file_path:str):
         self.tools = {}
-
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # 构建 tools.yaml 文件的绝对路径
-        tools_yaml_path = os.path.join(current_dir, "tools.yaml")
-
+        # 获取调用此方法的栈帧
+        stack = inspect.stack()
+        caller_frame = stack[2]
+        # 获取调用者的文件路径
+        caller_path = caller_frame.filename
+        # 获取调用者的目录路径
+        caller_dir = os.path.dirname(caller_path)
+        # 构建 openai.yaml 文件的绝对路径
+        yaml_file_path = os.path.join(caller_dir, yaml_file_path)
+        print(f'yaml_file_path:{yaml_file_path}')
+        tools_yaml_path = yaml_file_path
         # 读取 tools.yaml 文件，初始化所有 tools
         with open(tools_yaml_path, "r") as f:
             config_obj = yaml.safe_load(f)
