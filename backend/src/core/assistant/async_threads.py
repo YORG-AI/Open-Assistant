@@ -16,7 +16,7 @@ import logging
 import json
 
 
-from .prompt.few_shot_tools_choose_prompt import *
+from .prompt.few_shot_cot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
 from .prompt.response_generate_prompt import *
 
@@ -256,8 +256,16 @@ class AsyncThreads:
             response = response.message.content  # 现在可以安全地访问 message 属性
             # 使用 chat_with_prompt_template 方法进行聊天
             # response = await tools_node.chat_with_message(chat_config).message.content
-        tools_list = extract_bracket_content(response)
-        print(f'tools_list:{tools_list}')
+        # tools_list = extract_bracket_content(response)
+         # 使用正则表达式匹配字典部分
+        match = re.search(r'\{.*\}', response, re.DOTALL)
+        if match:
+            dict_str = match.group()
+            # 使用json.loads()函数将字符串转换为字典
+            response = json.loads(dict_str)
+        else:
+            response = json.loads(response)
+        tools_list = response['tool']['name']
         return tools_list
 
     async def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
