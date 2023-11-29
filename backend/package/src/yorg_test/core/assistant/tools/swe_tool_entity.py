@@ -1,5 +1,7 @@
+import logging
+from typing import List, Optional
 from .stateful_tool_entity import *
-from ...agents.software_engineer.software_engineer import SoftwareEngineerAgent, Plan
+from ...agents.software_engineer.software_engineer import SoftwareEngineerAgent
     
 class SWEToolEntity(StatefulToolEntity):
     def __init__(self):
@@ -64,7 +66,7 @@ class SWEToolEntity(StatefulToolEntity):
         self.task.set_feature_description(feature)
         return {"type": "success", "content": {"message": "stage2 done,get feature"}}
 
-    def _stage3(self,focus_files_name_list: list[str]):
+    def _stage3(self,focus_files_name_list: List[str]):
         #锁定文件
         self.task.set_focus_files()
         #选择修改文件
@@ -119,11 +121,11 @@ class SWEToolEntity(StatefulToolEntity):
             file_actions = self.task.get_file_actions()
             finish_file_actions = self.task.get_finish_file_actions()
             finish_file_actions.append(file_actions[action_idx])
-            self.task.set_finish_file_actions(finish_file_actions)
+            selftask.set_finish_file_actions(finish_file_actions)
             del file_actions[action_idx]
-            self.task.set_file_actions(file_actions)
+            selftask.set_file_actions(file_actions)
         elif action == REVISE:
-            new_action = self.task.agent._revise_code(f"{self.task.previous_action[action_idx]}", revise_comments, action_idx)
+            new_action = task.agent._revise_code(f"{task.previous_action[action_idx]}", revise_comments, action_idx)
             self.previous_action.append(new_action)
             return {"type": "success", "content": {"result": "stage6 done","actions":self.previous_action}}
         return {"type": "success", "content": {"result": "stage6 done"}}

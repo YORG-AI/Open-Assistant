@@ -1,13 +1,11 @@
-import json
-
 from .model import *
 from .tool_entity import *
 from ...nodes.openai.openai import OpenAINode
 from ...nodes.openai.openai_model import *
-
-from ..prompt.few_shot_extract_parametes_from_input import *
-from ..prompt.few_shot_response_prompt import *
-
+from ...assistant.prompt.few_shot_extract_parametes_from_input import *
+from ...assistant.prompt.few_shot_response_prompt import *
+import inspect
+import json
 class StatefulToolEntityConfig(BaseModel):
     start_stage: str = Field(description="The start stage of the tool entity.")
     finish_stage: str = Field(description="The finish stage of the tool entity.")
@@ -19,12 +17,17 @@ class StatefulToolEntity(BaseToolEntity, ABC):
     current_stage: Stage
 
     def __init__(self, config_file_name: str):
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # 构建 example_stateful_tool.yaml 文件的绝对路径
-        config_path = os.path.join(current_dir, config_file_name)
-
+         # 获取调用此方法的栈帧
+        stack = inspect.stack()
+        # 假设调用者是栈的第二个帧（第一个是当前的 __init__ 方法）
+        caller_frame = stack[1]
+        # 获取调用者的文件路径
+        caller_path = caller_frame.filename
+        # 获取调用者的目录路径
+        caller_dir = os.path.dirname(caller_path)
+        # 构建 openai.yaml 文件的绝对路径
+        config_path = os.path.join(caller_dir, config_file_name)
+        print(f'config_path:{config_path}')
         # 使用绝对路径打开 assistants.yaml 文件
         with open(config_path, "r") as file:
             data = yaml.safe_load(file) or []

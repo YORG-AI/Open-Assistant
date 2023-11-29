@@ -36,9 +36,15 @@ FUNCTION_TOOL_ENTITIES = {
 
 STATEFUL_TOOL_ENTITIES = {
     "example_stateful_tool": ExampleStatefulToolEntity,
-    "swe_tool": SWEToolEntity,
 }
 
+def register_function_tool(func):
+    FUNCTION_TOOL_ENTITIES[func.__name__] = func
+    return func
+
+def register_stateful_tool(cls):
+    STATEFUL_TOOL_ENTITIES[cls.__name__] = cls
+    return cls
 
 class ToolConfig(BaseModel):
     name: str = Field(description="工具名称")
@@ -90,7 +96,7 @@ class Tools:
         caller_dir = os.path.dirname(caller_path)
         # 构建 openai.yaml 文件的绝对路径
         yaml_file_path = os.path.join(caller_dir, yaml_file_path)
-        print(f'yaml_file_path:{yaml_file_path}')
+
         tools_yaml_path = yaml_file_path
         # 读取 tools.yaml 文件，初始化所有 tools
         with open(tools_yaml_path, "r") as f:

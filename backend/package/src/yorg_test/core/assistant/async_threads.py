@@ -3,10 +3,10 @@ from collections import deque
 from typing import List, Optional
 from pydantic import BaseModel, Field
 
-from src.core.assistant.assistant import Assistants
-from src.core.nodes.openai.openai import OpenAINode,AsyncOpenAINode
-from src.core.nodes.openai.openai_model import *
-from src.core.assistant.tools.tools import Tools, Tool
+from .assistant import Assistants
+from ..nodes.openai.openai import OpenAINode,AsyncOpenAINode
+from ..nodes.openai.openai_model import *
+from .tools.tools import Tools, Tool
 
 import time
 import yaml
@@ -16,7 +16,7 @@ import logging
 import json
 
 
-from .prompt.few_shot_tools_choose_prompt import *
+from .prompt.few_shot_cot_tools_choose_prompt import *
 from .prompt.parameters_generate_prompt import *
 from .prompt.response_generate_prompt import *
 
@@ -82,7 +82,10 @@ class AsyncThreads:
 
         # 构建 threads.yaml 文件的绝对路径
         threads_yaml_path = os.path.join(current_dir, "threads.yaml")
-
+        # 检查文件是否存在，如果不存在，则创建一个空的yaml文件
+        if not os.path.exists(threads_yaml_path):
+            with open(threads_yaml_path, 'w') as file:
+                file.write('')  # 创建一个空文件
         # 使用绝对路径打开 threads.yaml 文件
         with open(threads_yaml_path, "r") as file:
             data = yaml.safe_load(file) or []
@@ -256,8 +259,16 @@ class AsyncThreads:
             response = response.message.content  # 现在可以安全地访问 message 属性
             # 使用 chat_with_prompt_template 方法进行聊天
             # response = await tools_node.chat_with_message(chat_config).message.content
-        tools_list = extract_bracket_content(response)
-        print(f'tools_list:{tools_list}')
+        # tools_list = extract_bracket_content(response)
+         # 使用正则表达式匹配字典部分
+        match = re.search(r'\{.*\}', response, re.DOTALL)
+        if match:
+            dict_str = match.group()
+            # 使用json.loads()函数将字符串转换为字典
+            response = json.loads(dict_str)
+        else:
+            response = json.loads(response)
+        tools_list = response['tool']['name']
         return tools_list
 
     async def _generate_parameters(self, target_tool: Tool, input_text: str,instruct:bool = False) -> dict:
