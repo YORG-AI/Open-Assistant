@@ -96,7 +96,7 @@ class Tools:
         caller_dir = os.path.dirname(caller_path)
         # 构建 openai.yaml 文件的绝对路径
         yaml_file_path = os.path.join(caller_dir, yaml_file_path)
-        print(f'yaml_file_path:{yaml_file_path}')
+
         tools_yaml_path = yaml_file_path
         # 读取 tools.yaml 文件，初始化所有 tools
         with open(tools_yaml_path, "r") as f:
