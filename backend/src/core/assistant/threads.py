@@ -67,7 +67,8 @@ class Threads:
     current_tool: Tool
     chat_node: OpenAINode  # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
 
-    def __init__(self, config: ThreadsConfig):
+    def __init__(self, config: ThreadsConfig,yaml_file_path:str):
+        self.yaml_file_path = yaml_file_path
         self._config = config
         self.current_tool = None
 
@@ -99,7 +100,7 @@ class Threads:
             yaml.dump(data, file)
 
     @staticmethod
-    def create() -> "Threads":
+    def create(yaml_file_path:str) -> "Threads":
         # 创建 ThreadsConfig 对象
         config = ThreadsConfig(
             id=str(uuid.uuid4()),
@@ -108,9 +109,9 @@ class Threads:
             message_history=[],
             metadata={},
         )
-
+       
         # 创建 Threads 对象
-        threads = Threads(config)
+        threads = Threads(config,yaml_file_path)
 
         # 保存到 YAML 文件
         threads.save_to_yaml()
@@ -125,7 +126,7 @@ class Threads:
         print(tools_list)
         print(self.current_tool)
         # 初始化 Tools 对象
-        tools = Tools()
+        tools = Tools(self.yaml_file_path)
         # 获取 tools 的 summary
         tools_summary = tools.get_tools_list_summary(tools_list)
         # 如果第一次执行或当前的 tool 已执行完毕
@@ -253,12 +254,18 @@ class Threads:
 
             # 使用 chat_with_prompt_template 方法进行聊天
             response = tools_node.chat_with_message(chat_config).message.content
-        print("tools_summary", tools_summary)
-        print("input_text", input_text)
-        print("instruct:", instruct)
-        print("response:")
-        print(response)
-        tools_list = extract_bracket_content(response)
+         # 使用正则表达式匹配字典部分
+        match = re.search(r'\{.*\}', response, re.DOTALL)
+        if match:
+            dict_str = match.group()
+            # 使用json.loads()函数将字符串转换为字典
+            response = json.loads(dict_str)
+        else:
+            response = json.loads(response)
+        # tools_list = extract_bracket_content(response)
+        # response = json.loads(response)
+        tools_list = response['tool']['name']
+
         print(f'tools_list:{tools_list}')
         return tools_list
 
