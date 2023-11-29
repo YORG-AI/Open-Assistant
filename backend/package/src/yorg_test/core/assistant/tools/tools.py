@@ -16,7 +16,7 @@ from .example_stateful_tool_entity import ExampleStatefulToolEntity
 
 # 示例工具函数
 def serve_code_interpreter(code: str) -> dict[str, any]:
-    from src.core.nodes.code_runner.code_runner import CodeRunnerNode, RunCodeInput
+    from ...nodes.code_runner.code_runner import CodeRunnerNode, RunCodeInput
 
     code_runner_node = CodeRunnerNode()
     code_runner_node.init_python_repl()
