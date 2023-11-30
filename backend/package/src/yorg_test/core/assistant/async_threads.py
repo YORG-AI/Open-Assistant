@@ -7,7 +7,7 @@ from .assistant import Assistants
 from ..nodes.openai.openai import OpenAINode,AsyncOpenAINode
 from ..nodes.openai.openai_model import *
 from .tools.tools import Tools, Tool
-
+from .config import *
 import time
 import yaml
 import os
@@ -34,54 +34,40 @@ def extract_bracket_content(s: str) -> list:
     return ret
 
 
-class MessageRecord(BaseModel):
-    role: str = Field(description="角色")
-    content: str = Field(description="内容")
-
-
-class ThreadsConfig(BaseModel):
-    id: str = Field(description="线程 ID")
-    object: str = Field(default="thread", description="对象类型")
-    created_at: int = Field(description="创建时间")
-    assistant_id: Optional[str] = Field(description="助手 ID")
-    message_history: deque[List[MessageRecord]] = Field(
-        deque(maxlen=10), description="消息"
-    )
-    metadata: dict = Field(default={}, description="元数据")
-
-    def to_dict(self):
-        # Convert the ThreadsConfig object to a dictionary
-        data = self.__dict__.copy()
-        # Convert the deque to a list
-        data["message_history"] = list(data["message_history"])
-        return data
-
-    @classmethod
-    def from_dict(cls, data):
-        # Convert the list back to a deque
-        data["message_history"] = deque(data["message_history"], maxlen=10)
-        return cls(**data)
-
-
 class AsyncThreads:
     current_tool: Tool
     chat_node: OpenAINode  # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
 
-    def __init__(self, config: ThreadsConfig,yaml_file_path:str):
+    def __init__(self, config: ThreadsConfig,yaml_file_path:str,threads_yaml_path:Optional[str] = None):
         self.yaml_file_path = yaml_file_path
         self._config = config
         self.current_tool = None
+        YamlPathConfig.threads_yaml_path = threads_yaml_path if threads_yaml_path else "threads.yaml"
 
     @property
     def config(self):
         return self._config
 
-    def save_to_yaml(self):
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
+    def set_threads_yaml_path(yaml_path:str):
+        # 获取调用此方法的栈帧
+        stack = inspect.stack()
+        caller_frame = stack[1]
+        # 获取调用者的文件路径
+        caller_path = caller_frame.filename
+        # 获取调用者的目录路径
+        caller_dir = os.path.dirname(caller_path)
+        # 构建 yaml 文件的绝对路径
+        full_yaml_path = os.path.join(caller_dir, yaml_path)
+        # 获取 yaml 文件所在的目录
+        yaml_dir = os.path.dirname(full_yaml_path)
+        # 如果目录不存在，则创建它
+        os.makedirs(yaml_dir, exist_ok=True)
+        # 构建 openai.yaml 文件的绝对路径
+        YamlPathConfig.threads_yaml_path = full_yaml_path
 
+    def save_to_yaml(self):
         # 构建 threads.yaml 文件的绝对路径
-        threads_yaml_path = os.path.join(current_dir, "threads.yaml")
+        threads_yaml_path = YamlPathConfig.threads_yaml_path
         # 检查文件是否存在，如果不存在，则创建一个空的yaml文件
         if not os.path.exists(threads_yaml_path):
             with open(threads_yaml_path, 'w') as file:
@@ -103,7 +89,7 @@ class AsyncThreads:
             yaml.dump(data, file)
 
     @staticmethod
-    def create(yaml_file_path:str) -> "AsyncThreads":
+    def create(yaml_file_path:str) -> "Threads":
         # 创建 ThreadsConfig 对象
         config = ThreadsConfig(
             id=str(uuid.uuid4()),
@@ -114,7 +100,7 @@ class AsyncThreads:
         )
        
         # 创建 Threads 对象
-        threads = AsyncThreads(config,yaml_file_path)
+        threads = Threads(config,yaml_file_path,YamlPathConfig.threads_yaml_path)
 
         # 保存到 YAML 文件
         threads.save_to_yaml()

@@ -1,20 +1,37 @@
-from .base_assistant import BaseAssistant,AssistantConfig
 import uuid
 import time
+import os
 import yaml
+from typing import Callable, Optional
+from pydantic import BaseModel, Field
+import inspect
+from .config import *
 
-class Assistants(BaseAssistant):
-    def __init__(self, config):
-        super().__init__(config)
+class Assistants():
+    def __init__(self, config,yaml_path:Optional[str] = None):
+        self.config = config
+        YamlPathConfig.assistants_yaml_path = yaml_path if yaml_path else 'assistants.yaml'
     
+    def set_assistants_yaml_path(yaml_path:str):
+        # 获取调用此方法的栈帧
+        stack = inspect.stack()
+        caller_frame = stack[1]
+        # 获取调用者的文件路径
+        caller_path = caller_frame.filename
+        # 获取调用者的目录路径
+        caller_dir = os.path.dirname(caller_path)
+        # 构建 yaml 文件的绝对路径
+        full_yaml_path = os.path.join(caller_dir, yaml_path)
+        # 获取 yaml 文件所在的目录
+        yaml_dir = os.path.dirname(full_yaml_path)
+        # 如果目录不存在，则创建它
+        os.makedirs(yaml_dir, exist_ok=True)
+        # 构建 openai.yaml 文件的绝对路径
+        YamlPathConfig.assistants_yaml_path = full_yaml_path
+
     def save_to_yaml(self):
-        import os
-
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
         # 构建 assistants.yaml 文件的绝对路径
-        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
+        assistants_yaml_path = YamlPathConfig.assistants_yaml_path
         # 检查文件是否存在，如果不存在，则创建一个空的yaml文件
         if not os.path.exists(assistants_yaml_path):
             with open(assistants_yaml_path, 'w') as file:
@@ -34,6 +51,7 @@ class Assistants(BaseAssistant):
         # 写回 YAML 文件
         with open(assistants_yaml_path, 'w') as file:
             yaml.dump(data, file)
+
     @property
     def id(self):
         return self.config.id
@@ -97,44 +115,30 @@ class Assistants(BaseAssistant):
             model=model,
             file_ids=file_ids if file_ids is not None else [],
         )
-        assistant = Assistants(config)
+        assistant = Assistants(config,YamlPathConfig.assistants_yaml_path)
         assistant.save_to_yaml()  # 保存到 YAML 文件
         return assistant
     
+    
     @classmethod
     def from_id(cls, id: str) -> 'Assistants':
-        import os
-
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # 构建 assistants.yaml 文件的绝对路径
-        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
-
-        # 使用绝对路径打开 assistants.yaml 文件
-        with open(assistants_yaml_path, 'r') as file:
+        # 使用传入的 yaml_path 参数打开 YAML 文件
+        with open(YamlPathConfig.assistants_yaml_path, 'r') as file:
             data = yaml.safe_load(file) or []
         # 查找具有相同 id 的配置
         for d in data:
             if d['id'] == id:
                 # 如果找到了，就用这个配置创建一个新的 Assistants 对象
                 config = AssistantConfig(**d)
-                return cls(config)
+                return cls(config, YamlPathConfig.assistants_yaml_path)  # 使用传入的 yaml_path 创建 Assistants 实例
         # 如果没有找到，就抛出一个异常
         raise ValueError(f'No assistant with id {id} found in YAML file.')
     
     @classmethod
     def delete_by_id(cls, id: str):
-        import os
-
-        # 获取当前文件的绝对路径
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-
-        # 构建 assistants.yaml 文件的绝对路径
-        assistants_yaml_path = os.path.join(current_dir, 'assistants.yaml')
 
         # 使用绝对路径打开 assistants.yaml 文件
-        with open(assistants_yaml_path, 'r') as file:
+        with open(YamlPathConfig.assistants_yaml_path, 'r') as file:
             data = yaml.safe_load(file) or []
 
         # 查找具有相同 id 的 assistant

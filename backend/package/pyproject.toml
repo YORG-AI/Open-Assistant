@@ -30,7 +30,7 @@ Issues = "https://github.com/YORG-AI/Open-Assistant/issues"
 
 [tool.poetry]
 name = "yorg_test"
-version = "0.0.14"
+version = "0.0.30"
 authors = ["zxy <zhongxingyuemail@gmail.com>"]
 description = "test package for yorg"
 readme = "README.md"
@@ -38,4 +38,4 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8"
 
-include = ["*.yaml","src/yorg_test/core/assistant/tools/*.yaml"]
+include = ["src/yorg_test/core/assistant/tools/*.yaml"]

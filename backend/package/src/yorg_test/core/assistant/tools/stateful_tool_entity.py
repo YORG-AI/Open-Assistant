@@ -27,7 +27,6 @@ class StatefulToolEntity(BaseToolEntity, ABC):
         caller_dir = os.path.dirname(caller_path)
         # 构建 openai.yaml 文件的绝对路径
         config_path = os.path.join(caller_dir, config_file_name)
-        print(f'config_path:{config_path}')
         # 使用绝对路径打开 assistants.yaml 文件
         with open(config_path, "r") as file:
             data = yaml.safe_load(file) or []
