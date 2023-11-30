@@ -1,0 +1,57 @@
+start_stage: "init"
+finish_stage: "finish"
+all_stages:
+  init:
+    name: "init"
+    next_stage_entry: 
+      stage_1:
+        - name: repo_url
+          required: true
+          parameter_schema:
+            type: string
+            description: "Provide a code repository address"
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_1:
+    name: "stage_1"
+    next_stage_entry: 
+      stage_2:
+        - name: repo_url 
+          required: true
+          parameter_schema:
+            type: string
+            description: "Generate AST structure for the repo provided under this path"
+    need_llm_generate_parameters: false 
+    need_llm_generate_response: false
+  stage_2:
+    name: "stage_2"
+    next_stage_entry: 
+      stage_3:
+        - name: user_feature 
+          required: true
+          parameter_schema:
+            type: string
+            description: "User's query about the repo, or what he wants to know about the repo."
+        - name: query_related_code 
+          required: true
+          parameter_schema:
+            type: string
+            description: "User's query related code, this field maybe is empty string."
+        - name: query_related_content 
+          required: true
+          parameter_schema:
+            type: string
+            description: "Other user's query related content, also maybe empty string."
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_3:
+    name: "stage_3"
+    next_stage_entry: 
+      finish: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  finish:
+    name: "finish"
+    next_stage_entry: {}
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false

@@ -32,4 +32,26 @@ tools:
     entity_name: swe_tool
     summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
     parameters: []
-    responses: {}  
+    responses: {}
+  understand_tool:
+    name: understand_tool
+    entity_name: understand_tool
+    summary: Understand a repo's code according to users' specific query.
+    parameters: []
+    responses: {}
+    # name: understand_codebase
+    # entity_name: understand_codebase
+    # summary: Run the code through code_interpreter and return the result of the code run. If your query is about math, computer science, or data science, you can use this tool to get the result of the code run.
+    # parameters:
+    #   - name: code
+    #     description: code text that requires code_interpreter to run
+    #     required: true
+    #     parameter_schema:
+    #       type: string
+    # responses:
+    #   success:
+    #     description: OK
+    #     content:
+    #       result:
+    #         type: string
+    #         description: the result of the code run

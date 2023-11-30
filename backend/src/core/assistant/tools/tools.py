@@ -12,6 +12,7 @@ from .model import Parameter, Response
 
 from .swe_tool_entity import SWEToolEntity
 from .example_stateful_tool_entity import ExampleStatefulToolEntity
+from .understand_codebase_tool_entity import UnderstandToolEntity
 
 
 # 示例工具函数
@@ -29,13 +30,36 @@ def serve_code_interpreter(code: str) -> dict[str, any]:
         },
     }
 
+async def serve_understand_codebase(repo_url: str, user_feature: str, query_related_code: str) -> dict[str, any]:
+    from src.core.assignments.understand_codebase.understand_code_base_assignment import CodeBaseAssignment
+
+    assignment = CodeBaseAssignment()
+    assignment.set_repo_url(repo_url)
+    assignment.generate_code_classes()
+    assignment.generate_code_dependencies()
+    assignment.set_code_base_query(user_feature, query_related_code, "")
+    await assignment.set_possiblly_related_file()
+    await assignment.understand_codebase()
+    understanding = assignment.get_understanding()
+
+    # 格式化理解结果
+    formatted_result = [str(u) for u in understanding]
+    return {
+        "type": "success",
+        "content": {
+            "understanding": formatted_result,
+        },
+    }
+
 
 FUNCTION_TOOL_ENTITIES = {
     "code_interpreter": serve_code_interpreter,
+    # "understand_codebase": serve_understand_codebase,
 }
 
 STATEFUL_TOOL_ENTITIES = {
     "example_stateful_tool": ExampleStatefulToolEntity,
+    "understand_tool": UnderstandToolEntity,
 }
 
 def register_function_tool(func):

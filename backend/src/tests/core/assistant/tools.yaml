@@ -32,4 +32,10 @@ tools:
     entity_name: SWEToolEntity
     summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
     parameters: []
+    responses: {}
+  understand_tool:
+    name: understand_tool
+    entity_name: understand_tool
+    summary: Understand a repo's code according to users' specific query.
+    parameters: []
     responses: {}  
