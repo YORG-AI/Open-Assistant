@@ -49,20 +49,24 @@ class AsyncThreads:
         return self._config
 
     def set_threads_yaml_path(yaml_path:str):
-        # 获取调用此方法的栈帧
-        stack = inspect.stack()
-        caller_frame = stack[1]
-        # 获取调用者的文件路径
-        caller_path = caller_frame.filename
-        # 获取调用者的目录路径
-        caller_dir = os.path.dirname(caller_path)
-        # 构建 yaml 文件的绝对路径
-        full_yaml_path = os.path.join(caller_dir, yaml_path)
+        # 检查 yaml_path 是否为绝对路径
+        if not os.path.isabs(yaml_path):
+            # 获取调用此方法的栈帧
+            stack = inspect.stack()
+            caller_frame = stack[1]
+            # 获取调用者的文件路径
+            caller_path = caller_frame.filename
+            # 获取调用者的目录路径
+            caller_dir = os.path.dirname(caller_path)
+            # 构建 yaml 文件的绝对路径
+            full_yaml_path = os.path.join(caller_dir, yaml_path)
+        else:
+            full_yaml_path = yaml_path
         # 获取 yaml 文件所在的目录
         yaml_dir = os.path.dirname(full_yaml_path)
         # 如果目录不存在，则创建它
         os.makedirs(yaml_dir, exist_ok=True)
-        # 构建 openai.yaml 文件的绝对路径
+        # 设置 yaml_path
         YamlPathConfig.threads_yaml_path = full_yaml_path
 
     def save_to_yaml(self):
