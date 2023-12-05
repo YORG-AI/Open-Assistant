@@ -8,7 +8,7 @@ this is a test package
 
 - Set up test version package
 ``` shell
-pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple yorg-test
+pip install  yorgassistant
 ```
 - Set up openapikey
 (If you are in China, please set up a proxy to ensure that you can connect to openai.)
@@ -20,6 +20,8 @@ os.environ['OPENAI_CHAT_API_KEY'] = 'sk-br3j7Gxxxxxxxxvt8r'
 ```
 - set up yaml file
 We have some tools built in eg.code_interpreter,swe_tool
+
+tools.yaml
 ```yaml
 YORG: 0.0.1
 info:
@@ -183,7 +185,7 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
 ```python
 import yorg_test
 threads = yorg_test.Threads.create('tools.yaml')
-assistant = yorg_test.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'SWEToolEntity'}])
+assistant = yorg_test.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
 print(assistant.id)
 # 运行 Threads 对象
 result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
