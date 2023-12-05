@@ -63,7 +63,7 @@ Tools are categorized into stateful tools and function tools,
 Function tools can describe parameters and return values directly in tools.yaml
 Functions can be registered using decorators
 ```python
-from yorg_test.core.assistant.tools.tools import register_function_tool
+from yorgassistant.core.assistant.tools.tools import register_function_tool
 @register_function_tool
 def code_test(code: str):
     return {
@@ -74,6 +74,8 @@ def code_test(code: str):
     }
 ```
 If it's a stateful tool you need to write an additional yaml file with a stateful description
+
+example_stateful_tool.yaml
 ```yaml
 start_stage: "init"
 finish_stage: "finish"
@@ -121,8 +123,8 @@ all_stages:
 Stateful tools can also be registered using decorators.
 The yaml file is registered in init.
 ```python
-from yorg_test.core.assistant.tools.tools import register_stateful_tool
-from yorg_test.core.assistant.tools.stateful_tool_entity import StatefulToolEntity
+from yorgassistant.core.assistant.tools.tools import register_stateful_tool
+from yorgassistant.core.assistant.tools.stateful_tool_entity import StatefulToolEntity
 @register_stateful_tool
 class ExampleStatefulToolEntity(StatefulToolEntity):
     """
@@ -183,9 +185,9 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
 - run example
 
 ```python
-import yorg_test
-threads = yorg_test.Threads.create('tools.yaml')
-assistant = yorg_test.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
+import yorgassistant
+threads = yorgassistant.Threads.create('tools.yaml')
+assistant = yorgassistant.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
 print(assistant.id)
 # 运行 Threads 对象
 result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
