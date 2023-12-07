@@ -182,6 +182,18 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
     def _finish(self):
         return {"type": "success", "content": {"message": "stateful tool is finished"}}
 ```
+- setting data
+```python
+import yorgassistant
+yorgassistant.Threads.set_threads_yaml_path('data/threads.yaml')
+yorgassistant.Assistants.set_assistants_yaml_path('data/assistants.yaml')
+```
+- find assistants
+```python
+import yorgassistant
+assistants_list = yorgassistant.Assistants.get_all_assistants()
+print(assistants_list)
+```
 - run example
 
 ```python
