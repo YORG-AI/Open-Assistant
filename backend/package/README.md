@@ -186,6 +186,8 @@ class ExampleStatefulToolEntity(StatefulToolEntity):
 
 ```python
 import yorgassistant
+yorgassistant.Threads.set_threads_yaml_path('data/threads.yaml')
+yorgassistant.Assistants.set_assistants_yaml_path('data/assistants.yaml')
 threads = yorgassistant.Threads.create('tools.yaml')
 assistant = yorgassistant.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
 print(assistant.id)
