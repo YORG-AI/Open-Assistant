@@ -454,3 +454,9 @@
   message_history: []
   metadata: {}
   object: thread
+- assistant_id: null
+  created_at: 1700587530
+  id: 6492da26-65cc-46e3-92cd-4eeae31d877c
+  message_history: []
+  metadata: {}
+  object: thread

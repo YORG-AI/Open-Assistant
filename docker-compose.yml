@@ -32,3 +32,11 @@ services:
       - ./frontend/fishweb:/app
       - /app/node_modules
     command: npm start
+
+  backend_test_assistant:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app/
+    command: ["python3", "-m", "pytest", "src/tests/core/assistant"]

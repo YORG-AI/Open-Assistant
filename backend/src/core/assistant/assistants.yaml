@@ -335,3 +335,14 @@
   tools:
   - type: code_interpreter
   - type: data_analyzer
+- created_at: 1700587530
+  description: null
+  file_ids: []
+  id: fdbc8d92-73ac-416b-ad6e-29328998687f
+  instructions: Use swe tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: swe_tool

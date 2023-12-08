@@ -1,7 +1,7 @@
 import requests
 from github import Github
 from src.core.nodes.base_node import BaseNode, NodeConfig
-from src.core.nodes.github.github_model import (
+from .github_model import (
     RepositoryInput,
     GetSpecificContentFileInput,
     CreateFileInput,
