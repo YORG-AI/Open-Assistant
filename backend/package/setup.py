@@ -18,7 +18,7 @@ URL = 'https://github.com/YORG-AI/Open-Assistant'
 EMAIL = 'zhongxingyuemail@gmail.com'  # 请替换为你的邮箱
 AUTHOR = 'XingYu-Zhong'
 REQUIRES_PYTHON = '>=3.8.0'
-VERSION = '0.0.15'
+VERSION = '0.0.16'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

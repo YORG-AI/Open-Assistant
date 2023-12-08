@@ -118,7 +118,7 @@ class AsyncThreads:
         for d in data:
             if d['id'] == id:
                 # 如果找到了，就用这个配置创建一个新的对象
-                config = ThreadsConfig(**d)
+                config = ThreadsConfig.from_dict(d)
                 return cls(config, YamlPathConfig.threads_yaml_path)  # 使用传入的 yaml_path 创建  实例
         # 如果没有找到，就抛出一个异常
         raise ValueError(f'No threads with id {id} found in YAML file.')
