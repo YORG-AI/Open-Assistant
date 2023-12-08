@@ -194,16 +194,57 @@ import yorgassistant
 assistants_list = yorgassistant.Assistants.get_all_assistants()
 print(assistants_list)
 ```
+- find threads
+```python
+import yorgassistant
+threads_list = yorgassistant.Threads.get_all_threads()
+print(threads_list)
+```
 - run example
 
 ```python
 import yorgassistant
 yorgassistant.Threads.set_threads_yaml_path('data/threads.yaml')
 yorgassistant.Assistants.set_assistants_yaml_path('data/assistants.yaml')
-threads = yorgassistant.Threads.create('tools.yaml')
+yorgassistant.Tools.set_tools_yaml_path('tools.yaml')
+threads = yorgassistant.Threads.create()
+print(threads.id)
 assistant = yorgassistant.Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'swe_tool'}])
 print(assistant.id)
-# 运行 Threads 对象
+
+result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
+print(result)
+
+result = threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",goto="stage_1")
+print(result)
+
+result = threads.run(assistant.id, "add helloworld feature to readme",  goto="stage_2")
+print(result)
+
+result = threads.run(assistant.id, "focus_files_name_list = [README.md]", goto="stage_3")
+print(result)
+
+result = threads.run(assistant.id, "action=3", goto="stage_4")
+print(result)
+
+result = threads.run(assistant.id, "", goto="stage_5")
+print(result)
+
+result = threads.run(assistant.id, "action=0,action_idx=0", goto="stage_6")
+print(result)
+
+result = threads.run(assistant.id, "", goto="finish")
+print(result)
+```
+
+- or
+```python
+import yorgassistant
+yorgassistant.Threads.set_threads_yaml_path('data/threads.yaml')
+yorgassistant.Assistants.set_assistants_yaml_path('data/assistants.yaml')
+yorgassistant.Tools.set_tools_yaml_path('tools.yaml')
+assistant = yorgassistant.Assistants.from_id('56b0a8c9-b8b4-4c86-8d68-c7793235283b')
+threads = yorgassistant.Threads.from_id("6014b05d-1be9-4e8d-933c-ed8f17dfa8f0")
 result = threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
 print(result)
 

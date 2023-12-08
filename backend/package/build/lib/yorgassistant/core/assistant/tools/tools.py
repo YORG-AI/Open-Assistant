@@ -12,7 +12,7 @@ from .model import Parameter, Response
 
 from .swe_tool_entity import SWEToolEntity
 from .example_stateful_tool_entity import ExampleStatefulToolEntity
-
+from ..config import YamlPathConfig
 
 # 示例工具函数
 def serve_code_interpreter(code: str) -> dict[str, any]:
@@ -58,6 +58,7 @@ class ToolConfig(BaseModel):
 class Tool:
     config: ToolConfig
     entity: BaseToolEntity
+    _tool_type: str  # 使用一个内部变量来存储 tool_type 的值
 
     def __init__(self, config: ToolConfig):
         self.config = config
@@ -65,11 +66,20 @@ class Tool:
 
         if entity_name in FUNCTION_TOOL_ENTITIES:
             self.entity = FunctionToolEntity(FUNCTION_TOOL_ENTITIES[entity_name])
+            self._tool_type = 'function'
         elif entity_name in STATEFUL_TOOL_ENTITIES:
             self.entity = STATEFUL_TOOL_ENTITIES[entity_name]()
+            self._tool_type = 'stateful'
         else:
             raise Exception(f"Tool entity {entity_name} not found.")
 
+    @property
+    def tool_type(self):
+        return self._tool_type
+
+    @tool_type.setter
+    def tool_type(self, value):
+        self._tool_type = value
     # TODO: response check and type convert
     def call(self, **kwargs):
         return self.entity.call(**kwargs)
@@ -86,23 +96,44 @@ class Tool:
 class Tools:
     tools: dict[str, Tool]
 
-    def __init__(self,yaml_file_path:str):
+    def __init__(self):
         self.tools = {}
         # 获取调用此方法的栈帧
         stack = inspect.stack()
-        caller_frame = stack[2]
+        caller_frame = stack[1]
         # 获取调用者的文件路径
         caller_path = caller_frame.filename
         # 获取调用者的目录路径
         caller_dir = os.path.dirname(caller_path)
         # 构建 openai.yaml 文件的绝对路径
-        yaml_file_path = os.path.join(caller_dir, yaml_file_path)
+        yaml_file_path = os.path.join(caller_dir, YamlPathConfig.tools_yaml_path)
         tools_yaml_path = yaml_file_path
         # 读取 tools.yaml 文件，初始化所有 tools
         with open(tools_yaml_path, "r") as f:
             config_obj = yaml.safe_load(f)
             for tool_name, tool_config in config_obj["tools"].items():
                 self.tools[tool_name] = Tool(config=ToolConfig(**tool_config))
+
+    def set_tools_yaml_path(yaml_path:str):
+        # 检查 yaml_path 是否为绝对路径
+        if not os.path.isabs(yaml_path):
+            # 获取调用此方法的栈帧
+            stack = inspect.stack()
+            caller_frame = stack[1]
+            # 获取调用者的文件路径
+            caller_path = caller_frame.filename
+            # 获取调用者的目录路径
+            caller_dir = os.path.dirname(caller_path)
+            # 构建 yaml 文件的绝对路径
+            full_yaml_path = os.path.join(caller_dir, yaml_path)
+        else:
+            full_yaml_path = yaml_path
+        # 获取 yaml 文件所在的目录
+        yaml_dir = os.path.dirname(full_yaml_path)
+        # 如果目录不存在，则创建它
+        os.makedirs(yaml_dir, exist_ok=True)
+        # 设置 yaml_path
+        YamlPathConfig.tools_yaml_path = full_yaml_path
 
     def get_tool(self, tool_name: str) -> Tool:
         # 找到对应的工具

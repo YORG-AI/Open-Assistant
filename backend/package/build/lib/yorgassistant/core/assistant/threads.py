@@ -1,7 +1,7 @@
+
 import uuid
-from collections import deque
-from typing import List, Optional
-from pydantic import BaseModel, Field
+from typing import Any, List, Optional,Dict
+
 
 from .assistant import Assistants
 from ..nodes.openai.openai import OpenAINode
@@ -41,8 +41,7 @@ class Threads:
     current_tool: Tool
     chat_node: OpenAINode  # Threads 全局的 OpenAI node，仅用于 chat 交互以及对 tool 执行结果的分析（选择 tool 以及生成参数不使用该 node）
 
-    def __init__(self, config: ThreadsConfig,yaml_file_path:str,threads_yaml_path:Optional[str] = None):
-        self.yaml_file_path = yaml_file_path
+    def __init__(self, config: ThreadsConfig,threads_yaml_path:Optional[str] = None):
         self._config = config
         self.current_tool = None
         YamlPathConfig.threads_yaml_path = threads_yaml_path if threads_yaml_path else "threads.yaml"
@@ -50,6 +49,10 @@ class Threads:
     @property
     def config(self):
         return self._config
+    
+    @property
+    def id(self):
+        return self._config.id
 
     def set_threads_yaml_path(yaml_path:str):
         # 检查 yaml_path 是否为绝对路径
@@ -97,7 +100,7 @@ class Threads:
             yaml.dump(data, file)
 
     @staticmethod
-    def create(yaml_file_path:str) -> "Threads":
+    def create() -> "Threads":
         # 创建 ThreadsConfig 对象
         config = ThreadsConfig(
             id=str(uuid.uuid4()),
@@ -108,69 +111,134 @@ class Threads:
         )
        
         # 创建 Threads 对象
-        threads = Threads(config,yaml_file_path,YamlPathConfig.threads_yaml_path)
+        threads = Threads(config,YamlPathConfig.threads_yaml_path)
 
         # 保存到 YAML 文件
         threads.save_to_yaml()
 
         return threads
 
+    @classmethod
+    def from_id(cls, id: str) -> 'Threads':
+        # 使用传入的 yaml_path 参数打开 YAML 文件
+        with open(YamlPathConfig.threads_yaml_path, 'r') as file:
+            data = yaml.safe_load(file) or []
+        # 查找具有相同 id 的配置
+        for d in data:
+            if d['id'] == id:
+                # 如果找到了，就用这个配置创建一个新的对象
+                config = ThreadsConfig.from_dict(**d)
+                return cls(config, YamlPathConfig.threads_yaml_path)  # 使用传入的 yaml_path 创建  实例
+        # 如果没有找到，就抛出一个异常
+        raise ValueError(f'No threads with id {id} found in YAML file.')
+    @staticmethod
+    def get_all_threads() -> List[Dict[str, Any]]:
+        """
+        读取 YAML 文件并返回所有 threads 的信息列表。
+        """
+        # 确保 YAML 文件路径已经被设置
+        if not YamlPathConfig.threads_yaml_path or not os.path.isfile(YamlPathConfig.threads_yaml_path):
+            raise FileNotFoundError("The threads YAML file path is not set or the file does not exist.")
+
+        # 读取 YAML 文件
+        with open(YamlPathConfig.threads_yaml_path, 'r') as file:
+            data = yaml.safe_load(file) or []
+        # 使用 from_dict 方法将每个字典转换为 ThreadsConfig 实例
+        threads_list = []
+        for item in data:
+            config = ThreadsConfig.from_dict(item)
+            threads_list.append(config)
+
+        return threads_list
     def run(self, assistant_id: str, input_text: str, **kwargs):
-        
-        # 使用 from_id 方法获取助手
-        assistant = Assistants.from_id(assistant_id)
-        tools_list = assistant.get_tools_type_list()
-        # 初始化 Tools 对象
-        tools = Tools(self.yaml_file_path)
-        # 获取 tools 的 summary
-        tools_summary = tools.get_tools_list_summary(tools_list)
-        # 如果第一次执行或当前的 tool 已执行完毕
-        if self.current_tool is None or self.current_tool.has_done():
-            # 使用 LLM 选择 tools
-            chosen_tools = self._choose_tools(tools_summary, input_text)
-            # TODO: 支持多个 tool 执行
-            if len(chosen_tools) == 0:
-                logging.warn("No tool is recommended.")
+        try:
+            # 使用 from_id 方法获取助手
+            assistant = Assistants.from_id(assistant_id)
+            tools_list = assistant.get_tools_type_list()
+            # 初始化 Tools 对象
+            tools = Tools()
+            # 获取 tools 的 summary
+            tools_summary = tools.get_tools_list_summary(tools_list)
+            # 如果第一次执行或当前的 tool 已执行完毕
+            if self.current_tool is None or self.current_tool.has_done():
+                # 使用 LLM 选择 tools
+                chosen_tools = self._choose_tools(tools_summary, input_text)
+                # TODO: 支持多个 tool 执行
+                if len(chosen_tools) == 0:
+                    logging.warn("No tool is recommended.")
 
-                self.current_tool = None
-                # 不使用 Tool, 直接 chat
-                res_message = self._chat(input_text, assistant)
+                    self.current_tool = None
+                    # 不使用 Tool, 直接 chat
+                    res_message = self._chat(input_text, assistant)
+                else:
+                    tool_name = chosen_tools[0]
+
+                    # 获取对应的 tool 对象
+                    self.current_tool = tools.get_tool(tool_name)
+
+            # 判断当前 tool 的执行是否需要 llm 生成参数
+            if self.current_tool is not None and self.current_tool.need_llm_generate_parameters():
+                # 使用 LLM 生成参数
+                parameters = self._generate_parameters(self.current_tool, input_text)
             else:
-                tool_name = chosen_tools[0]
+                parameters = kwargs
+                parameters['input_text'] = input_text
 
-                # 获取对应的 tool 对象
-                self.current_tool = tools.get_tool(tool_name)
+            # 执行 tool
+            if self.current_tool is not None:
+                res_message = self.current_tool.call(**parameters)
+                tool_tmp_message = str(res_message)
 
-        # 判断当前 tool 的执行是否需要 llm 生成参数
-        if self.current_tool is not None and self.current_tool.need_llm_generate_parameters():
-            # 使用 LLM 生成参数
-            parameters = self._generate_parameters(self.current_tool, input_text)
-        else:
-            parameters = kwargs
-            parameters['input_text'] = input_text
+            # 根据执行结果，交给 LLM 进行包装
+            if self.current_tool is not None and self.current_tool.need_llm_generate_response():
+                # 使用 LLM 生成 response
+                res_message = self._generate_response(
+                    self.current_tool, input_text, parameters, tool_tmp_message, assistant
+                )
 
-        # 执行 tool
-        if self.current_tool is not None:
-            res_message = self.current_tool.call(**parameters)
-
-        # 根据执行结果，交给 LLM 进行包装
-        if self.current_tool is not None and self.current_tool.need_llm_generate_response():
-            # 使用 LLM 生成 response
-            res_message = self._generate_response(
-                self.current_tool, input_text, parameters, res_message, assistant
-            )
-
-        #有问题 assistant_message_str = res_message if isinstance(res_message, str) else json.dumps(res_message)
-        assistant_message_str = str(res_message)
-
-        self._config.message_history.append(
-            [
-                MessageRecord(role="user", content=input_text),
-                MessageRecord(role="assistant", content=assistant_message_str),
-            ]
-        )
-
-        return res_message
+            if isinstance(res_message, dict) and 'assistant' in res_message:
+                res_message['content']['tool'] = self.current_tool.config.name
+                res_message['content']['tool_type'] = self.current_tool.tool_type
+                res_message['content']['tool_response'] = tool_tmp_message
+                if res_message['type'] =='success':
+                    self._config.message_history.append(
+                        [
+                            {'user':input_text},
+                            {'assistant':res_message},
+               
+                        ]
+                    )
+                    self._config.assistant_id = assistant_id
+                    self.save_to_yaml()
+                return res_message
+            else:
+                assistant_message_str = str(res_message)
+                result_dict = {
+                'type': 'success',
+                'content': {'tool': self.current_tool.config.name,'tool_type':self.current_tool.tool_type,'tool_response':tool_tmp_message},
+                'next_stages_info': {},
+                'assistant': {'message': assistant_message_str}
+            }
+                self._config.message_history.append(
+                    [
+                        {'user':input_text},
+                        {'assistant':result_dict},
+                    ]
+                )
+                self._config.assistant_id = assistant_id
+                self.save_to_yaml()
+                return result_dict
+            
+        except Exception as e:
+            # 异常时的返回格式
+            logging.error(f"An error occurred: {e}")
+            return {
+                'type': 'error',
+                'content': {'message': str(e)},
+                'next_stages_info': {},
+                'assistant': {'message': ''}
+            }
+        
 
     def _chat(
         self, prompt: str, assistant: Assistants, system_message: Optional[str] = None

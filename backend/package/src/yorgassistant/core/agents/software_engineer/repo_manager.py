@@ -175,12 +175,20 @@ class RepoManager:
         else:
             raise FileNotFoundError(f"File {full_path} does not exist.")
 
-    def _generate_file_tree_str(self):
-        result = subprocess.run(
-            ["tree", "."], stdout=subprocess.PIPE, cwd=self.root_path
-        )
-        result.check_returncode()
-        return result.stdout.decode("utf-8")
+    def _generate_file_tree_str(self, dir_path=None, prefix=''):
+        if dir_path is None:
+            dir_path = self.root_path
+        file_tree_str = ''
+        entries = os.listdir(dir_path)
+        entries.sort()  # Sort the entries alphabetically
+        entries_path = [os.path.join(dir_path, entry) for entry in entries]
+        for entry, entry_path in zip(entries, entries_path):
+            if os.path.isdir(entry_path):
+                file_tree_str += f"{prefix}├── {entry}/\n"
+                file_tree_str += self._generate_file_tree_str(entry_path, prefix=prefix + "│   ")
+            else:
+                file_tree_str += f"{prefix}├── {entry}\n"
+        return file_tree_str.rstrip()
 
     def _load_readme(self):
         readme_file_names = ["README.md", "README", "README.txt"]

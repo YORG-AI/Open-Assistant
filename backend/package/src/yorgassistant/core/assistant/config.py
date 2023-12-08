@@ -1,13 +1,7 @@
-import uuid
+
 from collections import deque
 from typing import List, Optional
 from pydantic import BaseModel, Field
-import time
-import yaml
-import os
-import re
-import logging
-import json
 
 class MessageRecord(BaseModel):
     role: str = Field(description="角色")
@@ -16,6 +10,7 @@ class MessageRecord(BaseModel):
 class YamlPathConfig:
     threads_yaml_path = 'threads.yaml'
     assistants_yaml_path = 'assistants.yaml'
+    tools_yaml_path = 'tools.yaml'
 
 class AssistantConfig(BaseModel):
     id: str = Field(description="助手 ID")
@@ -34,7 +29,7 @@ class ThreadsConfig(BaseModel):
     object: str = Field(default="thread", description="对象类型")
     created_at: int = Field(description="创建时间")
     assistant_id: Optional[str] = Field(description="助手 ID")
-    message_history: deque[List[MessageRecord]] = Field(
+    message_history: deque[List[dict]] = Field(
         deque(maxlen=10), description="消息"
     )
     metadata: dict = Field(default={}, description="元数据")
@@ -48,6 +43,9 @@ class ThreadsConfig(BaseModel):
 
     @classmethod
     def from_dict(cls, data):
-        # Convert the list back to a deque
-        data["message_history"] = deque(data["message_history"], maxlen=10)
+        # Ensure the message_history does not exceed the maxlen
+        history = data.get("message_history", [])
+        if len(history) > 10:
+            history = history[-10:]  # Keep only the last 10 items
+        data["message_history"] = deque(history, maxlen=10)
         return cls(**data)

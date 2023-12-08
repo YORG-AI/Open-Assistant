@@ -136,10 +136,12 @@ class Assistants():
         # 读取 YAML 文件
         with open(YamlPathConfig.assistants_yaml_path, 'r') as file:
             assistants_data = yaml.safe_load(file) or []
-
-        # 返回 assistants 数据列表
-        return assistants_data
-    
+        # 使用 from_dict 方法将每个字典转换为 AssistantConfig 实例
+        assistants_list = []
+        for item in assistants_data:
+            config = AssistantConfig(**item)
+            assistants_list.append(config)
+        return assistants_list
     @classmethod
     def from_id(cls, id: str) -> 'Assistants':
         # 使用传入的 yaml_path 参数打开 YAML 文件
