@@ -26,4 +26,10 @@ tools:
     entity_name: swe_tool
     summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
     parameters: []
-    responses: {}  
+    responses: {}
+  da_tool:
+    name: da_tool
+    entity_name: da_tool
+    summary: Data Analysis Agent (da_tool) specializes in working with code files.
+    parameters: []
+    responses: {}

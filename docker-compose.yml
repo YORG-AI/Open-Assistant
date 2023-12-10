@@ -11,10 +11,10 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000
-      - 8888:8888   # Port for Jupyter Notebook
-      - 5678:5678   # Port for Debugger
+    # ports:
+      # - 8000:8000
+      # - 8888:8888   # Port for Jupyter Notebook
+      # - 5678:5678   # Port for Debugger
     depends_on:
       - redis
     volumes:

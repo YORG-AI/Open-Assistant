@@ -22,3 +22,4 @@ src/data/data_analysis/*
 echokernel.py
 file_dir/**
 frontend/fishweb/node_modules
+.idea/

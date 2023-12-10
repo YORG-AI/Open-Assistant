@@ -123,6 +123,8 @@ class Threads:
         # 使用 from_id 方法获取助手
         assistant = Assistants.from_id(assistant_id)
         tools_list = assistant.get_tools_type_list()
+        print(tools_list)
+        print(self.current_tool)
         # 初始化 Tools 对象
         tools = Tools(self.yaml_file_path)
         # 获取 tools 的 summary

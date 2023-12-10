@@ -177,10 +177,10 @@ async def test_threads_run_stateful_tool():
     # 创建一个 Threads 对象  
     threads = AsyncThreads.create('tools.yaml')
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'SWEToolEntity'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use da tool auto fix code files", tools=[{'type':'DAToolEntity'}])
     print(assistant.id)
-    # 运行 Threads 对象
-    result =await threads.run(assistant.id, "Use SoftWare Engineer Agent swe tool auto fix code files.")
+    result = await threads.run(assistant.id, "the project is called test_project",
+                         project_name="test_project", goto="stage_1")
     print(result)
 
     result =await threads.run(assistant.id, "the repo url is https://github.com/YORG-AI/Open-Assistant",goto="stage_1")
@@ -234,4 +234,3 @@ async def test_threads_run_stateful_tool():
 
 #     result = threads.run(assistant.id, "", goto="finish")
 #     print(result)
-     
