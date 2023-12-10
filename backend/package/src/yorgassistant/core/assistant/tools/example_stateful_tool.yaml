@@ -1,0 +1,42 @@
+start_stage: "init"
+finish_stage: "finish"
+all_stages:
+  init:
+    name: "init"
+    next_stage_entry: 
+      stage_1:
+        - name: x
+          required: true
+          parameter_schema:
+            type: number
+            description: "input value x"
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_1:
+    name: "stage_1"
+    next_stage_entry: 
+      stage_2:
+        - name: y 
+          required: true
+          parameter_schema:
+            type: number
+            description: "input value y"
+    need_llm_generate_parameters: false 
+    need_llm_generate_response: false
+  stage_2:
+    name: "stage_2"
+    next_stage_entry: 
+      stage_3: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  stage_3:
+    name: "stage_3"
+    next_stage_entry: 
+      finish: []
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false
+  finish:
+    name: "finish"
+    next_stage_entry: {}
+    need_llm_generate_parameters: false
+    need_llm_generate_response: false

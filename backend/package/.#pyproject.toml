@@ -1,0 +1,44 @@
+[project]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+  "langchain==0.0.214",
+  "lxml==4.9.2",
+  "python-multipart==0.0.6",
+  "tiktoken==0.5.1",
+  "dnspython==2.1.0",
+  "typeguard==4.1.2",
+  "PyGithub==1.58",
+  "bs4",
+  "pyyaml",
+  "pydantic",
+  "python-dotenv",
+  "httpx",
+  "openai==1.2.3",
+  "fastapi==0.72.0",
+  "redis==4.5.5",
+  "GitPython",
+  "pandas",
+]
+
+[project.urls]
+Homepage = "https://github.com/YORG-AI/Open-Assistant"
+Issues = "https://github.com/YORG-AI/Open-Assistant/issues"
+
+[tool.poetry]
+name = "yorgassistant"
+version = "0.0.1"
+authors = ["zxy <zhongxingyuemail@gmail.com>"]
+description = "assistant package for yorg"
+readme = "README.md"
+packages = [
+    { include = "yorg", from = "src" }
+]
+[tool.poetry.dependencies]
+python = ">=3.8"
+
+include = ["src/yorg/core/assistant/tools/*.yaml"]

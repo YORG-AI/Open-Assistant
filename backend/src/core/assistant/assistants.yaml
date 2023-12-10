@@ -515,13 +515,6 @@
   description: null
   file_ids: []
   id: e5d787e5-ab64-4cad-94c7-84b322cc0daa
-  instructions: Use swe tool auto fix code files
-  metadata: {}
-  model: gpt-4-1106-preview
-  name: Test Assistant
-  object: assistant
-  tools:
-  - type: swe_tool
 - created_at: 1702201847
   description: null
   file_ids: []

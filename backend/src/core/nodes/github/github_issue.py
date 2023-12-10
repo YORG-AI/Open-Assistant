@@ -1,6 +1,6 @@
 from src.core.nodes.base_node import BaseNode, NodeConfig
-from src.core.nodes.github.github_node import GithubNode
-from src.core.nodes.github.github_model import (
+from .github_node import GithubNode
+from .github_model import (
     GetIssueInput,
     CreateIssueCommentInput,
     CreateIssueInput,
