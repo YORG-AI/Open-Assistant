@@ -652,3 +652,15 @@
   message_history: []
   metadata: {}
   object: thread
+- assistant_id: null
+  created_at: 1702208886
+  id: d8a716d1-d61f-4f71-9fda-fff93f6680dd
+  message_history: []
+  metadata: {}
+  object: thread
+- assistant_id: null
+  created_at: 1702208990
+  id: aae71cb0-fc1e-4e37-a41c-d774a9d7ef70
+  message_history: []
+  metadata: {}
+  object: thread

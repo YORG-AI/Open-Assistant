@@ -183,5 +183,5 @@ async def test_threads_run_stateful_tool():
                          project_name="test_project", goto="stage_1")
     print(result)
     result = await threads.run(assistant.id, "the data file we need is at src/data/ds_data/data.csv", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
-    print(result)
+    print("result of stage two:", result)
      

@@ -698,3 +698,25 @@
   object: assistant
   tools:
   - type: DAToolEntity
+- created_at: 1702208886
+  description: null
+  file_ids: []
+  id: 0e79e44e-4efe-4343-944a-c86c362f8d55
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702208990
+  description: null
+  file_ids: []
+  id: 8d9f9062-a295-4842-b688-d7a41cb391c9
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
