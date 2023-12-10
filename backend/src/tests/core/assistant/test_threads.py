@@ -177,11 +177,11 @@ async def test_threads_run_stateful_tool():
     # 创建一个 Threads 对象  
     threads = AsyncThreads.create('tools.yaml')
     # 创建一个助手并保存到 assistants.yaml 文件
-    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use swe tool auto fix code files", tools=[{'type':'SWEToolEntity'}])
+    assistant = Assistants.create(name="Test Assistant", model="gpt-4-1106-preview", instructions="Use da tool auto fix code files", tools=[{'type':'DAToolEntity'}])
     print(assistant.id)
-    result = threads.run(assistant.id, "the project is called test_project",
+    result = await threads.run(assistant.id, "the project is called test_project",
                          project_name="test_project", goto="stage_1")
     print(result)
-    result = threads.run(assistant.id, "the data file we need is at src/data/ds_data/data.csv", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
+    result = await threads.run(assistant.id, "the data file we need is at src/data/ds_data/data.csv", file_list=["src/data/ds_data/data.csv"],goto="stage_2")
     print(result)
      

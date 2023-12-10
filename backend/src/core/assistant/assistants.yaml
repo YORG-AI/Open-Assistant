@@ -522,3 +522,179 @@
   object: assistant
   tools:
   - type: swe_tool
+- created_at: 1702201847
+  description: null
+  file_ids: []
+  id: 37047fd2-84ed-42b7-a084-5004924bfab5
+  instructions: Use swe tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: SWEToolEntity
+- created_at: 1702204408
+  description: null
+  file_ids: []
+  id: 80792f32-8e42-4f2f-a0b7-8a000038592f
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702205392
+  description: null
+  file_ids: []
+  id: d7a4a4a6-6dd3-45a3-8794-fd86d3916ac2
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702205839
+  description: null
+  file_ids: []
+  id: 61f3207d-f79c-4556-bfd3-51a6c0b09c9d
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702205993
+  description: null
+  file_ids: []
+  id: ab177f85-a892-43f0-bcc3-7f00c6d335b7
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702206116
+  description: null
+  file_ids: []
+  id: 6ffb2e4e-a4ad-4abb-8f38-0b84c6055e79
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity
+- created_at: 1702206284
+  description: null
+  file_ids: []
+  id: 12ba4cd8-091a-4160-9ff5-d531be678985
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702206314
+  description: null
+  file_ids: []
+  id: 6d4ecad0-64e1-4e5f-9d47-1219b595825a
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702206384
+  description: null
+  file_ids: []
+  id: e76213fc-0938-4114-878a-6668b76a62f2
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702206500
+  description: null
+  file_ids: []
+  id: 5e64fec7-6c87-4504-9407-5a51f53d408a
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702206632
+  description: null
+  file_ids: []
+  id: ea5a0433-3f26-4bb6-a9b1-ae26cbf97b7f
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702206679
+  description: null
+  file_ids: []
+  id: 1714bbe4-a2ef-4e4c-a257-523ac4ec3b8d
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702207505
+  description: null
+  file_ids: []
+  id: e98be225-91e0-4e94-8bb5-2065cf0b802d
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702207653
+  description: null
+  file_ids: []
+  id: e516653f-e13f-49ab-8a8e-791587b09be8
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702207785
+  description: null
+  file_ids: []
+  id: f185e1aa-71fb-4af3-a363-b032b65f46d0
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: da_tool
+- created_at: 1702207877
+  description: null
+  file_ids: []
+  id: 19f6eff0-5597-444d-a3b7-bcf1cb722d7b
+  instructions: Use da tool auto fix code files
+  metadata: {}
+  model: gpt-4-1106-preview
+  name: Test Assistant
+  object: assistant
+  tools:
+  - type: DAToolEntity

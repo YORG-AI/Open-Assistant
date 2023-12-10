@@ -32,4 +32,10 @@ tools:
     entity_name: SWEToolEntity
     summary: SoftWare Engineer Agent(swe_tool) specializes in working with code files.
     parameters: []
-    responses: {}  
+    responses: {}
+  DAToolEntity:
+    name: DAToolEntity
+    entity_name: DAToolEntity
+    summary: Data Analysis Agent(da_tool) specializes in analysing data files.
+    parameters: []
+    responses: {}

@@ -37,6 +37,7 @@ FUNCTION_TOOL_ENTITIES = {
 
 STATEFUL_TOOL_ENTITIES = {
     "example_stateful_tool": ExampleStatefulToolEntity,
+    "DAToolEntity": DAToolEntity
 }
 
 def register_function_tool(func):
