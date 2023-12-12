@@ -215,7 +215,7 @@ class Threads:
                 assistant_message_str = str(res_message)
                 result_dict = {
                 'type': 'success',
-                'content': {'tool': self.current_tool.config.name,'tool_type':self.current_tool.tool_type,'tool_response':tool_tmp_message},
+                'content': {'tool': self.current_tool.config.name if self.current_tool else '','tool_type':self.current_tool.tool_type if self.current_tool else '','tool_response':tool_tmp_message if self.current_tool else ''},
                 'next_stages_info': {},
                 'assistant': {'message': assistant_message_str}
             }
@@ -259,10 +259,10 @@ class Threads:
             for record in self._config.message_history:
                 user_message = record[0]
                 assistant_message = record[1]
-                response_node.add_content(user_message.content)
-                response_node.add_role(user_message.role)
-                response_node.add_content(assistant_message.content)
-                response_node.add_role(assistant_message.role)
+                response_node.add_content(user_message['user'])
+                response_node.add_role('user')
+                response_node.add_content(str(assistant_message['assistant']))
+                response_node.add_role('assistant')
 
         message_config = Message(role="user", content=prompt)
 
