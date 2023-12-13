@@ -303,6 +303,8 @@ print(result)
 
 ## Contributing
 <a href="https://github.com/YORG-AI/Open-Assistant/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=YORG-AI/Open-Assistant" />
+</a>
 
 ## Star History
 <picture>
