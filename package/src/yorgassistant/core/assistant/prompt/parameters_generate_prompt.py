@@ -45,4 +45,6 @@ Output:
 
 PARAMETERS_GENERATE_HINT = """
 You should only output the json string of parameters, such as {"code": "print('Hello World')"}. Do not output any other information and do not contain quotation marks, such as `, \", \' and so on.
+Ensure the response can be parsed by Python json.loads.
+Don't output in markdown format, something like ```json or ```,just output in the corresponding string format
 """
