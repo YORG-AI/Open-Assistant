@@ -1,20 +1,21 @@
 # YORG open-assistant
+<div id="top"></div>
 
-## Introduction
-OpenAI's Assistant API is awesome: channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers build powerful AI assistants capable of performing various tasks. However, it executes codes within an online sandbox and requires us to upload our files to OpenAI's platform -- which does not sound that awesome...
+## 😎Introduction
+OpenAI's Assistant API is awesome : channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers 👩‍💻👨‍💻 build powerful 💪 AI assistants capable of performing various tasks 📋. However, it executes codes within an online sandbox 🏖️ and requires us to upload our files to OpenAI's platform 🌐 -- which does not sound that awesome 😎...
 
-Y'ORG AI thus introduces the Open Assistant, which allows you to run your codes locally, retrieve knowledge from local files (without sendding them to OpenAI), and access more developer-friendly tools!
+Y'ORG AI thus introduces the Open Assistant 🛠️, which allows you to run your codes locally 🏠, retrieve knowledge from local 🏠 files (without sendding them to OpenAI), and access more developer-friendly tools!
 
-## Key Advantages
-Our platform is designed with the developer and data analyst in mind, offering unparalleled advantages:
+## 🌟Key Advantages
+Our platform 🌐 is designed with the developer and data analyst in mind, offering unparalleled advantages:
 
 - **Fortified Data Privacy**: Your sensitive information never leaves your own secure servers.
 - **Boundless Document Handling**: Wave goodbye to restrictions on file size or quantity.
-- **Cost Efficiency**: Eliminate session and retrieval costs associated with cloud-based services.
+- **Cost Efficiency**: Eliminate session and retrieval🔍 costs associated with cloud-based services.
 - **Local LLM Flexibility**: Opt for the Large Language Model of your choice and maintain all operations in-house.
 
-## Tools and pre-built assistants
-Y'ORG provide additional tools for developers:
+## 🔌Tools and pre-built assistants
+Y'ORG provide additional tools for developers👩‍💻👨‍💻:
 - Understand codebases.
 - Draft development specification.
 - Introduce new features into existing projects.
@@ -27,15 +28,19 @@ We also provide pre-built assistants for our users:
 
 **SDE assistant**: Transform feature requests into executable code and documentation by harnessing the collective intelligence of your entire code repository—no IDE required.
 
-(labs)**Data assistant**: Analyze datasets, distill insights, and convert them into comprehensive reports for varied stakeholders.
+**Data assistant**: Analyze datasets, distill insights, and convert them into comprehensive reports for varied stakeholders.
 
-## webui dome
-For details, you can open the readme file in the webui folder.
+## 🔍What's yorgassistant
+Yorgassistant is a streamlined open source framework designed for users to efficiently build agents based on large language models. It includes a set of built-in tools for enhancing the functionality of LLMs. Here is an overview of our framework:
+![open-assistant](https://github.com/YORG-AI/Open-Assistant/assets/42194301/4ef6bb53-691c-4d3a-a472-58b760e64bdf)
+
+## 🏖️webui dome
+For details, you can open the readme file in the [webui folder](./webui/README.md).
 <div align="center">
     <img src="https://github.com/YORG-AI/Open-Assistant/assets/42194301/e964f81f-5daa-45fc-ac82-1cc9c73253eb" width="500">
 </div>
 
-## Quick Start
+## 👨‍💻Quick Start
 
 - Set up package
 ``` shell
@@ -301,12 +306,12 @@ result = threads.run(assistant.id, "", goto="finish")
 print(result)
 ```
 
-## Contributing
+## 🤝 Contributing
 <a href="https://github.com/YORG-AI/Open-Assistant/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=YORG-AI/Open-Assistant" />
 </a>
 
-## Star History
+## 🌟Star History
 <picture>
   <source
     media="(prefers-color-scheme: dark)"
@@ -326,10 +331,22 @@ print(result)
   />
 </picture>
 
-## Contact
+## 📋Citation
+If you find this project useful in your research, please consider cite:
+```latex
+@misc{yorgassistant2023,
+    title={{yorgassistant} A streamlined open source framework designed for users to efficiently build agents based on large language models.},
+    author={YORG-AI Developer Team},
+    howpublished = {\url{https://github.com/YORG-AI/Open-Assistant}},
+    year={2023}
+}
+```
+## 📞Contact
 
 If you have any questions / feedback / comment, do not hesitate to contact us. 
 
 Email: contact@yorg.ai
 
 GitHub Issues: For more technical inquiries, you can also create a new issue in our GitHub repository.
+
+<p align="right"><a href="#top">Back to top</a></p>
