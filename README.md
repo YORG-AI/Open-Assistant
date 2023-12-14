@@ -2,9 +2,9 @@
 <div id="top"></div>
 
 ## 😎Introduction
-OpenAI's Assistant API is awesome : channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers 👩‍💻👨‍💻 build powerful 💪 AI assistants capable of performing various tasks 📋. However, it executes codes within an online sandbox 🏖️ and requires us to upload our files to OpenAI's platform 🌐 -- which does not sound that awesome 😎...
+OpenAI's Assistant API is awesome : channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers  build powerful  AI assistants capable of performing various tasks . However, it executes codes within an online sandbox  and requires us to upload our files to OpenAI's platform  -- which does not sound that awesome ...
 
-Y'ORG AI thus introduces the Open Assistant 🛠️, which allows you to run your codes locally 🏠, retrieve knowledge from local 🏠 files (without sendding them to OpenAI), and access more developer-friendly tools!
+Y'ORG AI thus introduces the Open Assistant , which allows you to run your codes locally , retrieve knowledge from local  files (without sendding them to OpenAI), and access more developer-friendly tools!
 
 ## 🌟Key Advantages
 Our platform 🌐 is designed with the developer and data analyst in mind, offering unparalleled advantages:
