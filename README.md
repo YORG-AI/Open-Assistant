@@ -1,5 +1,7 @@
 # YORG open-assistant
 <div id="top"></div>
+
+
 ## Introduction
 OpenAI's Assistant API is awesome: channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers build powerful AI assistants capable of performing various tasks. However, it executes codes within an online sandbox and requires us to upload our files to OpenAI's platform -- which does not sound that awesome...
 
@@ -34,7 +36,7 @@ Yorgassistant is a streamlined open source framework designed for users to effic
 ![open-assistant](https://github.com/YORG-AI/Open-Assistant/assets/42194301/4ef6bb53-691c-4d3a-a472-58b760e64bdf)
 
 ## webui dome
-For details, you can open the readme file in the webui folder.
+For details, you can open the readme file in the [webui folder](./webui/README.md).
 <div align="center">
     <img src="https://github.com/YORG-AI/Open-Assistant/assets/42194301/e964f81f-5daa-45fc-ac82-1cc9c73253eb" width="500">
 </div>
@@ -329,7 +331,9 @@ print(result)
     src="https://api.star-history.com/svg?repos=YORG-AI/Open-Assistant&type=Date"
   />
 </picture>
+
 ## Citation
+
 If you find this project useful in your research, please consider cite:
 ```latex
 @misc{yorgassistant2023,
