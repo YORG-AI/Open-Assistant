@@ -13,7 +13,7 @@ from .model import Parameter, Response
 from .swe_tool_entity import SWEToolEntity
 from .example_stateful_tool_entity import ExampleStatefulToolEntity
 from ..config import YamlPathConfig
-
+from .da_tool_entity import DAToolEntity
 # 示例工具函数
 def serve_code_interpreter(code: str) -> dict[str, any]:
     from ...nodes.code_runner.code_runner import CodeRunnerNode, RunCodeInput
@@ -37,6 +37,7 @@ FUNCTION_TOOL_ENTITIES = {
 STATEFUL_TOOL_ENTITIES = {
     "example_stateful_tool": ExampleStatefulToolEntity,
     "swe_tool":SWEToolEntity,
+    "DAToolEntity": DAToolEntity
 }
 
 def register_function_tool(func):
