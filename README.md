@@ -35,7 +35,7 @@ Yorgassistant is a streamlined open source framework designed for users to effic
 ![open-assistant](https://github.com/YORG-AI/Open-Assistant/assets/42194301/4ef6bb53-691c-4d3a-a472-58b760e64bdf)
 
 ## 🏖️webui dome
-For details, you can open the readme file in the webui folder.
+For details, you can open the readme file in the [webui folder](./webui/README.md).
 <div align="center">
     <img src="https://github.com/YORG-AI/Open-Assistant/assets/42194301/e964f81f-5daa-45fc-ac82-1cc9c73253eb" width="500">
 </div>
