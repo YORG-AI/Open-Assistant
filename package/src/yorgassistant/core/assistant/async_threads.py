@@ -128,8 +128,13 @@ class AsyncThreads:
         读取 YAML 文件并返回所有 threads 的信息列表。
         """
         # 确保 YAML 文件路径已经被设置
-        if not YamlPathConfig.threads_yaml_path or not os.path.isfile(YamlPathConfig.threads_yaml_path):
-            raise FileNotFoundError("The threads YAML file path is not set or the file does not exist.")
+        if YamlPathConfig.threads_yaml_path:
+            if not os.path.isfile(YamlPathConfig.threads_yaml_path):
+                # 如果文件路径存在但文件不存在，则创建一个空文件
+                with open(YamlPathConfig.threads_yaml_path, 'w') as file:
+                    yaml.dump([], file)
+        else:
+            raise FileNotFoundError("The threads YAML file path is not set.")
 
         # 读取 YAML 文件
         with open(YamlPathConfig.threads_yaml_path, 'r') as file:
