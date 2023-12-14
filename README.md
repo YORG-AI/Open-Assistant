@@ -311,7 +311,7 @@ print(result)
   <img src="https://contrib.rocks/image?repo=YORG-AI/Open-Assistant" />
 </a>
 
-## Star History
+## 🌟Star History
 <picture>
   <source
     media="(prefers-color-scheme: dark)"
@@ -330,7 +330,8 @@ print(result)
     src="https://api.star-history.com/svg?repos=YORG-AI/Open-Assistant&type=Date"
   />
 </picture>
-## Citation
+
+## 📋Citation
 If you find this project useful in your research, please consider cite:
 ```latex
 @misc{yorgassistant2023,
