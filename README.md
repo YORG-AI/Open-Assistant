@@ -1,5 +1,5 @@
 # YORG open-assistant
-
+<div id="top"></div>
 ## Introduction
 OpenAI's Assistant API is awesome: channeling the power of **Code interpreter** and **Retrieval** and thereby helping developers build powerful AI assistants capable of performing various tasks. However, it executes codes within an online sandbox and requires us to upload our files to OpenAI's platform -- which does not sound that awesome...
 
@@ -27,7 +27,11 @@ We also provide pre-built assistants for our users:
 
 **SDE assistant**: Transform feature requests into executable code and documentation by harnessing the collective intelligence of your entire code repository—no IDE required.
 
-(labs)**Data assistant**: Analyze datasets, distill insights, and convert them into comprehensive reports for varied stakeholders.
+**Data assistant**: Analyze datasets, distill insights, and convert them into comprehensive reports for varied stakeholders.
+
+## What's yorgassistant
+Yorgassistant is a streamlined open source framework designed for users to efficiently build agents based on large language models. It includes a set of built-in tools for enhancing the functionality of LLMs. Here is an overview of our framework:
+![open-assistant](https://github.com/YORG-AI/Open-Assistant/assets/42194301/4ef6bb53-691c-4d3a-a472-58b760e64bdf)
 
 ## webui dome
 For details, you can open the readme file in the webui folder.
@@ -325,7 +329,16 @@ print(result)
     src="https://api.star-history.com/svg?repos=YORG-AI/Open-Assistant&type=Date"
   />
 </picture>
-
+## Citation
+If you find this project useful in your research, please consider cite:
+```latex
+@misc{yorgassistant2023,
+    title={{yorgassistant} A streamlined open source framework designed for users to efficiently build agents based on large language models.},
+    author={YORG-AI Developer Team},
+    howpublished = {\url{https://github.com/YORG-AI/Open-Assistant}},
+    year={2023}
+}
+```
 ## Contact
 
 If you have any questions / feedback / comment, do not hesitate to contact us. 
@@ -333,3 +346,5 @@ If you have any questions / feedback / comment, do not hesitate to contact us.
 Email: contact@yorg.ai
 
 GitHub Issues: For more technical inquiries, you can also create a new issue in our GitHub repository.
+
+<p align="right"><a href="#top">Back to top</a></p>
