@@ -1,1 +1,5 @@
+# vscode config
 .vscode/
+
+# local yaml config file for webui
+webui/data/
