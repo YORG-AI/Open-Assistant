@@ -34,7 +34,7 @@ We also provide pre-built assistants for our users:
 Yorgassistant is a streamlined open source framework designed for users to efficiently build agents based on large language models. It includes a set of built-in tools for enhancing the functionality of LLMs. Here is an overview of our framework:
 ![open-assistant](https://github.com/YORG-AI/Open-Assistant/assets/42194301/4ef6bb53-691c-4d3a-a472-58b760e64bdf)
 
-## 🏖️webui dome
+## 🏖️webui demo
 For details, you can open the readme file in the [webui folder](./webui/README.md).
 <div align="center">
     <img src="https://github.com/YORG-AI/Open-Assistant/assets/42194301/e964f81f-5daa-45fc-ac82-1cc9c73253eb" width="500">
